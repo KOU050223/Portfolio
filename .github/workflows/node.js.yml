@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  pages: write
+  id-token: write
+
 jobs:
   build:
 
@@ -28,3 +32,10 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run rebuild
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: docs/index.html
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
