@@ -1,0 +1,87 @@
+[
+    {
+      "title": "FK大RPG",
+      "img": "/img/FKRPG.png",
+      "description": "KOU初作品\n立花祭に出店したい一心で１週間ほどで作成したゲームバランスが終わっているゲーム",
+      "links": {
+        "インストールexeダウンロード": "download/福工大RPG.exe"
+      }
+    },
+    {
+      "title": "ウイルスバスター",
+      "img": "/img/uirusu.png",
+      "description": "Unityのネコ本を履修後初作品\nクリックでウイルスを消そう！",
+      "links": {
+        "GitHub": "#",
+        "UnityRoom": "https://unityroom.com/games/virus_buster_in_physics"
+      }
+    },
+    {
+      "title": "生き残れ！クリオネちゃん",
+      "img": "/img/kurione.png",
+      "description": "Unity２作目（１年生２月ごろ）\nフラッピーバードをつくろう的なやつ丸パクリ",
+      "links": {
+        "GitHub": "#",
+        "UnityRoom": "https://unityroom.com/games/ikinokore_clionetyan"
+      }
+    },
+    {
+      "title": "ポージングエフェクト",
+      "img": "/img/posingeffect.png",
+      "description": "ハックツハッカソン ステゴカップにて作成（2年生5月ごろ）\nPythonとUnityを繋げて作った。MediaPipeでポーズ推定したよ\n・特別賞 受賞",
+      "links": {
+        "GitHub": "https://github.com/jyogi-web/sutego_PosingEffect",
+        "Topaz": "https://topaz.dev/projects/6dd69986efee3f535106"
+      }
+    },
+    {
+      "title": "人から作る？！錬金クッキング",
+      "img": "/img/renkin_title.png",
+      "description": "第２回福岡学生ゲームジャムにて作成\nstage1とステージの統合を担当/Unityのチーム開発それぞれのコードを見ないといけなくて大変だった",
+      "links": {
+        "GitHub": "GitHubなんてないよ",
+        "UnityRoom": "https://unityroom.com/games/gamejam_2024_08_22_01"
+      }
+    },
+    {
+      "title": "ジャストエイサー",
+      "img": "/img/justeisa.png",
+      "description": "第2回やんばるハッカソン＆ハックツハッカソンにて作成\nJoyconを担当したがバックエンドとの接続や非同期処理難しい\n・やんばるハックツハッカソン最優秀賞\n・EDD企業賞(nulab)\n・2024技育博 vol.6 企業賞(CARTA)",
+      "links": {
+        "GitHub(メイン)": "https://github.com/jyogi-web/yanbaru-back-mediapipe",
+        "Topaz": "https://topaz.dev/projects/3cacf9e968739f90fbe8",
+        "protopedia":"https://protopedia.net/prototype/6119",
+        "FECアーカイブ":"https://www.youtube.com/live/DvJnTxMt3RI",
+        "デプロイ先": "https://yanabaru-e2dbfbhjdzd0gpg0.japaneast-01.azurewebsites.net/"
+      }
+    },
+    {
+      "title": "Tonkatsu___Ito",
+      "img": "/img/ito.png",
+      "description": "データエンジニアカタパルトフェーズ2で作成\nTonkatsu食べながら案出ししたよ～\nチャットしながらItoが遊べるよ！",
+      "links": {
+        "GitHub": "https://github.com/porChe1223/Tonkatsu___Ito",
+        "Googleスライド": "https://docs.google.com/presentation/d/19-Yqanv-jhIDZZhBB_HJGQ8gKHyr-sSlGYzypjaRTWk/edit?usp=sharing"
+      }
+    },
+    {
+      "title": "AtQuizer",
+      "img": "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01JD113R2KYAGX1DH8HT1GM4Y2.png&w=3840&q=75",
+      "description" :"ハックツハッカソン ラブカカップで作成\nLineを使ったリアルタイム性クイズアプリ\n",
+      "links":{
+        "GitHub":"#",
+        "デプロイ先":""
+      }
+    },
+    {
+      "title":"資格マウンティングトレーディングカードバトル（シカポケ）",
+      "img":"https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01JF4F42YJ3WVR0DTXN6PR3P6A.png&w=3840&q=75",
+      "description":"ハックツハッカソン アンキロアップにて作成\n資格という指標でカードバトル！\n流行りのポケ○ケパロディーで作成",
+      "links":{
+        "GitHub":"https://github.com/jyogi-web/loveka-2024/",
+        "デプロイ先（現在停止）":"https://loveka-deploy.vercel.app/"
+      }
+    }
+
+]
+  

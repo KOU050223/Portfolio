@@ -42,7 +42,7 @@
 --------------------------------------*/
 .l-wrapper {
   margin: 1rem auto;
-  width: 100%;
+  width: 100vw;
 }
 
 .l-wrapper:hover {
@@ -54,6 +54,9 @@
   background: #fff;
   border-radius: 5px;
   box-shadow: 0 2px 5px #ccc;
+  width: 45vw;
+  height: auto;
+  float: left;
 }
 
 .card-img {
