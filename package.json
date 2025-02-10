@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
-    "build": "vite build && xcopy dist docs /e /i",                   
-    "rebuild": "vite build && rmdir /s /q docs && xcopy dist docs /e /i",
+    "build": "vite build && cp -r dist docs",
+    "rebuild": "vite build && rm -rf docs && cp -r dist docs",
     "git": "git add . && git commit && git push origin main"
   },
   "dependencies": {
