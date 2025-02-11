@@ -12,7 +12,7 @@
       "img": "/img/uirusu.png",
       "description": "Unityのネコ本を履修後初作品\nクリックでウイルスを消そう！",
       "links": {
-        "GitHub": "#",
+        "GitHub": "https://github.com/KOU050223/VirusBuster",
         "UnityRoom": "https://unityroom.com/games/virus_buster_in_physics"
       }
     },
@@ -21,7 +21,7 @@
       "img": "/img/kurione.png",
       "description": "Unity２作目（１年生２月ごろ）\nフラッピーバードをつくろう的なやつ丸パクリ",
       "links": {
-        "GitHub": "#",
+        "GitHub": "https://github.com/KOU050223/IkinokoreClionetyan",
         "UnityRoom": "https://unityroom.com/games/ikinokore_clionetyan"
       }
     },
@@ -46,12 +46,12 @@
     {
       "title": "ジャストエイサー",
       "img": "/img/justeisa.png",
-      "description": "第2回やんばるハッカソン＆ハックツハッカソンにて作成\nJoyconを担当したがバックエンドとの接続や非同期処理難しい\n・やんばるハックツハッカソン最優秀賞\n・EDD企業賞(nulab)\n・2024技育博 vol.6 企業賞(CARTA)",
+      "description": "第2回やんばるハッカソン＆ハックツハッカソンにて作成\nJoyconを担当したがバックエンドとの接続や非同期処理難しい\n・やんばるハックツハッカソン最優秀賞\n・EFCアワードプロダクト開発部門 & 企業特別賞ヌーラボ賞 受賞\n・2024技育博 vol.6 企業賞(CARTA)",
       "links": {
         "GitHub(メイン)": "https://github.com/jyogi-web/yanbaru-back-mediapipe",
         "Topaz": "https://topaz.dev/projects/3cacf9e968739f90fbe8",
         "protopedia":"https://protopedia.net/prototype/6119",
-        "FECアーカイブ":"https://www.youtube.com/live/DvJnTxMt3RI",
+        "EFCアワードアーカイブ":"https://www.youtube.com/live/DvJnTxMt3RI",
         "デプロイ先": "https://yanabaru-e2dbfbhjdzd0gpg0.japaneast-01.azurewebsites.net/"
       }
     },
@@ -66,22 +66,48 @@
     },
     {
       "title": "AtQuizer",
-      "img": "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01JD113R2KYAGX1DH8HT1GM4Y2.png&w=3840&q=75",
+      "img": "/img/atquizer.png",
       "description" :"ハックツハッカソン ラブカカップで作成\nLineを使ったリアルタイム性クイズアプリ\n",
       "links":{
-        "GitHub":"#",
-        "デプロイ先":""
+        "GitHub":"https://github.com/jyogi-web/loveka-2024/",
+        "デプロイ先":"https://loveka-deploy.vercel.app/"
       }
     },
     {
       "title":"資格マウンティングトレーディングカードバトル（シカポケ）",
-      "img":"https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01JF4F42YJ3WVR0DTXN6PR3P6A.png&w=3840&q=75",
-      "description":"ハックツハッカソン アンキロアップにて作成\n資格という指標でカードバトル！\n流行りのポケ○ケパロディーで作成",
+      "img":"/img/ShikaPoke.png",
+      "description":"ハックツハッカソン アンキロアップにて作成\n資格という指標でカードバトル！\n流行りのポケ○ケパロディーで作成\n環境構築・バトル部分（Laravel・React）を担当",
       "links":{
-        "GitHub":"https://github.com/jyogi-web/loveka-2024/",
-        "デプロイ先（現在停止）":"https://loveka-deploy.vercel.app/"
+        "GitHub":"https://github.com/jyogi-web/ankylo-monorepo",
+        "デプロイ先（現在停止）":"https://anklohack.an.r.appspot.com/"
+      }
+    },
+    {
+      "title":"スプラッターうさこ(未完成)",
+      "img":"/img/spusako.png",
+      "description":"じょぎハッカソンにて作成\nPythonでレトロゲームを作成\nチームぼっちとして個人開発...",
+      "links":{
+        "GitHub":"https://github.com/KOU050223/jyogi_new_year_hackathon",
+        "デプロイ先":"https://kou050223.github.io/jyogi_new_year_hackathon/"
+      }
+    },
+    {
+      "title":"アニ名刺",
+      "img":"/img/animeishi.png",
+      "description":"技育ハッカソンvol.22にて作成\n自分が見たアニメを名詞として共有\n環境構築・Firebaseとの連携を担当\nFlutter・Firebaseで作成",
+      "links":{
+        "GitHub":"https://github.com/KOU050223/Animeishi",
+        "デプロイ先":"https://animeishi-73560.firebaseapp.com/"
+      }
+    },
+    {
+      "title":"キャラクタープロフィール共有アプリ（製作中）",
+      "img":"",
+      "description":"キャラクタープロフィールを共有・編集",
+      "links":{
+        "GitHub":"http://github.com/jyogi-web/geek2024_vol.22_1",
+        "デプロイ先":""
       }
     }
-
 ]
   

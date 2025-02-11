@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
-    "build": "vite build && cp -r dist docs",
+    "build": "vite build",
     "rebuild": "vite build && rm -rf docs && cp -r dist docs",
     "git": "git add . && git commit && git push origin main"
   },
