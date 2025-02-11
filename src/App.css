@@ -54,9 +54,9 @@
   background: #fff;
   border-radius: 5px;
   box-shadow: 0 2px 5px #ccc;
-  width: 45vw;
+  width: 60vw;
   height: auto;
-  float: left;
+  text-align: center;
 }
 
 .card-img {

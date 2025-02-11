@@ -10,7 +10,8 @@ function App() {
       .then(response => response.json())
       .then(data => setProjects(data))
       .catch(error => console.error('Error loading projects:', error));
-  }, []);
+    }, []);
+    console.log(JSON.stringify(projects));
 
   return (
     <>
@@ -26,12 +27,7 @@ function App() {
                       img={project.img}
                       title={project.title}
                       text={
-                        project.description.split('\n').map((line, i) => (
-                          <span key={i}>
-                            {line}
-                            <br />
-                          </span>
-                        ))
+                        project.description
                       }
                     />
                     <div className="card-link">
