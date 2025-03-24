@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import Card from "../components/Card";
+import { Heading } from "@chakra-ui/react";
 
 const Production = () => {
   const [projects, setProjects] = useState([]);
@@ -15,13 +16,13 @@ const Production = () => {
 
   return (
     <div>
-      <h1>KOUのこれまでの作品一覧</h1>
+      <Heading size={'4xl'}>KOUのこれまでの作品一覧</Heading>
       <table>
         <tbody>
           {projects.map((project, index) => (
             <tr key={index}>
               <td>
-                <div className="l-wrapper card">
+                <div>
                   <Card
                     img={project.img}
                     title={project.title}

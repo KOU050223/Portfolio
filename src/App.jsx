@@ -1,26 +1,32 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MoneyConversion from "./pages/MoneyConversion.jsx";
 import Production from "./pages/Production.jsx";
+import Header from "./components/Header.jsx";
+import { Container, Box } from "@chakra-ui/react";
 
 function App() {
   return (
     <Router>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/money_conversion">Money Conversion</Link>
-          </li>
-        </ul>
-      </nav>
-      
-      <Routes>
-        <Route path="/" element={<Production />} />
-        <Route path="/money_conversion" element={<MoneyConversion />} />
-      </Routes>
+      <Container
+        maxW={"1200px"}
+        minH={"100vh"}
+        p={4}
+        mt={4}
+        borderRadius="md"
+      >
+        <Header />
+        <Box
+          width="100%"
+          minH="80vh" 
+          mt={4}
+        >
+          <Routes>
+            <Route path="/" element={<Production />} />
+            <Route path="/money_conversion" element={<MoneyConversion />} />
+          </Routes>
+        </Box>
+      </Container>
     </Router>
   );
 }
