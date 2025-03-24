@@ -1,50 +1,27 @@
-import './App.css';
-import Card from './Card.jsx';
-import { useEffect, useState } from 'react';
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import MoneyConversion from "./pages/MoneyConversion.jsx";
+import Production from "./pages/Production.jsx";
 
 function App() {
-  const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    fetch('https://fetch-projects-data.uozumi05.workers.dev/projects')
-      .then(response => response.json())
-      .then(data => setProjects(data))
-      .catch(error => console.error('Error loading projects:', error));
-    }, []);
-    console.log(JSON.stringify(projects));
-
   return (
-    <>
-      <div>
-        <h1>KOUのこれまでの作品一覧</h1>
-        <table>
-          <tbody>
-            {projects.map((project, index) => (
-              <tr key={index}>
-                <td>
-                  <div className="l-wrapper card">
-                    <Card
-                      img={project.img}
-                      title={project.title}
-                      text={
-                        project.description
-                      }
-                    />
-                    <div className="card-link">
-                      {Object.entries(project.links).map(([linkText, linkUrl], linkIndex) => (
-                        <a key={linkIndex} href={linkUrl} target="_blank" rel="noopener noreferrer">
-                          {linkText}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </>
+    <Router>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/money_conversion">Money Conversion</Link>
+          </li>
+        </ul>
+      </nav>
+      
+      <Routes>
+        <Route path="/" element={<Production />} />
+        <Route path="/money_conversion" element={<MoneyConversion />} />
+      </Routes>
+    </Router>
   );
 }
 
