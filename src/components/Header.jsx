@@ -25,16 +25,16 @@ const Header = () => {
         <HStack spacing={4}>
           <Button 
             as={Link} 
-            to="/" 
+            to="/production" 
             variant="ghost" 
             color="gray.600"
             _hover={{ bg: 'gray.200', color: 'blue.500' }}
             fontWeight="medium"
             transition="all 0.2s ease-in-out"
           >
-            ホーム
+            作品一覧
           </Button>
-          <Button 
+          {/* <Button 
             as={Link} 
             to="/money_conversion" 
             variant="ghost" 
@@ -43,8 +43,8 @@ const Header = () => {
             fontWeight="medium"
             transition="all 0.2s ease-in-out"
           >
-            為替変換ツール
-          </Button>
+            金の重み計算ツール
+          </Button> */}
         </HStack>
       </Flex>
     </Box>

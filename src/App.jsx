@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home.jsx";  
 import MoneyConversion from "./pages/MoneyConversion.jsx";
 import Production from "./pages/Production.jsx";
 import Header from "./components/Header.jsx";
@@ -22,7 +23,8 @@ function App() {
           mt={4}
         >
           <Routes>
-            <Route path="/" element={<Production />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/production" element={<Production />} />
             <Route path="/money_conversion" element={<MoneyConversion />} />
           </Routes>
         </Box>

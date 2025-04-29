@@ -1,54 +1,40 @@
-import React, { useEffect, useState } from "react";
 import "../App.css";
 import Card from "../components/Card";
 import { Heading } from "@chakra-ui/react";
+import { useProjects } from "../hooks/useProjects";
+import { Container, SimpleGrid } from "@chakra-ui/react";
+import ProjectCard from "../components/projectCard";
 
 const Production = () => {
-  const [projects, setProjects] = useState([]);
+  const {projects , isLoading, error} = useProjects();
 
-  useEffect(() => {
-    fetch("https://fetch-projects-data.uozumi05.workers.dev/projects")
-      .then((response) => response.json())
-      .then((data) => setProjects(data))
-      .catch((error) => console.error("Error loading projects:", error));
-  }, []);
   console.log(JSON.stringify(projects));
 
   return (
-    <div>
+    <Container maxW="container.xl" py={10}>
       <Heading size={'4xl'}>KOUのこれまでの作品一覧</Heading>
-      <table>
-        <tbody>
+      <SimpleGrid
+            columns={{ base: 1, sm: 2, lg: 3 }}
+            spacing={{ base: 8, sm: 12, md: 16 }}
+            justifyItems="center"
+            px={{ base: 2, md: 8 }}
+          >
           {projects.map((project, index) => (
-            <tr key={index}>
-              <td>
-                <div>
-                  <Card
-                    img={project.img}
-                    title={project.title}
-                    text={project.description}
-                  />
-                  <div className="card-link">
-                    {Object.entries(project.links).map(
-                      ([linkText, linkUrl], linkIndex) => (
-                        <a
-                          key={linkIndex}
-                          href={linkUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {linkText}
-                        </a>
-                      )
-                    )}
-                  </div>
-                </div>
-              </td>
-            </tr>
+              <ProjectCard
+              key={index}
+              title={project.title}
+              authors={project.authors}
+              date={project.date}
+              technologies={project.technologies}
+              youtubeUrl={project.youtubeUrl}
+              description={project.description}
+              deployLink={project.deployLink}
+              githubLink={project.githubLink}
+              articleLink={project.articleLink}
+            />
           ))}
-        </tbody>
-      </table>
-    </div>
+          </SimpleGrid>
+      </Container>
   );
 };
 

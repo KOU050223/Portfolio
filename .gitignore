@@ -25,3 +25,11 @@ dist-ssr
 
 #大きすぎるファイル（今後運用考える）
 download
+
+# macOS
+*.DS_Store
+
+# 環境変数
+.env
+.env.*
+.env.local
