@@ -4,6 +4,7 @@ import Home from "./pages/Home.jsx";
 import MoneyConversion from "./pages/MoneyConversion.jsx";
 import Production from "./pages/Production.jsx";
 import Header from "./components/Header.jsx";
+import Footer from "./components/Footer.jsx";
 import { Container, Box } from "@chakra-ui/react";
 
 function App() {
@@ -12,8 +13,8 @@ function App() {
       <Container
         maxW={"1200px"}
         minH={"100vh"}
-        p={4}
-        mt={4}
+        p={0}
+        mt={0}
         borderRadius="md"
       >
         <Header />
@@ -28,6 +29,7 @@ function App() {
             <Route path="/money_conversion" element={<MoneyConversion />} />
           </Routes>
         </Box>
+        <Footer/>
       </Container>
     </Router>
   );
