@@ -13,7 +13,7 @@ const Header = () => {
       borderBottom="1px solid"
       borderColor="gray.200"
     >
-      <Flex alignItems="center" maxW="1200px" mx="auto">
+      <Flex alignItems="center" maxW="auto" mx="auto">
         <Heading as="h1" size="md" color="gray.700" fontWeight="600">
           <Link to="/" _hover={{ textDecoration: 'none', color: 'blue.500' }}>
             KOUサイト

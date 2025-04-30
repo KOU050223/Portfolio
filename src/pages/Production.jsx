@@ -1,5 +1,4 @@
 import "../App.css";
-import Card from "../components/Card";
 import { Heading } from "@chakra-ui/react";
 import { useProjects } from "../hooks/useProjects";
 import { Container, SimpleGrid } from "@chakra-ui/react";
@@ -12,7 +11,7 @@ const Production = () => {
 
   return (
     <Container maxW="container.xl" py={10}>
-      <Heading size={'4xl'}>KOUのこれまでの作品一覧</Heading>
+      <Heading size={'4xl'} textAlign="center" mb={8}>作品一覧</Heading>
       <SimpleGrid
             columns={{ base: 1, sm: 2, lg: 3 }}
             spacing={{ base: 8, sm: 12, md: 16 }}
