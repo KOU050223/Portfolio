@@ -50,6 +50,10 @@ const ProjectCard = ({
   const authorIconColor = useColorModeValue('#718096', '#A0AEC0');
   const noThumbnailBg = useColorModeValue('gray.100', 'gray.600');
   const noThumbnailText = useColorModeValue('gray.500', 'gray.300');
+  const detailButtonText = 'black';
+  
+  // 他のボタンのテキスト色
+  const buttonTextColor = 'white';
 
   const authorsText = Array.isArray(authors) ? authors.join(', ') : authors;
 
@@ -90,7 +94,7 @@ const ProjectCard = ({
           />
         </Box>
       ) : (
-        <Box>
+        <Box
           h={'200px'}
           bg={noThumbnailBg}
           mt={-6}
@@ -100,7 +104,7 @@ const ProjectCard = ({
           alignItems="center"
           justifyContent="center"
           color={noThumbnailText}
-
+        >
           No thumbnail available
         </Box>
       )}
@@ -140,10 +144,15 @@ const ProjectCard = ({
             <Dialog.Trigger asChild>
               <Button
                 size="sm"
-                colorScheme="teal"
+                bg={bgColor}
                 variant="solid"
                 leftIcon={<FaInfoCircle />}
                 width="100%"
+                color={detailButtonText}
+                fontWeight="bold"
+                _hover={{
+                  bg: 'gray.200',
+                }}
               >
                 詳細を見る
               </Button>
@@ -192,6 +201,7 @@ const ProjectCard = ({
                           isExternal
                           colorScheme="red"
                           leftIcon={<FaYoutube />}
+                          color={buttonTextColor}
                           _hover={{
                             textDecoration: 'none'
                           }}
@@ -207,6 +217,7 @@ const ProjectCard = ({
                           isExternal
                           colorScheme="blue"
                           leftIcon={<FaExternalLinkAlt />}
+                          color={buttonTextColor}
                           _hover={{
                             textDecoration: 'none'
                           }}
@@ -233,6 +244,7 @@ const ProjectCard = ({
             leftIcon={<FaYoutube />}
             colorScheme="red"
             size="sm"
+            color={buttonTextColor}
             _hover={{
               textDecoration: 'none'
             }}
@@ -249,6 +261,7 @@ const ProjectCard = ({
             leftIcon={<FaExternalLinkAlt />}
             colorScheme="blue"
             size="sm"
+            color={buttonTextColor}
             _hover={{
               textDecoration: 'none'
             }}
@@ -265,6 +278,7 @@ const ProjectCard = ({
             leftIcon={<FaGithub />}
             colorScheme="gray"
             size="sm"
+            color={buttonTextColor}
             _hover={{
               textDecoration: 'none'
             }}
@@ -281,6 +295,7 @@ const ProjectCard = ({
             leftIcon={<FaNewspaper />}
             colorScheme="green"
             size="sm"
+            color={buttonTextColor}
             _hover={{
               textDecoration: 'none'
             }}
@@ -309,5 +324,3 @@ ProjectCard.propTypes = {
 };
 
 export default ProjectCard;
-
-
