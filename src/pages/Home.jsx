@@ -4,7 +4,7 @@ import { FaGithub, FaTwitter, FaEnvelope } from 'react-icons/fa'
 
 const Home = () => {
   return (
-    <Container maxW="container.lg" py={10}>
+    <Container maxW="container.lg" py={10} mx="auto">
       <Flex 
         direction={{ base: 'column', md: 'row' }} 
         align="center" 
@@ -23,24 +23,27 @@ const Home = () => {
         />
         
         <VStack align="start" spacing={4}>
-          <Heading as="h1" size="xl">魚住 康平</Heading>
+          <Heading as="h1" size="xl">魚住 紘平</Heading>
           <Text fontSize="xl" fontWeight="bold" color="teal.500">ソフトウェアエンジニア</Text>
           
           <Text fontSize="md">
-            はじめまして！私はWebアプリケーション開発を専門としているエンジニアです。
-            フロントエンドからバックエンドまで幅広い技術に興味を持ち、
-            特にReactを使ったUI開発に情熱を注いでいます。
+            はじめまして！福岡工業大学の情報工学科に在籍している魚住 紘平です。<br/>
+            現在は大学3年生です。<br/>
+            2年生の頃から本格的にプログラミングで制作活動を始め、
+            さまざまなプロジェクトに取り組んできました。<br/>
             新しい技術を学ぶことが好きで、常に自己成長を目指しています。
+            様々な技術が触れるためフルスタックに開発することが多いですが、
+            特にバックエンドの開発を行うことが多いです。<br/>
           </Text>
           
-          <HStack spacing={4} pt={2}>
-            <Link href="https://github.com/" isExternal>
+          <HStack spacing={4} pt={2} justify="center">
+            <Link href="https://github.com/KOU050223" isExternal>
               <Icon as={FaGithub} w={6} h={6} />
             </Link>
-            <Link href="https://twitter.com/" isExternal>
+            <Link href="https://x.com/uomikou_0223" isExternal>
               <Icon as={FaTwitter} w={6} h={6} />
             </Link>
-            <Link href="mailto:example@example.com">
+            <Link href="mailto:s23a1090@bene.fit.ac.jp" isExternal>
               <Icon as={FaEnvelope} w={6} h={6} />
             </Link>
           </HStack>
