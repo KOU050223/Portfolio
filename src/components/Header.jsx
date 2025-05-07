@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Flex, Heading, Spacer, Button, HStack } from '@chakra-ui/react';
+import HamburgerMenu from './HamburgerMenu.jsx';
 
 const Header = () => {
   return (
@@ -34,18 +35,59 @@ const Header = () => {
           >
             作品一覧
           </Button>
-          {/* <Button 
+        </HStack>
+        <Box
+          display={{ base: 'block', md: 'none' }} 
+          ml={2}
+        />
+        <HStack spacing={4}>
+          <Button 
             as={Link} 
-            to="/money_conversion" 
+            to="/career" 
             variant="ghost" 
             color="gray.600"
             _hover={{ bg: 'gray.200', color: 'blue.500' }}
             fontWeight="medium"
             transition="all 0.2s ease-in-out"
           >
-            金の重み計算ツール
-          </Button> */}
+            キャリア
+          </Button>
         </HStack>
+        <Box
+          display={{ base: 'block', md: 'none' }} 
+          ml={2}
+        />
+        <HStack spacing={4}>
+          <Button 
+            as={Link} 
+            to="/skill" 
+            variant="ghost" 
+            color="gray.600"
+            _hover={{ bg: 'gray.200', color: 'blue.500' }}
+            fontWeight="medium"
+            transition="all 0.2s ease-in-out"
+          >
+            技術スタック
+          </Button>
+        </HStack>
+        <Box
+          display={{ base: 'block', md: 'none' }} 
+          ml={2}
+        />
+        <HStack spacing={4}>
+          <Button 
+            as={Link} 
+            to="/hobby" 
+            variant="ghost" 
+            color="gray.600"
+            _hover={{ bg: 'gray.200', color: 'blue.500' }}
+            fontWeight="medium"
+            transition="all 0.2s ease-in-out"
+          >
+            趣味
+          </Button>
+        </HStack>
+
       </Flex>
     </Box>
   );

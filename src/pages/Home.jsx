@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Flex, Heading, Text, VStack, HStack, Image, Container, Link, Icon } from '@chakra-ui/react'
 import { FaGithub, FaTwitter, FaEnvelope } from 'react-icons/fa'
+import NavigationButtons from '../components/NavigationButtons'
 
 const Home = () => {
   return (
@@ -48,7 +49,10 @@ const Home = () => {
             </Link>
           </HStack>
         </VStack>
-      </Flex>
+      </Flex>  
+      {/* Navigation Buttons */}
+      <NavigationButtons />
+      
     </Container>
   )
 }
