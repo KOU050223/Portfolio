@@ -50,6 +50,15 @@ const ProjectCard = ({
   const authorIconColor = useColorModeValue('#718096', '#A0AEC0');
   const noThumbnailBg = useColorModeValue('gray.100', 'gray.600');
   const noThumbnailText = useColorModeValue('gray.500', 'gray.300');
+  const detailButtonText = 'black';
+  
+  // 他のボタンのテキスト色
+  const buttonTextColor = 'white';
+  
+  // ダイアログの背景色と文字色
+  const dialogBgColor = useColorModeValue('white', 'gray.800');
+  const dialogTextColor = useColorModeValue('gray.800', 'white');
+  const dialogBodyColor = useColorModeValue('gray.600', 'gray.300');
 
   const authorsText = Array.isArray(authors) ? authors.join(', ') : authors;
 
@@ -90,7 +99,7 @@ const ProjectCard = ({
           />
         </Box>
       ) : (
-        <Box>
+        <Box
           h={'200px'}
           bg={noThumbnailBg}
           mt={-6}
@@ -100,7 +109,7 @@ const ProjectCard = ({
           alignItems="center"
           justifyContent="center"
           color={noThumbnailText}
-
+        >
           No thumbnail available
         </Box>
       )}
@@ -136,14 +145,19 @@ const ProjectCard = ({
 
       {description && (
         <Box mt={3}>
-          <Dialog.Root size="md" placement="center" motionPreset="slide-in-bottom">
+          <Dialog.Root size="lg" placement="center" motionPreset="slide-in-bottom">
             <Dialog.Trigger asChild>
               <Button
                 size="sm"
-                colorScheme="teal"
+                bg={bgColor}
                 variant="solid"
                 leftIcon={<FaInfoCircle />}
                 width="100%"
+                color={detailButtonText}
+                fontWeight="bold"
+                _hover={{
+                  bg: 'gray.200',
+                }}
               >
                 詳細を見る
               </Button>
@@ -151,20 +165,20 @@ const ProjectCard = ({
             <Portal>
               <Dialog.Backdrop />
               <Dialog.Positioner>
-                <Dialog.Content bg={bgColor}>
-                  <Dialog.Header>
-                    <Dialog.Title color={headingColor}>{title}</Dialog.Title>
+                <Dialog.Content bg={dialogBgColor} maxW="90vw" w={{ base: "95%", md: "600px" }}>
+                  <Dialog.Header borderBottomWidth="1px" borderBottomColor={borderColor} p={4}>
+                    <Dialog.Title color={dialogTextColor} fontSize="xl">{title}</Dialog.Title>
                     <Dialog.CloseTrigger asChild>
-                      <CloseButton size="sm" />
+                      <CloseButton size="md" />
                     </Dialog.CloseTrigger>
                   </Dialog.Header>
-                  <Dialog.Body>
-                    <Flex alignItems="center" mb={2}>
+                  <Dialog.Body p={4}>
+                    <Flex alignItems="center" mb={4}>
                       <FaUser color={authorIconColor} />
-                      <Text ml={2} fontWeight="bold" color={headingColor}>作成者: {authorsText}</Text>
+                      <Text ml={2} fontWeight="bold" color={dialogTextColor}>作成者: {authorsText}</Text>
                     </Flex>
 
-                    <Text fontSize="sm" color={textColor} mb={4}>{date}</Text>
+                    <Text fontSize="sm" color={dialogBodyColor} mb={4}>{date}</Text>
 
                     <Stack direction={'row'} mb={4} flexWrap="wrap" gap={1}>
                       {technologies.map((tech, index) => (
@@ -173,18 +187,17 @@ const ProjectCard = ({
                         </Badge>
                       ))}
                     </Stack>
-                    <Text mb={4} color={headingColor}>{description}</Text>
+                    <Text mb={6} color={dialogTextColor} fontSize="md" lineHeight="1.6">{description}</Text>
                     {thumbnailUrl && (
-                      <Box maxW="100%" mb={4}>
+                      <Box maxW="100%" mb={6} borderRadius="md" overflow="hidden" boxShadow="md">
                         <Image
                           src={thumbnailUrl}
                           alt={`${title} thumbnail`}
-                          borderRadius="md"
                           w="full"
                         />
                       </Box>
                     )}
-                    <Stack direction={{ base: 'column', md: 'row' }} spacing={4} mt={2}>
+                    <Stack direction={{ base: 'column', md: 'row' }} spacing={4} mt={4}>
                       {youtubeUrl && (
                         <Button
                           as={Link}
@@ -192,6 +205,7 @@ const ProjectCard = ({
                           isExternal
                           colorScheme="red"
                           leftIcon={<FaYoutube />}
+                          color={buttonTextColor}
                           _hover={{
                             textDecoration: 'none'
                           }}
@@ -207,12 +221,45 @@ const ProjectCard = ({
                           isExternal
                           colorScheme="blue"
                           leftIcon={<FaExternalLinkAlt />}
+                          color={buttonTextColor}
                           _hover={{
                             textDecoration: 'none'
                           }}
                           w={{ base: 'full', md: 'auto' }}
                         >
                           作品のリンク
+                        </Button>
+                      )}
+                      {githubLink && (
+                        <Button
+                          as={Link}
+                          href={githubLink}
+                          isExternal
+                          colorScheme="gray"
+                          leftIcon={<FaGithub />}
+                          color={buttonTextColor}
+                          _hover={{
+                            textDecoration: 'none'
+                          }}
+                          w={{ base: 'full', md: 'auto' }}
+                        >
+                          GitHub
+                        </Button>
+                      )}
+                      {articleLink && (
+                        <Button
+                          as={Link}
+                          href={articleLink}
+                          isExternal
+                          colorScheme="green"
+                          leftIcon={<FaNewspaper />}
+                          color={buttonTextColor}
+                          _hover={{
+                            textDecoration: 'none'
+                          }}
+                          w={{ base: 'full', md: 'auto' }}
+                        >
+                          記事
                         </Button>
                       )}
                     </Stack>
@@ -233,6 +280,7 @@ const ProjectCard = ({
             leftIcon={<FaYoutube />}
             colorScheme="red"
             size="sm"
+            color={buttonTextColor}
             _hover={{
               textDecoration: 'none'
             }}
@@ -249,6 +297,7 @@ const ProjectCard = ({
             leftIcon={<FaExternalLinkAlt />}
             colorScheme="blue"
             size="sm"
+            color={buttonTextColor}
             _hover={{
               textDecoration: 'none'
             }}
@@ -265,6 +314,7 @@ const ProjectCard = ({
             leftIcon={<FaGithub />}
             colorScheme="gray"
             size="sm"
+            color={buttonTextColor}
             _hover={{
               textDecoration: 'none'
             }}
@@ -281,6 +331,7 @@ const ProjectCard = ({
             leftIcon={<FaNewspaper />}
             colorScheme="green"
             size="sm"
+            color={buttonTextColor}
             _hover={{
               textDecoration: 'none'
             }}
@@ -309,5 +360,3 @@ ProjectCard.propTypes = {
 };
 
 export default ProjectCard;
-
-
