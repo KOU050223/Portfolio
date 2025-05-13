@@ -18,24 +18,6 @@ const Skill = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.600')
   const lineColor = useColorModeValue('gray.300', 'gray.500')
 
-  // if (isLoading) {
-  //   return (
-  //     <Box p={8}>
-  //       <Heading size="lg" mb={8}>キャリア</Heading>
-  //       <Text>読み込み中...</Text>
-  //     </Box>
-  //   )
-  // }
-  
-  // if (error) {
-  //   return (
-  //     <Box p={8}>
-  //       <Heading size="lg" mb={8}>キャリア</Heading>
-  //       <Text color="red.500">エラーが発生しました</Text>
-  //     </Box>
-  //   )
-  // }
-
   return (
     <Box maxW="1200px" mx="auto" p={8}>
       <Heading size="lg" mb={8}>技術スタック</Heading>
