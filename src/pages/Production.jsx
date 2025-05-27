@@ -1,25 +1,27 @@
 import "../App.css";
-import { Heading } from "@chakra-ui/react";
+import { Heading, Container, SimpleGrid, Flex } from "@chakra-ui/react";
 import { useProjects } from "../hooks/useProjects";
-import { Container, SimpleGrid } from "@chakra-ui/react";
 import ProjectCard from "../components/projectCard";
 
 const Production = () => {
-  const {projects , isLoading, error} = useProjects();
+  const { projects, isLoading, error } = useProjects();
 
-  console.log(JSON.stringify(projects));
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading projects</div>;
 
   return (
-    <Container maxW="container.xl" py={10}>
-      <Heading size={'4xl'} textAlign="center" mb={8}>作品一覧</Heading>
-      <SimpleGrid
-            columns={{ base: 1, sm: 2, lg: 3 }}
-            spacing={{ base: 8, sm: 12, md: 16 }}
-            justifyItems="center"
-            px={{ base: 2, md: 8 }}
-          >
+    <Container maxW="100%" py={10}>
+      <Heading size="3xl" textAlign="center" mb={10}>
+        作品一覧
+      </Heading>
+      <Flex justifyContent="center" width="100%">
+        <SimpleGrid
+          columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+          spacing={{ base: 6, md: 8 }}
+          width="100%"
+        >
           {projects.map((project, index) => (
-              <ProjectCard
+            <ProjectCard
               key={index}
               title={project.title}
               authors={project.authors}
@@ -32,8 +34,9 @@ const Production = () => {
               articleLink={project.articleLink}
             />
           ))}
-          </SimpleGrid>
-      </Container>
+        </SimpleGrid>
+      </Flex>
+    </Container>
   );
 };
 

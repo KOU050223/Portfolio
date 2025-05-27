@@ -14,7 +14,7 @@ function App() {
   return (
     <Router>
       <Container
-        maxW={"100%"}
+        maxW={"container.xl"}
         minH={"100vh"}
         p={0}
         mt={0}
