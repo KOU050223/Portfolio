@@ -4,10 +4,10 @@ import { useLocation } from 'react-router-dom';
 
 const Seo = ({
     title = "魚住紘平|ウオミコウのポートフォリオサイト",
-    description = "魚住紘平|ウオミコウのポートフォリオサイト",
+    description = "魚住紘平|ウオミコウの活動歴や作品を紹介するポートフォリオサイトです。",
     image = "/tinkani.svg",
     twitterCard = "summary_large_image",
-    siteUrl = "https://portfoliosite-01v.pages.dev/",
+    siteUrl = "https://portfolio.uomi.site",
 }) => {
     const { pathname } = useLocation();
     const currentUrl = `${siteUrl}${pathname}`;
@@ -32,7 +32,7 @@ const Seo = ({
 
             {/* Twitter Card */}
             <meta name="twitter:card" content={twitterCard} />
-            <meta name="twitter:site" content="@jyogi_pr" />
+            <meta name="twitter:site" content="@uomikou_0223" />
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={imageUrl} />
