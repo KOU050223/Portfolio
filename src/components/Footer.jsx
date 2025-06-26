@@ -89,7 +89,7 @@ const Footer = () => {
                   <Text fontSize="sm">GitHub</Text>
                 </HStack>
               </Link>
-              <Link href="https://qiita.com/KOU20050223" isExternal>
+              <Link href="https://qiita.com/KOU050223" isExternal>
                 <HStack
                   spacing={1}
                   color={textColor}
