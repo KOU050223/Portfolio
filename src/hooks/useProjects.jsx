@@ -10,8 +10,6 @@ export const useProjects = () => {
             try {
                 const SPREADSHEET_ID = import.meta.env.VITE_SPREADSHEET_ID;
                 const API_KEY = import.meta.env.VITE_GOOGLE_SHEETS_API_KEY;
-                console.log('SPREADSHEET_ID:', SPREADSHEET_ID);
-                console.log('API_KEY:', API_KEY);
 
                 if (!SPREADSHEET_ID || !API_KEY) {
                     throw new Error('環境変数が設定されていません');
