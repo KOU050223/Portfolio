@@ -29,10 +29,12 @@ npm run build
 - API設定用の環境変数
 
 **スタイリング手法:**
-- レイアウトとコンポーネントライブラリにChakra UI
-- ユーティリティクラスにTailwindCSS
-- アニメーションにFramer Motion
-- next-themesによるテーマ切り替えサポート
+- **Chakra UI (^3.13.0):** レイアウトとコンポーネントライブラリの基盤。
+- **TailwindCSS (^4.0.15):** ユーティリティファーストのCSSフレームワーク。
+- **Emotion (^11.14.0):** Chakra UIが依存するCSS-in-JSライブラリ。
+- **Framer Motion (^12.10.0):** アニメーション制作用ライブラリ。
+- **React Icons (^5.5.0):** アイコンライブラリ。
+- **next-themes (^0.4.6):** テーマ切り替えをサポート。
 
 ## 主要な技術詳細
 
@@ -47,6 +49,12 @@ npm run build
 **データソース:**
 - Google Sheets: https://docs.google.com/spreadsheets/d/1Ly-ss8euUmEDd3IUXSBqoValHX_m1AKVWjtlxbvp73w/edit?gid=0#gid=0
 - プロジェクトカードの画像はYoutubeのサムネイルから取得
+
+**データ構造:**
+- Projects: title, author, date, technologies, youtubeUrl, description, deployLink, githubLink, articleLink
+  - authorとtechnologiesはカンマ区切りで複数の値を格納
+- Career: date, title, description, type
+  - typeはカンマ区切りで複数のタグを格納（例：開発, イベント, 受賞）
 
 ## 開発メモ
 

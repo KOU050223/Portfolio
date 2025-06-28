@@ -12,19 +12,12 @@ import { Container, Box } from "@chakra-ui/react";
 function App() {
   return (
     <Router>
-      <Container
-        maxW={"container.xl"}
-        minH={"100vh"}
-        p={0}
-        mt={0}
-        borderRadius="md"
-        mx="auto"
-      >
+      <Box minH="100vh">
         <Header />
         <Box
           width="100%"
-          minH="80vh" 
-          mt={4}
+          minH="calc(100vh - 80px)"
+          pt={{ base: "60px", md: "70px" }} // ヘッダーの高さ分のpadding-top
         >
           <Routes>
             <Route path="/" element={<Home />} />
@@ -35,7 +28,7 @@ function App() {
           </Routes>
         </Box>
         <Footer/>
-      </Container>
+      </Box>
     </Router>
   );
 }
