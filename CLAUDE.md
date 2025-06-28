@@ -29,10 +29,12 @@ npm run build
 - API設定用の環境変数
 
 **スタイリング手法:**
-- レイアウトとコンポーネントライブラリにChakra UI
-- ユーティリティクラスにTailwindCSS
-- アニメーションにFramer Motion
-- next-themesによるテーマ切り替えサポート
+- **Chakra UI (^3.13.0):** レイアウトとコンポーネントライブラリの基盤。
+- **TailwindCSS (^4.0.15):** ユーティリティファーストのCSSフレームワーク。
+- **Emotion (^11.14.0):** Chakra UIが依存するCSS-in-JSライブラリ。
+- **Framer Motion (^12.10.0):** アニメーション制作用ライブラリ。
+- **React Icons (^5.5.0):** アイコンライブラリ。
+- **next-themes (^0.4.6):** テーマ切り替えをサポート。
 
 ## 主要な技術詳細
 
