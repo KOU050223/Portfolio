@@ -36,7 +36,7 @@ const ProjectCard = ({
     const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
 
     if (videoId && videoId[1]) {
-      return `https://img.youtube.com/vi/${videoId[1]}/maxresdefault.jpg`;
+      return `https://img.youtube.com/vi/${videoId[1]}/hqdefault.jpg`;
     }
 
     return null;
@@ -110,7 +110,7 @@ const ProjectCard = ({
           justifyContent="center"
           color={noThumbnailText}
         >
-          No thumbnail available
+          {title}
         </Box>
       )}
 
