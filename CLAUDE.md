@@ -48,6 +48,12 @@ npm run build
 - Google Sheets: https://docs.google.com/spreadsheets/d/1Ly-ss8euUmEDd3IUXSBqoValHX_m1AKVWjtlxbvp73w/edit?gid=0#gid=0
 - プロジェクトカードの画像はYoutubeのサムネイルから取得
 
+**データ構造:**
+- Projects: title, author, date, technologies, youtubeUrl, description, deployLink, githubLink, articleLink
+  - authorとtechnologiesはカンマ区切りで複数の値を格納
+- Career: date, title, description, type
+  - typeはカンマ区切りで複数のタグを格納（例：開発, イベント, 受賞）
+
 ## 開発メモ
 
 - React固有のルールでESLintを設定
