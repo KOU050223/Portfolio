@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import { 
   Box, 
   Flex, 
@@ -8,7 +8,10 @@ import {
   HStack, 
   VStack,
   Circle,
-  Text
+  Text,
+  Badge,
+  Wrap,
+  WrapItem
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { useColorModeValue } from "../components/ui/color-mode";
@@ -16,10 +19,53 @@ import { useCareer } from '../hooks/useCareer'
 
 const Career = () => {
   const { career, isLoading, error } = useCareer()
+  const [sortOrder, setSortOrder] = useState('newest') // newest, oldest
+  const [selectedTag, setSelectedTag] = useState('all') // all, or specific tag
   
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.600')
   const lineColor = useColorModeValue('gray.300', 'gray.500')
+  
+  // 全てのタグを取得
+  const allTags = useMemo(() => {
+    if (!career.length) return []
+    const tags = new Set()
+    career.forEach(item => {
+      if (item.type) {
+        item.type.split(',').forEach(tag => {
+          tags.add(tag.trim())
+        })
+      }
+    })
+    return Array.from(tags).sort()
+  }, [career])
+
+
+  // フィルタリングとソート処理
+  const filteredAndSortedCareer = useMemo(() => {
+    let filtered = [...career]
+    
+    // タグフィルタリング
+    if (selectedTag !== 'all') {
+      filtered = filtered.filter(item => 
+        item.type && item.type.split(',').some(tag => tag.trim() === selectedTag)
+      )
+    }
+    
+    // ソート処理
+    filtered.sort((a, b) => {
+      const dateA = new Date(a.date.replace(/(\d+)\/(\d+)\/(\d+)/, '$1-$2-$3'))
+      const dateB = new Date(b.date.replace(/(\d+)\/(\d+)\/(\d+)/, '$1-$2-$3'))
+      
+      if (sortOrder === 'newest') {
+        return dateB - dateA
+      } else {
+        return dateA - dateB
+      }
+    })
+    
+    return filtered
+  }, [career, selectedTag, sortOrder])
   
   if (isLoading) {
     return (
@@ -39,12 +85,63 @@ const Career = () => {
     )
   }
 
-  // 日付でソート（新しい順）
-  const sortedCareer = [...career].sort((a, b) => new Date(b.date) - new Date(a.date))
-
   return (
     <Box maxW="1200px" mx="auto" p={8}>
       <Heading size="lg" mb={8}>キャリア</Heading>
+      
+      {/* クイックフィルター */}
+      <Box mb={8} p={4} bg={bgColor} borderRadius="lg" border="1px" borderColor={borderColor} boxShadow="sm">
+        <VStack spacing={4} align="stretch">
+          <Box>
+            <Text fontSize="sm" mb={3} fontWeight="medium">タグでフィルタリング</Text>
+            <Wrap spacing={2}>
+              <WrapItem>
+                <Badge
+                  variant={selectedTag === 'all' ? 'solid' : 'outline'}
+                  colorScheme={selectedTag === 'all' ? 'blue' : 'gray'}
+                  cursor="pointer"
+                  onClick={() => setSelectedTag('all')}
+                  px={3}
+                  py={1}
+                  borderRadius="full"
+                  fontSize="sm"
+                >
+                  すべて ({career.length})
+                </Badge>
+              </WrapItem>
+              {allTags.map(tag => {
+                const count = career.filter(item => 
+                  item.type && item.type.split(',').some(t => t.trim() === tag)
+                ).length
+                return (
+                  <WrapItem key={tag}>
+                    <Badge
+                      variant={selectedTag === tag ? 'solid' : 'outline'}
+                      colorScheme={selectedTag === tag ? (tag === '受賞' ? 'yellow' : 'blue') : 'gray'}
+                      cursor="pointer"
+                      onClick={() => setSelectedTag(tag)}
+                      px={3}
+                      py={1}
+                      borderRadius="full"
+                      fontSize="sm"
+                    >
+                      {tag} ({count})
+                    </Badge>
+                  </WrapItem>
+                )
+              })}
+            </Wrap>
+          </Box>
+          
+          {/* 結果表示 */}
+          <Box>
+            <Text fontSize="sm" color="gray.500">
+              {filteredAndSortedCareer.length}件の経歴を表示中
+              {selectedTag !== 'all' && ` (「${selectedTag}」でフィルタリング)`}
+            </Text>
+          </Box>
+        </VStack>
+      </Box>
       
       <Box position="relative">
         {/* タイムライン垂直ライン */}
@@ -57,7 +154,7 @@ const Career = () => {
           bg={lineColor}
         />
         
-        {sortedCareer.map((item, index) => {
+        {filteredAndSortedCareer.map((item, index) => {
           const hasAward = item.type && item.type.includes('受賞');
           
           return (
