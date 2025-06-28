@@ -356,9 +356,6 @@ const Home = () => {
           )}
         </Box>
         
-        {/* Navigation Buttons */}
-        <NavigationButtons />
-        
       </Container>
     </>
   )
