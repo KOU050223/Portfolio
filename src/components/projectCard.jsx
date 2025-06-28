@@ -42,7 +42,26 @@ const ProjectCard = ({
     return null;
   };
 
-  const thumbnailUrl = getYoutubeThumbnail(youtubeUrl);
+  const getQiitaThumbnail = (url) => {
+    if (!url || !url.includes('qiita.com')) return null;
+    
+    // カスタムQiitaサムネイルとしてnullを返し、代わりにカスタムUIを表示
+    return null;
+  };
+
+  const getThumbnailUrl = () => {
+    // YouTube URLが存在する場合はYouTubeのサムネイルを優先
+    if (youtubeUrl) {
+      return getYoutubeThumbnail(youtubeUrl);
+    }
+    // ArticleLinkがQiitaの場合はQiitaのサムネイル
+    if (articleLink && articleLink.includes('qiita.com')) {
+      return getQiitaThumbnail(articleLink);
+    }
+    return null;
+  };
+
+  const thumbnailUrl = getThumbnailUrl();
   const bgColor = useColorModeValue('white', 'gray.700');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const textColor = useColorModeValue('gray.500', 'gray.300');
@@ -97,6 +116,40 @@ const ProjectCard = ({
             w="full"
             h="full"
           />
+        </Box>
+      ) : articleLink && articleLink.includes('qiita.com') ? (
+        <Box
+          h={'200px'}
+          bg="linear-gradient(135deg, #55C500 0%, #4CAF50 100%)"
+          mt={-6}
+          mx={-6}
+          mb={6}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          color="white"
+          pos="relative"
+        >
+          <Text fontSize="4xl" mb={2}>📝</Text>
+          <Text fontSize="lg" fontWeight="bold" mb={1}>Qiita記事</Text>
+          <Text fontSize="sm" opacity={0.9} textAlign="center" px={4} noOfLines={2}>
+            {title}
+          </Text>
+          <Box
+            position="absolute"
+            top={2}
+            right={2}
+            bg="white"
+            color="green.600"
+            px={2}
+            py={1}
+            borderRadius="md"
+            fontSize="xs"
+            fontWeight="bold"
+          >
+            Qiita
+          </Box>
         </Box>
       ) : (
         <Box
@@ -259,7 +312,7 @@ const ProjectCard = ({
                           }}
                           w={{ base: 'full', md: 'auto' }}
                         >
-                          記事
+                          {articleLink.includes('qiita.com') ? 'Qiita記事' : '記事'}
                         </Button>
                       )}
                     </Stack>
@@ -336,7 +389,7 @@ const ProjectCard = ({
               textDecoration: 'none'
             }}
           >
-            記事
+            {articleLink.includes('qiita.com') ? 'Qiita記事' : '記事'}
           </Button>
         )}
       </Stack>
