@@ -1,7 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home.jsx";  
-import MoneyConversion from "./pages/MoneyConversion.jsx";
 import Production from "./pages/Production.jsx";
 import Career from "./pages/Career.jsx";
 import Hobby from "./pages/Hobby.jsx";
@@ -33,7 +32,6 @@ function App() {
             <Route path="/career" element={<Career />} />
             <Route path="/hobby" element={<Hobby />}/>
             <Route path="/skill" element={<Skill />}/>
-            <Route path="/money_conversion" element={<MoneyConversion />} />
           </Routes>
         </Box>
         <Footer/>
