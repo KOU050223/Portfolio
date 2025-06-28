@@ -57,64 +57,108 @@ const Career = () => {
           bg={lineColor}
         />
         
-        {sortedCareer.map((item, index) => (
-          <Flex key={index} mb={10} position="relative">
-            {/* タイムラインドット */}
-            <Circle 
-              size="40px" 
-              bg={bgColor} 
-              border="4px" 
-              borderColor={lineColor}
-              position="absolute"
-              left="0"
-              top="0"
-              zIndex={1}
-            />
-            
-            {/* コンテンツカード */}
-            <Box ml="70px" width="100%">
-              <Box 
-                bg={bgColor}
-                borderRadius="lg"
-                border="1px"
-                borderColor={borderColor}
-                p={6}
-                boxShadow="sm"
-              >
-                <Flex justify="space-between" align="center" mb={2}>
-                  <Heading size="md" color="blue.600">
-                    {item.title}
-                  </Heading>
-                  <Text 
-                    fontSize="sm" 
-                    color="gray.500"
-                    fontWeight="medium"
-                  >
-                    {item.date}
+        {sortedCareer.map((item, index) => {
+          const hasAward = item.type && item.type.includes('受賞');
+          
+          return (
+            <Flex key={index} mb={10} position="relative">
+              {/* タイムラインドット */}
+              <Circle 
+                size="40px" 
+                bg={hasAward ? "yellow.300" : bgColor}
+                border="4px" 
+                borderColor={hasAward ? "yellow.500" : lineColor}
+                position="absolute"
+                left="0"
+                top="0"
+                zIndex={1}
+                _before={hasAward ? {
+                  content: '"🏆"',
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  fontSize: "18px"
+                } : {}}
+              />
+              
+              {/* コンテンツカード */}
+              <Box ml="70px" width="100%">
+                <Box 
+                  bg={hasAward ? "yellow.50" : bgColor}
+                  borderRadius="lg"
+                  border={hasAward ? "2px solid" : "1px"}
+                  borderColor={hasAward ? "yellow.400" : borderColor}
+                  p={6}
+                  boxShadow={hasAward ? "lg" : "sm"}
+                  position="relative"
+                  _before={hasAward ? {
+                    content: '""',
+                    position: "absolute",
+                    top: "-2px",
+                    left: "-2px",
+                    right: "-2px",
+                    bottom: "-2px",
+                    borderRadius: "lg",
+                    background: "linear-gradient(45deg, #F6E05E, #ECC94B, #D69E2E)",
+                    zIndex: -1,
+                    opacity: 0.3
+                  } : {}}
+                >
+                  <Flex justify="space-between" align="center" mb={2}>
+                    <Heading 
+                      size="md" 
+                      color={hasAward ? "yellow.700" : "blue.600"}
+                      position="relative"
+                    >
+                      {hasAward && (
+                        <Text as="span" mr={2} fontSize="lg">
+                          🏆
+                        </Text>
+                      )}
+                      {item.title}
+                    </Heading>
+                    <Text 
+                      fontSize="sm" 
+                      color="gray.500"
+                      fontWeight="medium"
+                    >
+                      {item.date}
+                    </Text>
+                  </Flex>
+                  
+                  <Text color="gray.600" mb={2}>
+                    {item.description}
                   </Text>
-                </Flex>
-                
-                <Text color="gray.600" mb={2}>
-                  {item.description}
-                </Text>
-                
-                {item.type && (
-                  <Box
-                    display="inline-block"
-                    px={3}
-                    py={1}
-                    borderRadius="full"
-                    bg="blue.100"
-                    color="blue.800"
-                    fontSize="sm"
-                  >
-                    {item.type}
-                  </Box>
-                )}
+                  
+                  {item.type && (
+                    <HStack spacing={2} mt={2}>
+                      {item.type.split(',').map((tag, tagIndex) => {
+                        const trimmedTag = tag.trim();
+                        const isAward = trimmedTag === '受賞';
+                        return (
+                          <Box
+                            key={tagIndex}
+                            display="inline-block"
+                            px={3}
+                            py={1}
+                            borderRadius="full"
+                            bg={isAward ? "yellow.200" : "blue.100"}
+                            color={isAward ? "yellow.800" : "blue.800"}
+                            fontSize="sm"
+                            fontWeight={isAward ? "bold" : "normal"}
+                          >
+                            {trimmedTag}
+                          </Box>
+                        );
+                      })}
+                    </HStack>
+                  )}
+                </Box>
               </Box>
-            </Box>
-          </Flex>
-        ))}
+            </Flex>
+          );
+        })}
       </Box>
     </Box>
   )
