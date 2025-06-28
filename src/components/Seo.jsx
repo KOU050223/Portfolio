@@ -27,7 +27,7 @@ const Seo = ({
             <meta property="og:description" content={description} />
             <meta property="og:image" content={imageUrl} />
             <meta property="og:type" content="website" />
-            <meta property="og:site_name" content="情報技術研究部 | じょぎ" />
+            <meta property="og:site_name" content="魚住紘平|ウオミコウのポートフォリオサイト" />
             <meta property="og:locale" content="ja_JP" />
 
             {/* Twitter Card */}
