@@ -1,0 +1,5 @@
+name = "portfolio-site"
+compatibility_date = "2024-07-26"
+
+[site]
+bucket = "./out"
