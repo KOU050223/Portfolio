@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { config } from '@/lib/config'
 
 export interface Career {
   date: string
@@ -17,11 +18,14 @@ export const useCareer = () => {
   useEffect(() => {
     const fetchCareer = async () => {
       try {
-        const SPREADSHEET_ID = process.env.NEXT_PUBLIC_SPREADSHEET_ID
-        const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY
+        const SPREADSHEET_ID = config.googleSheets.spreadsheetId
+        const API_KEY = config.googleSheets.apiKey
 
-        if (!SPREADSHEET_ID || !API_KEY) {
-          throw new Error('環境変数が設定されていません')
+        if (!config.isConfigValid()) {
+          console.warn('環境変数が設定されていません。デモデータを表示します。')
+          setCareer([])
+          setIsLoading(false)
+          return
         }
 
         const response = await fetch(
