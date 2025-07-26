@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   distDir: 'out',
   
+  // 環境変数を静的エクスポートに含める
+  env: {
+    NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY,
+    NEXT_PUBLIC_SPREADSHEET_ID: process.env.NEXT_PUBLIC_SPREADSHEET_ID,
+  },
+  
   // Cloudflare Pagesでは画像最適化が利用できないため無効化
   images: {
     unoptimized: true,
