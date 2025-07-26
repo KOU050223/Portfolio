@@ -1,9 +1,41 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, Code, Briefcase, GraduationCap, Star } from 'lucide-react'
+import { ArrowRight, Code, Briefcase, GraduationCap, Star, Eye } from 'lucide-react'
+import { useProjects } from '@/hooks/useProjects'
+import { useCareer } from '@/hooks/useCareer'
+import { skillCategories, getLevelPercentage, getSkillColor } from '@/data/skills'
 
 export default function Home() {
+  const { projects, isLoading: projectsLoading } = useProjects()
+  const { career, isLoading: careerLoading } = useCareer()
+  
+  // 最新の3つのプロジェクトを取得
+  const latestProjects = projects.slice(0, 3)
+  // 最新の3つのキャリアを取得
+  const latestCareer = career.slice(0, 3)
+  
+  // メインスキルを中級以上から抽出（重複除去）
+  const allSkills = skillCategories.flatMap(category => category.skills)
+  const seen = new Set()
+  const mainSkills = allSkills
+    .filter(skill => {
+      if (seen.has(skill.name) || skill.level === "初級") return false
+      seen.add(skill.name)
+      return true
+    })
+    .slice(0, 6)
+    .map(skill => ({
+      name: skill.name,
+      level: getLevelPercentage(skill.level),
+      color: getSkillColor(skill.name),
+      icons: skill.icons
+    }))
+  
+  // 全技術数を計算（重複除去）
+  const totalSkillsCount = new Set(allSkills.map(skill => skill.name)).size
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       {/* ヒーローセクション */}
@@ -55,12 +87,12 @@ export default function Home() {
       <section className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
         <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl text-center">
           <Code className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
-          <div className="text-2xl font-bold text-gray-900 dark:text-white">10+</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-white">{projects.length}+</div>
           <div className="text-sm text-gray-600 dark:text-gray-300">プロジェクト</div>
         </div>
         <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl text-center">
           <Briefcase className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
-          <div className="text-2xl font-bold text-gray-900 dark:text-white">5+</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-white">{career.length}+</div>
           <div className="text-sm text-gray-600 dark:text-gray-300">経験・実績</div>
         </div>
         <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl text-center">
@@ -70,7 +102,7 @@ export default function Home() {
         </div>
         <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl text-center">
           <Star className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
-          <div className="text-2xl font-bold text-gray-900 dark:text-white">20+</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-white">{totalSkillsCount}+</div>
           <div className="text-sm text-gray-600 dark:text-gray-300">技術スタック</div>
         </div>
       </section>
@@ -78,6 +110,7 @@ export default function Home() {
       {/* 自己紹介セクション */}
       <section className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 mb-12">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+          <Eye className="inline w-6 h-6 mr-3 text-blue-600 dark:text-blue-400" />
           About Me
         </h2>
         <div className="space-y-6">
@@ -92,6 +125,149 @@ export default function Home() {
             チーム開発の経験も積んでおり、効率的な開発プロセスと品質の高いコードを心がけています。
           </p>
         </div>
+      </section>
+
+      {/* 技術スタック概要 */}
+      <section className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+          <Star className="inline w-6 h-6 mr-3 text-blue-600 dark:text-blue-400" />
+          技術スタック
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          {mainSkills.map((skill, index) => (
+            <div key={index} className="flex flex-col items-center text-center space-y-3">
+              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                <Image 
+                  src={`https://skillicons.dev/icons?i=${skill.icons}`} 
+                  alt={skill.name}
+                  width={40}
+                  height={40}
+                />
+              </div>
+              <div className="space-y-1">
+                <p className="font-medium text-gray-900 dark:text-white text-sm">
+                  {skill.name}
+                </p>
+                <span className="inline-block px-2 py-1 rounded text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200">
+                  {skill.level === 75 ? "中級" : "上級"}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center mt-8">
+          <Button asChild variant="outline">
+            <Link href="/skill" className="flex items-center space-x-2">
+              <span>すべてのスキルを見る</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* 最新プロジェクト */}
+      <section className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 mb-12">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <Code className="inline w-6 h-6 mr-3 text-blue-600 dark:text-blue-400" />
+            最新プロジェクト
+          </h2>
+          <Button asChild variant="outline" size="sm">
+            <Link href="/production" className="flex items-center space-x-2">
+              <span>すべて見る</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </Button>
+        </div>
+        {projectsLoading ? (
+          <div className="text-center text-gray-600 dark:text-gray-300">読み込み中...</div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {latestProjects.map((project, index) => (
+              <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.slice(0, 3).map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs rounded"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.technologies.length > 3 && (
+                      <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded">
+                        +{project.technologies.length - 3}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {project.date}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* 最新キャリア */}
+      <section className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 mb-12">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <Briefcase className="inline w-6 h-6 mr-3 text-blue-600 dark:text-blue-400" />
+            最新の経験・実績
+          </h2>
+          <Button asChild variant="outline" size="sm">
+            <Link href="/career" className="flex items-center space-x-2">
+              <span>すべて見る</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </Button>
+        </div>
+        {careerLoading ? (
+          <div className="text-center text-gray-600 dark:text-gray-300">読み込み中...</div>
+        ) : (
+          <div className="space-y-4">
+            {latestCareer.map((item, index) => (
+              <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="md:w-24 flex-shrink-0">
+                    <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+                      {item.date}
+                    </span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                      {item.description}
+                    </p>
+                    {item.type && (
+                      <div className="flex flex-wrap gap-1">
+                        {item.type.split(',').map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs rounded"
+                          >
+                            {tag.trim()}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* クイックナビゲーション */}
