@@ -1,34 +1,7 @@
-export default function SkillPage() {
-  const skillCategories = [
-    {
-      name: 'フロントエンド',
-      skills: [
-        { name: 'React', level: 90, icon: 'react' },
-        { name: 'Next.js', level: 85, icon: 'nextjs' },
-        { name: 'TypeScript', level: 80, icon: 'typescript' },
-        { name: 'Tailwind CSS', level: 85, icon: 'tailwindcss' },
-      ]
-    },
-    {
-      name: 'バックエンド',
-      skills: [
-        { name: 'Node.js', level: 85, icon: 'nodejs' },
-        { name: 'Python', level: 75, icon: 'python' },
-        { name: 'Go', level: 70, icon: 'go' },
-        { name: 'PostgreSQL', level: 80, icon: 'postgresql' },
-      ]
-    },
-    {
-      name: 'ツール・その他',
-      skills: [
-        { name: 'Git', level: 85, icon: 'git' },
-        { name: 'Docker', level: 75, icon: 'docker' },
-        { name: 'AWS', level: 70, icon: 'aws' },
-        { name: 'Figma', level: 65, icon: 'figma' },
-      ]
-    }
-  ]
+import Image from 'next/image'
+import { skillCategories } from '@/data/skills'
 
+export default function SkillPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="mb-8">
@@ -49,29 +22,30 @@ export default function SkillPage() {
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
               {category.name}
             </h2>
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
               {category.skills.map((skill, skillIndex) => (
-                <div key={skillIndex} className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                    <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
-                      {skill.icon.slice(0, 2).toUpperCase()}
-                    </span>
+                <div key={skillIndex} className="flex flex-col items-center text-center space-y-3">
+                  <div className="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                    <Image 
+                      src={`https://skillicons.dev/icons?i=${skill.icons}`} 
+                      alt={skill.name}
+                      width={40}
+                      height={40}
+                    />
                   </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium text-gray-900 dark:text-white">
-                        {skill.name}
-                      </span>
-                      <span className="text-sm text-gray-600 dark:text-gray-300">
-                        {skill.level}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div
-                        className="bg-blue-600 dark:bg-blue-400 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${skill.level}%` }}
-                      ></div>
-                    </div>
+                  <div className="space-y-1">
+                    <h3 className="font-medium text-gray-900 dark:text-white text-sm">
+                      {skill.name}
+                    </h3>
+                    <span className={`inline-block px-2 py-1 rounded text-xs ${
+                      skill.level === '上級' 
+                        ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200'
+                        : skill.level === '中級'
+                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200'
+                        : 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-200'
+                    }`}>
+                      {skill.level}
+                    </span>
                   </div>
                 </div>
               ))}
