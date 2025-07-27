@@ -18,7 +18,6 @@ export default function YouTubeThumbnail({ videoId, title, className = "" }: You
 
   // YouTubeサムネイルURLの優先順位付きリスト（高解像度から低解像度へ）
   const thumbnailUrls = [
-    `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,  // 1280x720 (最高品質)
     `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,      // 480x360 (高品質)
     `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,      // 320x180 (中品質)
     `https://img.youtube.com/vi/${videoId}/default.jpg`,        // 120x90 (標準)

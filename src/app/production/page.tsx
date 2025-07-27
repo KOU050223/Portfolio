@@ -1,10 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { ExternalLink, Github, Play } from 'lucide-react'
+import { ExternalLink, Github, Play, Code, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useProjects } from '@/hooks/useProjects'
 import YouTubeThumbnail from '@/components/YouTubeThumbnail'
+import Image from 'next/image'
 
 // YouTubeのビデオIDを抽出する関数
 function extractYouTubeId(url: string): string | null {
@@ -53,6 +54,11 @@ function extractYouTubeId(url: string): string | null {
 export default function ProductionPage() {
   const { projects, isLoading, error } = useProjects()
 
+  // 全技術数を計算（重複除去）
+  const totalTechnologies = projects.length > 0 
+    ? new Set(projects.flatMap(project => project.technologies)).size 
+    : 0
+
   if (error) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -74,6 +80,20 @@ export default function ProductionPage() {
         </p>
       </div>
 
+      {/* 統計情報 */}
+      <section className="grid grid-cols-2 gap-6 mb-8">
+        <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl text-center">
+          <Code className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
+          <div className="text-2xl font-bold text-gray-900 dark:text-white">{projects.length}</div>
+          <div className="text-sm text-gray-600 dark:text-gray-300">作品数</div>
+        </div>
+        <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl text-center">
+          <Star className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
+          <div className="text-2xl font-bold text-gray-900 dark:text-white">{totalTechnologies}</div>
+          <div className="text-sm text-gray-600 dark:text-gray-300">使用技術数</div>
+        </div>
+      </section>
+
       {isLoading ? (
         <div className="text-center text-gray-600 dark:text-gray-300">
           読み込み中...
@@ -85,16 +105,42 @@ export default function ProductionPage() {
               key={index}
               className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
             >
-              {/* YouTubeサムネイル */}
-              {project.youtubeUrl && (() => {
-                const videoId = extractYouTubeId(project.youtubeUrl)
-                return videoId ? (
-                  <YouTubeThumbnail 
-                    videoId={videoId} 
-                    title={project.title}
-                    className="mb-4"
-                  />
-                ) : null
+              {/* サムネイル表示 */}
+              {(() => {
+                // YouTubeが設定されている場合はYouTubeサムネイル
+                if (project.youtubeUrl) {
+                  const videoId = extractYouTubeId(project.youtubeUrl)
+                  return videoId ? (
+                    <YouTubeThumbnail 
+                      videoId={videoId} 
+                      title={project.title}
+                      className="mb-4"
+                    />
+                  ) : null
+                }
+                
+                // qiita.comの記事の場合はQiitaカード
+                if (project.articleLink && project.articleLink.includes('qiita.com')) {
+                  return (
+                    <div className="h-48 bg-gradient-to-br from-green-400 to-green-600 rounded-lg mb-4 flex flex-col items-center justify-center text-white relative">
+                      <div className="text-4xl mb-2">📝</div>
+                      <div className="text-lg font-bold mb-1">Qiita記事</div>
+                      <div className="text-sm opacity-90 text-center px-4 line-clamp-2">
+                        {project.title}
+                      </div>
+                      <div className="absolute top-2 right-2 bg-white text-green-600 px-2 py-1 rounded-md text-xs font-bold">
+                        Qiita
+                      </div>
+                    </div>
+                  )
+                }
+                
+                // YouTubeもQiitaも設定されていない場合はtinkaniアイコン
+                return (
+                  <div className="h-48 bg-gray-100 dark:bg-gray-800 rounded-lg mb-4 flex items-center justify-center">
+                    {project.title}
+                  </div>
+                )
               })()}
               
               <div className="space-y-3">
