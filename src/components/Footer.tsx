@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Github, Twitter, Mail } from 'lucide-react'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
@@ -8,8 +9,14 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           {/* ブランド */}
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-md bg-blue-600 flex items-center justify-center">
-              <span className="text-white font-bold">K</span>
+            <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center">
+              <Image 
+                src="/tinkani.png"
+                alt="KOU Portfolio Logo"
+                width={32}
+                height={32}
+                className="w-full h-full object-contain rounded-md"
+              />
             </div>
             <span className="text-lg font-bold text-gray-900 dark:text-white">
               KOU Portfolio

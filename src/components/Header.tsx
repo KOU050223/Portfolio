@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Home, Code, Briefcase, Settings, Gamepad2, Menu, X } from 'lucide-react'
+import Image from 'next/image'
 
 const navigationItems = [
   { name: 'ホーム', path: '/', icon: Home },
@@ -31,8 +32,14 @@ export default function Header() {
         <div className="flex items-center justify-between h-full px-4 md:px-6">
           {/* ロゴ・ブランド名 */}
           <Link href="/" className="flex items-center space-x-2 md:space-x-3 hover:opacity-80 transition-opacity">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-md bg-blue-600 flex items-center justify-center">
-              <span className="text-white font-bold text-lg">K</span>
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-md bg-white flex items-center justify-center">
+              <Image 
+                src="/tinkani.png"
+                alt="KOU Portfolio Logo"
+                width={40}
+                height={40}
+                className="w-full h-full object-contain rounded-md"
+              />
             </div>
             <div className="hidden sm:block">
               <h1 className="text-lg md:text-xl font-bold text-blue-600 dark:text-blue-400">
