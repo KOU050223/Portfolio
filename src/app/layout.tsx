@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -30,24 +31,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ja_JP",
+    url: "https://portfolio.uomi.site",
     title: "魚住 紘平 | ウオミーのポートフォリオサイト",
     description: "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。React、Next.js、Node.jsなど多様な技術スタックでの開発経験と作品を紹介。",
     siteName: "魚住 紘平 Portfolio",
-    images: [
-      {
-        url: "https://pbs.twimg.com/profile_images/1899830477785075712/LxVQunEl_400x400.jpg",
-        width: 400,
-        height: 400,
-        alt: "魚住 紘平 プロフィール画像",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "魚住 紘平 | ウオミーのポートフォリオサイト",
     description: "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。",
     creator: "@uomikou_0223",
-    images: ["https://pbs.twimg.com/profile_images/1899830477785075712/LxVQunEl_400x400.jpg"],
+    site: "@uomikou_0223",
   },
   robots: {
     index: true,
@@ -80,16 +74,6 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="180x180" href="/tinkani.png" />
         <meta name="format-detection" content="telephone=no" />
       </head>
-      {/* <!-- Google tag (gtag.js) --> */}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-K46J4R2B4N"></script>
-      <script>
-        {`
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-K46J4R2B4N');
-        `}
-        </script>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-white dark:bg-gray-950`}
       >
@@ -98,8 +82,21 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-K46J4R2B4N"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-K46J4R2B4N');
+          `}
+        </Script>
       </body>
-
     </html>
   );
 }
