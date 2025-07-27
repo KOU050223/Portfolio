@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -73,16 +74,6 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="180x180" href="/tinkani.png" />
         <meta name="format-detection" content="telephone=no" />
       </head>
-      {/* <!-- Google tag (gtag.js) --> */}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-K46J4R2B4N"></script>
-      <script>
-        {`
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-K46J4R2B4N');
-        `}
-        </script>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-white dark:bg-gray-950`}
       >
@@ -91,8 +82,21 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-K46J4R2B4N"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-K46J4R2B4N');
+          `}
+        </Script>
       </body>
-
     </html>
   );
 }
