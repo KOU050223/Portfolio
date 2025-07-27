@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import Head from 'next/head'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, Code, Briefcase, GraduationCap, Star, Eye } from 'lucide-react'
 import { useProjects } from '@/hooks/useProjects'
@@ -37,7 +38,38 @@ export default function Home() {
   // 全技術数を計算（重複除去）
   const totalSkillsCount = new Set(allSkills.map(skill => skill.name)).size
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <>
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "魚住 紘平",
+              "alternateName": "ウオミー",
+              "description": "福岡工業大学情報工学科在籍のフルスタック開発者",
+              "url": "https://portfolio.uomi.site",
+              "image": "https://pbs.twimg.com/profile_images/1899830477785075712/LxVQunEl_400x400.jpg",
+              "sameAs": [
+                "https://github.com/KOU050223",
+                "https://x.com/uomikou_0223"
+              ],
+              "jobTitle": "Software Engineer",
+              "worksFor": {
+                "@type": "EducationalOrganization",
+                "name": "福岡工業大学",
+                "department": "情報工学科"
+              },
+              "knowsAbout": [
+                "React", "Next.js", "Node.js", "TypeScript", "JavaScript",
+                "Python", "Java", "C++", "Web Development", "Full Stack Development"
+              ]
+            })
+          }}
+        />
+      </Head>
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
       {/* ヒーローセクション */}
       <section className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 mb-12">
         <div className="flex flex-col md:flex-row items-center gap-8">
@@ -317,6 +349,7 @@ export default function Home() {
           </div>
         </Link>
       </section>
-    </div>
+      </div>
+    </>
   )
 }
