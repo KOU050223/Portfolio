@@ -30,24 +30,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ja_JP",
+    url: "https://portfolio.uomi.site",
     title: "魚住 紘平 | ウオミーのポートフォリオサイト",
     description: "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。React、Next.js、Node.jsなど多様な技術スタックでの開発経験と作品を紹介。",
     siteName: "魚住 紘平 Portfolio",
-    images: [
-      {
-        url: "https://pbs.twimg.com/profile_images/1899830477785075712/LxVQunEl_400x400.jpg",
-        width: 400,
-        height: 400,
-        alt: "魚住 紘平 プロフィール画像",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "魚住 紘平 | ウオミーのポートフォリオサイト",
     description: "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。",
     creator: "@uomikou_0223",
-    images: ["https://pbs.twimg.com/profile_images/1899830477785075712/LxVQunEl_400x400.jpg"],
+    site: "@uomikou_0223",
   },
   robots: {
     index: true,
