@@ -85,7 +85,7 @@ export default function Home() {
           </div>
           <div className="flex-1 text-center md:text-left">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              魚住 紘平
+              魚住 紘平 | ウオミー | KOU
             </h1>
             <p className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-4">
               Software Engineer
