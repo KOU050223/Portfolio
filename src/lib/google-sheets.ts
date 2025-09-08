@@ -1,6 +1,7 @@
 import { config } from './config'
 
 export interface Project {
+  id: string
   title: string
   authors: string[]
   date: string
@@ -10,6 +11,20 @@ export interface Project {
   deployLink: string | null
   githubLink: string | null
   articleLink: string | null
+  events: string[]
+  awards: string[]
+}
+
+// プロジェクトIDを生成する関数
+export function generateProjectId(title: string, date: string): string {
+  const cleanTitle = title.toLowerCase()
+    .replace(/[^\w\s-]/g, '') // 特殊文字を除去
+    .replace(/\s+/g, '-') // スペースをハイフンに変換
+    .replace(/-+/g, '-') // 連続するハイフンを単一に
+    .trim()
+  
+  const cleanDate = date.replace(/\//g, '-')
+  return `${cleanDate}-${cleanTitle}`.substring(0, 50) // 長すぎる場合は切り詰め
 }
 
 export interface Career {
@@ -30,7 +45,7 @@ export async function getProjects(): Promise<Project[]> {
     }
 
     const response = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Projects!A2:I?key=${API_KEY}`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Projects!A2:K?key=${API_KEY}`,
       {
         next: { revalidate: 3600 } // 1時間キャッシュ
       }
@@ -56,7 +71,9 @@ export async function getProjects(): Promise<Project[]> {
       description,
       deployLink,
       githubLink,
-      articleLink
+      articleLink,
+      events,
+      awards
     ]: string[]) => {
       // YouTube URLのクリーニング
       let cleanedYoutubeUrl = youtubeUrl || null
@@ -67,16 +84,22 @@ export async function getProjects(): Promise<Project[]> {
         }
       }
 
+      const projectTitle = title || ''
+      const projectDate = date || ''
+      
       return {
-        title: title || '',
+        id: generateProjectId(projectTitle, projectDate),
+        title: projectTitle,
         authors: authors ? authors.split(',').map(author => author.trim()) : [],
-        date: date || '',
+        date: projectDate,
         technologies: technologies ? technologies.split(',').map(tech => tech.trim()) : [],
         youtubeUrl: cleanedYoutubeUrl,
         description: description || '',
         deployLink: deployLink || null,
         githubLink: githubLink || null,
         articleLink: articleLink || null,
+        events: events ? events.split(',').map(event => event.trim()) : [],
+        awards: awards ? awards.split(',').map(award => award.trim()) : [],
       }
     }).filter((project: Project) => project.title && project.description.length > 0)
 
@@ -97,6 +120,12 @@ export async function getProjects(): Promise<Project[]> {
     console.error('プロジェクトデータ取得エラー:', err)
     return []
   }
+}
+
+// 特定のプロジェクトを取得する関数
+export async function getProjectById(id: string): Promise<Project | null> {
+  const projects = await getProjects()
+  return projects.find(project => project.id === id) || null
 }
 
 export async function getCareer(): Promise<Career[]> {

@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { ExternalLink, Github, Play } from 'lucide-react'
+import { ExternalLink, Github, Play, Trophy, MapPin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import YouTubeThumbnail from '@/components/YouTubeThumbnail'
 import Image from 'next/image'
 import { Project } from '@/lib/google-sheets'
@@ -59,9 +60,10 @@ export default function ProductionList({ projects }: ProductionListProps) {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {projects.map((project, index) => (
-        <div
+        <Link
           key={index}
-          className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+          href={`/production/${project.id}`}
+          className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-200 block cursor-pointer transform hover:scale-[1.02]"
         >
           {/* サムネイル表示 */}
           {(() => {
@@ -122,16 +124,35 @@ export default function ProductionList({ projects }: ProductionListProps) {
               {project.description}
             </p>
             
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mb-2">
               {project.technologies.map((tech, techIndex) => (
-                <span
+                <Badge
                   key={techIndex}
-                  className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs rounded"
+                  variant="default"
+                  className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
                 >
                   {tech}
-                </span>
+                </Badge>
               ))}
             </div>
+            
+            {/* 受賞・イベント情報 */}
+            {(project.awards.length > 0 || project.events.length > 0) && (
+              <div className="flex flex-wrap gap-1 mb-2">
+                {project.awards.length > 0 && (
+                  <Badge variant="secondary" className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-200 text-xs">
+                    <Trophy className="w-3 h-3 mr-1" />
+                    受賞作品
+                  </Badge>
+                )}
+                {project.events.length > 0 && (
+                  <Badge variant="outline" className="border-blue-200 text-blue-600 dark:border-blue-800 dark:text-blue-200 text-xs">
+                    <MapPin className="w-3 h-3 mr-1" />
+                    展示済み
+                  </Badge>
+                )}
+              </div>
+            )}
             
             <p className="text-xs text-gray-500 dark:text-gray-400">
               {project.date}
@@ -192,7 +213,7 @@ export default function ProductionList({ projects }: ProductionListProps) {
               )}
             </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   )
