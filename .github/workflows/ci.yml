@@ -1,0 +1,70 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18, 20]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run ESLint
+      run: npm run lint
+
+    - name: Run TypeScript type check
+      run: npx tsc --noEmit
+
+    - name: Build application
+      run: npm run build
+      env:
+        # ビルド時に環境変数が必要な場合はここで設定
+        NEXT_PUBLIC_APP_ENV: production
+
+    - name: Upload build artifacts
+      if: matrix.node-version == 20
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-files
+        path: |
+          .next/
+          out/
+        retention-days: 7
+
+  # ビルド成功時の通知（オプション）
+  notify-success:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+    - name: Notify build success
+      run: echo "✅ Build and tests passed successfully!"
+
+  # ビルド失敗時の通知（オプション）
+  notify-failure:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: failure()
+    
+    steps:
+    - name: Notify build failure
+      run: echo "❌ Build or tests failed!"
