@@ -97,8 +97,8 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
               <div className="mb-6">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">使用技術・スキル</h2>
                 <div className="flex flex-wrap gap-2">
-                  {careerItem.skills.map((skill, index) => (
-                    <Badge key={index} variant="default" className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200">
+                  {careerItem.skills.map((skill) => (
+                    <Badge key={skill} variant="default" className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200">
                       {skill}
                     </Badge>
                   ))}
@@ -114,8 +114,8 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">成果・実績</h2>
                 </div>
                 <div className="space-y-2">
-                  {careerItem.achievements.map((achievement, index) => (
-                    <div key={index} className="flex items-start space-x-2">
+                  {careerItem.achievements.map((achievement) => (
+                    <div key={achievement} className="flex items-start space-x-2">
                       <span className="text-yellow-500 mt-1">✓</span>
                       <span className="text-gray-700 dark:text-gray-300">{achievement}</span>
                     </div>

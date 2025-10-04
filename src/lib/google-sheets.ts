@@ -167,6 +167,10 @@ export async function getProjectById(id: string): Promise<Project | null> {
   return projects.find(project => project.id === id) || null
 }
 
+// Career シートの列数（title, date, endDate, type, description, detailedDescription, skills, achievements, links, imageUrl, location）
+const CAREER_SHEET_COLUMNS = 11
+const CAREER_SHEET_RANGE = `Career!A2:${String.fromCharCode(64 + CAREER_SHEET_COLUMNS)}`
+
 export async function getCareer(): Promise<Career[]> {
   try {
     const SPREADSHEET_ID = config.googleSheets.spreadsheetId
@@ -178,7 +182,7 @@ export async function getCareer(): Promise<Career[]> {
     }
 
     const response = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Career!A2:K?key=${API_KEY}`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${CAREER_SHEET_RANGE}?key=${API_KEY}`,
       {
         next: { revalidate: 300 } // 5分キャッシュ（スプレッドシート更新を5分以内に反映）
       }
@@ -214,7 +218,7 @@ export async function getCareer(): Promise<Career[]> {
         try {
           parsedLinks = JSON.parse(links)
         } catch (error) {
-          console.error('links JSONのパースエラー:', error)
+          console.error('links JSONのパースエラー:', error, 'links value:', links)
         }
       }
 
