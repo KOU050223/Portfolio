@@ -15,9 +15,10 @@ export async function generateStaticParams() {
 }
 
 // 動的メタデータ生成
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const project = await getProjectById(params.id)
-  
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params
+  const project = await getProjectById(id)
+
   if (!project) {
     return {
       title: '作品が見つかりません',
@@ -36,13 +37,14 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 }
 
 interface ProjectDetailPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
-  const project = await getProjectById(params.id)
+  const { id } = await params
+  const project = await getProjectById(id)
 
   if (!project) {
     notFound()

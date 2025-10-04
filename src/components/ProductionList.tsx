@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ExternalLink, Github, Play, Trophy, MapPin } from 'lucide-react'
+import { ExternalLink, Play, Trophy, MapPin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import YouTubeThumbnail from '@/components/YouTubeThumbnail'
@@ -11,12 +11,9 @@ import { Project } from '@/lib/google-sheets'
 // YouTubeのビデオIDを抽出する関数
 function extractYouTubeId(url: string): string | null {
   if (!url || typeof url !== 'string') {
-    console.log('[extractYouTubeId] 無効なURL:', url)
     return null
   }
-  
-  console.log('[extractYouTubeId] 処理中のURL:', url)
-  
+
   // 様々なYouTubeURL形式に対応
   const patterns = [
     // youtube.com/watch?v=VIDEO_ID
@@ -32,23 +29,20 @@ function extractYouTubeId(url: string): string | null {
     // mobile youtube URLs
     /(?:https?:\/\/)?(?:m\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
   ]
-  
+
   for (const pattern of patterns) {
     const match = url.match(pattern)
     if (match && match[1] && match[1].length === 11) {
-      console.log('[extractYouTubeId] 抽出成功:', match[1])
       return match[1]
     }
   }
-  
+
   // 最後の手段: URLの末尾から11文字の英数字を抽出
   const fallbackMatch = url.match(/([a-zA-Z0-9_-]{11})/)
   if (fallbackMatch && fallbackMatch[1]) {
-    console.log('[extractYouTubeId] フォールバック抽出:', fallbackMatch[1])
     return fallbackMatch[1]
   }
-  
-  console.log('[extractYouTubeId] 抽出失敗:', url)
+
   return null
 }
 
@@ -60,10 +54,9 @@ export default function ProductionList({ projects }: ProductionListProps) {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {projects.map((project, index) => (
-        <Link
+        <div
           key={index}
-          href={`/production/${project.id}`}
-          className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-200 block cursor-pointer transform hover:scale-[1.02]"
+          className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] relative"
         >
           {/* サムネイル表示 */}
           {(() => {
@@ -110,9 +103,11 @@ export default function ProductionList({ projects }: ProductionListProps) {
           })()}
           
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              {project.title}
-            </h3>
+            <Link href={`/production/${project.id}`}>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                {project.title}
+              </h3>
+            </Link>
             
             {project.authors.length > 0 && (
               <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -159,61 +154,71 @@ export default function ProductionList({ projects }: ProductionListProps) {
             </p>
             
             {/* リンクボタン */}
-            <div className="flex flex-wrap gap-2 pt-2">
+            <div className="flex flex-wrap gap-2 pt-2 relative z-10">
               {project.deployLink && (
                 <Button asChild size="sm" variant="default">
-                  <Link
+                  <a
                     href={project.deployLink}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center space-x-1"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <ExternalLink className="w-3 h-3" />
                     <span>デモ</span>
-                  </Link>
+                  </a>
                 </Button>
               )}
-              
+
               {project.githubLink && (
                 <Button asChild size="sm" variant="outline">
-                  <Link
+                  <a
                     href={project.githubLink}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center space-x-1"
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    <Github className="w-3 h-3" />
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
                     <span>GitHub</span>
-                  </Link>
+                  </a>
                 </Button>
               )}
-              
+
               {project.youtubeUrl && (
                 <Button asChild size="sm" variant="outline">
-                  <Link
+                  <a
                     href={project.youtubeUrl}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center space-x-1"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <Play className="w-3 h-3" />
                     <span>動画</span>
-                  </Link>
+                  </a>
                 </Button>
               )}
-              
+
               {project.articleLink && (
                 <Button asChild size="sm" variant="outline">
-                  <Link
+                  <a
                     href={project.articleLink}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center space-x-1"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <ExternalLink className="w-3 h-3" />
                     <span>記事</span>
-                  </Link>
+                  </a>
                 </Button>
               )}
             </div>
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   )
