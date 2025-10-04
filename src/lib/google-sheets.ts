@@ -49,7 +49,7 @@ export async function getProjects(): Promise<Project[]> {
     const response = await fetch(
       `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Projects!A2:K?key=${API_KEY}`,
       {
-        next: { revalidate: 3600 } // 1時間キャッシュ
+        next: { revalidate: 300 } // 5分キャッシュ（スプレッドシート更新を5分以内に反映）
       }
     )
 
@@ -160,7 +160,7 @@ export async function getCareer(): Promise<Career[]> {
     const response = await fetch(
       `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Career!A2:I?key=${API_KEY}`,
       {
-        next: { revalidate: 3600 } // 1時間キャッシュ
+        next: { revalidate: 300 } // 5分キャッシュ（スプレッドシート更新を5分以内に反映）
       }
     )
 

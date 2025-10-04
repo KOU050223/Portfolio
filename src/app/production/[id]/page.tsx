@@ -3,7 +3,7 @@ import { getProjectById, getProjects } from '@/lib/google-sheets'
 import ProjectDetailClient from './ProjectDetailClient'
 import { Metadata } from 'next'
 
-export const revalidate = 3600 // 1時間ごとに再生成
+export const revalidate = 300 // 5分ごとに再生成（スプレッドシート更新を5分以内に反映）
 
 // generateStaticParams でプリレンダリング対象のパスを生成
 export async function generateStaticParams() {

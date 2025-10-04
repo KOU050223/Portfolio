@@ -1,7 +1,7 @@
 import { getCareer } from '@/lib/google-sheets'
 import CareerList from '@/components/CareerList'
 
-export const revalidate = 3600 // 1時間ごとに再生成
+export const revalidate = 300 // 5分ごとに再生成（スプレッドシート更新を5分以内に反映）
 
 export default async function CareerPage() {
   const career = await getCareer()
