@@ -57,34 +57,46 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
           {/* ヘッダー画像 */}
           <div className="relative h-64 md:h-80">
-            {videoId ? (
-              <YouTubeThumbnail
-                videoId={videoId}
-                title={project.title}
-                className="w-full h-full"
-              />
-            ) : project.articleLink && project.articleLink.includes('qiita.com') ? (
-              <div className="w-full h-full bg-gradient-to-br from-green-400 to-green-600 flex flex-col items-center justify-center text-white relative">
-                <div className="text-6xl mb-4">📝</div>
-                <div className="text-2xl font-bold mb-2">Qiita記事</div>
-                <div className="text-lg opacity-90 text-center px-4">
-                  {project.title}
+            {(() => {
+              // 優先順位1: 記事のOGP画像
+              if (project.ogpImage) {
+                return (
+                  <div className="w-full h-full relative bg-gray-100 dark:bg-gray-800">
+                    <Image
+                      src={project.ogpImage}
+                      alt={project.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                    />
+                  </div>
+                )
+              }
+
+              // 優先順位2: YouTube動画のサムネイル
+              if (videoId) {
+                return (
+                  <YouTubeThumbnail
+                    videoId={videoId}
+                    title={project.title}
+                    className="w-full h-full"
+                  />
+                )
+              }
+
+              // 優先順位3: デフォルト画像
+              return (
+                <div className="w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                  <Image
+                    src="/tinkani.png"
+                    alt={project.title}
+                    width={120}
+                    height={120}
+                    className="opacity-60"
+                  />
                 </div>
-                <div className="absolute top-4 right-4 bg-white text-green-600 px-3 py-2 rounded-lg font-bold">
-                  Qiita
-                </div>
-              </div>
-            ) : (
-              <div className="w-full h-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                <Image 
-                  src="/tinkani.png"
-                  alt={project.title}
-                  width={120}
-                  height={120}
-                  className="opacity-60"
-                />
-              </div>
-            )}
+              )
+            })()}
           </div>
 
           {/* プロジェクト情報 */}

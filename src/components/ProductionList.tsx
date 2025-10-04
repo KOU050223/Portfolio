@@ -60,38 +60,37 @@ export default function ProductionList({ projects }: ProductionListProps) {
         >
           {/* サムネイル表示 */}
           {(() => {
-            // YouTubeが設定されている場合はYouTubeサムネイル
+            // 優先順位1: 記事のOGP画像
+            if (project.ogpImage) {
+              return (
+                <div className="h-48 rounded-lg mb-4 overflow-hidden relative bg-gray-100 dark:bg-gray-800">
+                  <Image
+                    src={project.ogpImage}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
+              )
+            }
+
+            // 優先順位2: YouTube動画のサムネイル
             if (project.youtubeUrl) {
               const videoId = extractYouTubeId(project.youtubeUrl)
               return videoId ? (
-                <YouTubeThumbnail 
-                  videoId={videoId} 
+                <YouTubeThumbnail
+                  videoId={videoId}
                   title={project.title}
                   className="mb-4"
                 />
               ) : null
             }
-            
-            // qiita.comの記事の場合はQiitaカード
-            if (project.articleLink && project.articleLink.includes('qiita.com')) {
-              return (
-                <div className="h-48 bg-gradient-to-br from-green-400 to-green-600 rounded-lg mb-4 flex flex-col items-center justify-center text-white relative">
-                  <div className="text-4xl mb-2">📝</div>
-                  <div className="text-lg font-bold mb-1">Qiita記事</div>
-                  <div className="text-sm opacity-90 text-center px-4 line-clamp-2">
-                    {project.title}
-                  </div>
-                  <div className="absolute top-2 right-2 bg-white text-green-600 px-2 py-1 rounded-md text-xs font-bold">
-                    Qiita
-                  </div>
-                </div>
-              )
-            }
-            
-            // YouTubeもQiitaも設定されていない場合はtinkaniアイコン
+
+            // 優先順位3: デフォルト画像
             return (
               <div className="h-48 bg-gray-100 dark:bg-gray-800 rounded-lg mb-4 flex items-center justify-center">
-                <Image 
+                <Image
                   src="/tinkani.png"
                   alt={project.title}
                   width={80}

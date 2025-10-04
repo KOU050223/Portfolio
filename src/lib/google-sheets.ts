@@ -1,4 +1,5 @@
 import { config } from './config'
+import { getOgpImage } from './getOgp'
 
 export interface Project {
   id: string
@@ -13,6 +14,7 @@ export interface Project {
   articleLink: string | null
   events: string[]
   awards: string[]
+  ogpImage: string | null
 }
 
 // プロジェクトIDを生成する関数
@@ -62,7 +64,7 @@ export async function getProjects(): Promise<Project[]> {
       return []
     }
 
-    const projects = data.values.map(([
+    const projectsData = data.values.map(([
       title,
       authors,
       date,
@@ -86,7 +88,7 @@ export async function getProjects(): Promise<Project[]> {
 
       const projectTitle = title || ''
       const projectDate = date || ''
-      
+
       return {
         id: generateProjectId(projectTitle, projectDate),
         title: projectTitle,
@@ -100,8 +102,20 @@ export async function getProjects(): Promise<Project[]> {
         articleLink: articleLink || null,
         events: events ? events.split(',').map(event => event.trim()) : [],
         awards: awards ? awards.split(',').map(award => award.trim()) : [],
+        ogpImage: null, // 後で取得
       }
     }).filter((project: Project) => project.title && project.description.length > 0)
+
+    // OGP画像を取得（記事リンクがある場合のみ）
+    const projects = await Promise.all(
+      projectsData.map(async (project: Project) => {
+        if (project.articleLink) {
+          const ogpImage = await getOgpImage(project.articleLink)
+          return { ...project, ogpImage }
+        }
+        return project
+      })
+    )
 
     // 日付でソート（新しい順）
     const sortedProjects = projects.sort((a: Project, b: Project) => {
