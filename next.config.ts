@@ -1,20 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Cloudflare Pages用の静的エクスポート設定
-  output: 'export',
-  trailingSlash: true,
-  distDir: 'out',
-  
-  // 環境変数を静的エクスポートに含める
-  env: {
-    NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY,
-    NEXT_PUBLIC_SPREADSHEET_ID: process.env.NEXT_PUBLIC_SPREADSHEET_ID,
-  },
-  
-  // Cloudflare Pagesでは画像最適化が利用できないため無効化
+  // Vercelは画像最適化をサポート
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -34,15 +22,40 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/vi/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'lh7-us.googleusercontent.com',
+        port: '',
+        pathname: '/docs/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'qiita-user-contents.imgix.net',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ptera-publish.topaz.dev',
+        port: '',
+        pathname: '/project/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.canva.com',
+        port: '',
+        pathname: '/static/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.st-note.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },
-  
-  // 静的エクスポート時にAPIルートを無効化
-  experimental: {
-    typedRoutes: false,
   },
 };
 
