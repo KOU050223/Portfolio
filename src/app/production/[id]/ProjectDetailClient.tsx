@@ -7,31 +7,7 @@ import YouTubeThumbnail from '@/components/YouTubeThumbnail'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Project } from '@/lib/google-sheets'
-
-// YouTubeのビデオIDを抽出する関数
-function extractYouTubeId(url: string): string | null {
-  if (!url || typeof url !== 'string') {
-    return null
-  }
-  
-  const patterns = [
-    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
-    /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})/,
-    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
-    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/v\/([a-zA-Z0-9_-]{11})/,
-    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/,
-    /(?:https?:\/\/)?(?:m\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
-  ]
-  
-  for (const pattern of patterns) {
-    const match = url.match(pattern)
-    if (match && match[1] && match[1].length === 11) {
-      return match[1]
-    }
-  }
-  
-  return null
-}
+import { extractYouTubeId } from '@/lib/utils'
 
 interface ProjectDetailClientProps {
   project: Project

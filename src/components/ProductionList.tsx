@@ -7,44 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import YouTubeThumbnail from '@/components/YouTubeThumbnail'
 import Image from 'next/image'
 import { Project } from '@/lib/google-sheets'
-
-// YouTubeのビデオIDを抽出する関数
-function extractYouTubeId(url: string): string | null {
-  if (!url || typeof url !== 'string') {
-    return null
-  }
-
-  // 様々なYouTubeURL形式に対応
-  const patterns = [
-    // youtube.com/watch?v=VIDEO_ID
-    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
-    // youtu.be/VIDEO_ID
-    /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})/,
-    // youtube.com/embed/VIDEO_ID
-    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
-    // youtube.com/v/VIDEO_ID
-    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/v\/([a-zA-Z0-9_-]{11})/,
-    // youtube.com/watch?v=VIDEO_ID&other_params
-    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/,
-    // mobile youtube URLs
-    /(?:https?:\/\/)?(?:m\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
-  ]
-
-  for (const pattern of patterns) {
-    const match = url.match(pattern)
-    if (match && match[1] && match[1].length === 11) {
-      return match[1]
-    }
-  }
-
-  // 最後の手段: URLの末尾から11文字の英数字を抽出
-  const fallbackMatch = url.match(/([a-zA-Z0-9_-]{11})/)
-  if (fallbackMatch && fallbackMatch[1]) {
-    return fallbackMatch[1]
-  }
-
-  return null
-}
+import { extractYouTubeId } from '@/lib/utils'
 
 // 個別のプロジェクトカードコンポーネント
 function ProjectCard({ project, index }: { project: Project; index: number }) {
