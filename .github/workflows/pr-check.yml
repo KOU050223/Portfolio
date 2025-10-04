@@ -20,7 +20,7 @@ jobs:
         fetch-depth: 0 # 全履歴を取得してdiffを確認
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       with:
         node-version: '22'
         cache: 'npm'
@@ -102,7 +102,7 @@ jobs:
       uses: actions/checkout@v5
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       with:
         node-version: '22'
         cache: 'npm'
