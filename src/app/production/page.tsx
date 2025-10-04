@@ -2,7 +2,7 @@ import { Code, Star } from 'lucide-react'
 import { getProjects } from '@/lib/google-sheets'
 import ProductionList from '@/components/ProductionList'
 
-export const revalidate = 3600 // 1時間ごとに再生成
+export const revalidate = 300 // 5分ごとに再生成（スプレッドシート更新を5分以内に反映）
 
 export default async function ProductionPage() {
   const projects = await getProjects()
