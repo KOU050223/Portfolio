@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/badge'
 import YouTubeThumbnail from '@/components/YouTubeThumbnail'
 import Image from 'next/image'
 import { Project } from '@/lib/google-sheets'
-import { useState, useEffect } from 'react'
 
 // YouTubeのビデオIDを抽出する関数
 function extractYouTubeId(url: string): string | null {
@@ -49,29 +48,7 @@ function extractYouTubeId(url: string): string | null {
 
 // 個別のプロジェクトカードコンポーネント
 function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const [ogpImage, setOgpImage] = useState<string | null>(project.ogpImage)
-  const [isLoadingOgp, setIsLoadingOgp] = useState(false)
   const videoId = project.youtubeUrl ? extractYouTubeId(project.youtubeUrl) : null
-
-  useEffect(() => {
-    // 記事リンクがあり、まだOGP画像を取得していない場合
-    if (project.articleLink && !ogpImage && !isLoadingOgp) {
-      setIsLoadingOgp(true)
-      fetch(`/api/ogp?url=${encodeURIComponent(project.articleLink)}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.ogpImage) {
-            setOgpImage(data.ogpImage)
-          }
-        })
-        .catch(error => {
-          console.error('OGP取得エラー:', error)
-        })
-        .finally(() => {
-          setIsLoadingOgp(false)
-        })
-    }
-  }, [project.articleLink, ogpImage, isLoadingOgp])
 
   return (
     <div
@@ -81,11 +58,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       {/* サムネイル表示 */}
       {(() => {
         // 優先順位1: 記事のOGP画像
-        if (ogpImage) {
+        if (project.ogpImage) {
           return (
             <div className="h-48 rounded-lg mb-4 overflow-hidden relative bg-gray-100 dark:bg-gray-800">
               <Image
-                src={ogpImage}
+                src={project.ogpImage}
                 alt={project.title}
                 fill
                 className="object-cover"
