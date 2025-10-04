@@ -30,10 +30,30 @@ export function generateProjectId(title: string, date: string): string {
 }
 
 export interface Career {
-  date: string
+  id: string
   title: string
-  description: string
+  date: string
+  endDate: string | null
   type: string
+  description: string
+  detailedDescription: string
+  skills: string[]
+  achievements: string[]
+  links: Array<{ label: string; url: string }>
+  imageUrl: string | null
+  location: string | null
+}
+
+// キャリアIDを生成する関数
+export function generateCareerId(title: string, date: string): string {
+  const cleanTitle = title.toLowerCase()
+    .replace(/[^\w\s-]/g, '') // 特殊文字を除去
+    .replace(/\s+/g, '-') // スペースをハイフンに変換
+    .replace(/-+/g, '-') // 連続するハイフンを単一に
+    .trim()
+  
+  const cleanDate = date.replace(/\//g, '-')
+  return `${cleanDate}-${cleanTitle}`.substring(0, 50) // 長すぎる場合は切り詰め
 }
 
 export async function getProjects(): Promise<Project[]> {
@@ -147,6 +167,10 @@ export async function getProjectById(id: string): Promise<Project | null> {
   return projects.find(project => project.id === id) || null
 }
 
+// Career シートの列数（title, date, endDate, type, description, detailedDescription, skills, achievements, links, imageUrl, location）
+const CAREER_SHEET_COLUMNS = 11
+const CAREER_SHEET_RANGE = `Career!A2:${String.fromCharCode(64 + CAREER_SHEET_COLUMNS)}`
+
 export async function getCareer(): Promise<Career[]> {
   try {
     const SPREADSHEET_ID = config.googleSheets.spreadsheetId
@@ -158,7 +182,7 @@ export async function getCareer(): Promise<Career[]> {
     }
 
     const response = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/Career!A2:I?key=${API_KEY}`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${CAREER_SHEET_RANGE}?key=${API_KEY}`,
       {
         next: { revalidate: 300 } // 5分キャッシュ（スプレッドシート更新を5分以内に反映）
       }
@@ -176,16 +200,46 @@ export async function getCareer(): Promise<Career[]> {
     }
 
     const fetchedCareer = data.values.map(([
-      date,
       title,
-      description,
+      date,
+      endDate,
       type,
-    ]: string[]) => ({
-      date: date || '',
-      title: title || '',
-      description: description || '',
-      type: type || '',
-    })).filter((career: Career) => career.title && career.description.length > 0)
+      description,
+      detailedDescription,
+      skills,
+      achievements,
+      links,
+      imageUrl,
+      location,
+    ]: string[]) => {
+      // linksのパース
+      let parsedLinks: Array<{ label: string; url: string }> = []
+      if (links && links.trim()) {
+        try {
+          parsedLinks = JSON.parse(links)
+        } catch (error) {
+          console.error('links JSONのパースエラー:', error, 'links value:', links)
+        }
+      }
+
+      const careerTitle = title || ''
+      const careerDate = date || ''
+
+      return {
+        id: generateCareerId(careerTitle, careerDate),
+        title: careerTitle,
+        date: careerDate,
+        endDate: endDate && endDate.trim() ? endDate.trim() : null,
+        type: type || '',
+        description: description || '',
+        detailedDescription: detailedDescription || description || '',
+        skills: skills ? skills.split(',').map(skill => skill.trim()).filter(s => s) : [],
+        achievements: achievements ? achievements.split(',').map(achievement => achievement.trim()).filter(a => a) : [],
+        links: parsedLinks,
+        imageUrl: imageUrl && imageUrl.trim() ? imageUrl.trim() : null,
+        location: location && location.trim() ? location.trim() : null,
+      }
+    }).filter((career: Career) => career.title && career.description.length > 0)
 
     const sortedCareer = fetchedCareer.sort((a: Career, b: Career) => {
       if (!a.date) return 1
@@ -203,4 +257,10 @@ export async function getCareer(): Promise<Career[]> {
     console.error('キャリアデータ取得エラー:', err)
     return []
   }
+}
+
+// 特定のキャリアを取得する関数
+export async function getCareerById(id: string): Promise<Career | null> {
+  const career = await getCareer()
+  return career.find(item => item.id === id) || null
 }
