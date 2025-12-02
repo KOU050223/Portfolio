@@ -1,13 +1,13 @@
 version: 2
 updates:
-  # npm dependencies
+  # npm dependencies - セキュリティアップデートのみ
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0  # 通常のバージョン更新を無効化、セキュリティアップデートは引き続き作成される
     reviewers:
       - "KOU050223"
     assignees:
@@ -18,16 +18,16 @@ updates:
       include: "scope"
     labels:
       - "dependencies"
-      - "auto-update"
+      - "security"
 
-  # GitHub Actions
+  # GitHub Actions - セキュリティアップデートのみ
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday" 
+      day: "monday"
       time: "09:00"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 0  # 通常のバージョン更新を無効化、セキュリティアップデートは引き続き作成される
     reviewers:
       - "KOU050223"
     commit-message:
@@ -35,4 +35,4 @@ updates:
       include: "scope"
     labels:
       - "github-actions"
-      - "auto-update"
+      - "security"
