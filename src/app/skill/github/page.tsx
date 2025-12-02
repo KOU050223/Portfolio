@@ -139,7 +139,7 @@ export default async function GitHubSkillPage() {
                   href={repo.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group block bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 border border-transparent hover:border-blue-500/20 flex flex-col h-full"
+                  className="group flex flex-col bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 border border-transparent hover:border-blue-500/20 h-full"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1">
@@ -190,6 +190,11 @@ export default async function GitHubSkillPage() {
             </div>
           </div>
         ))}
+        {sortedLanguages.length === 0 && (
+          <p className="text-center text-gray-500 dark:text-gray-400 py-12">
+            リポジトリが見つかりませんでした。
+          </p>
+        )}
       </div>
     </div>
   )
