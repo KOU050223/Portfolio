@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Briefcase, GraduationCap, Star, Eye } from "lucide-react";
-import { getProjects, getCareer } from "@/lib/google-sheets";
+import { getProjects, getCareer } from "@/lib/notion";
 import { skillCategories, getLevelPercentage, getSkillColor } from "@/data/skills";
 
 export default async function Home() {

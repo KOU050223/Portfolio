@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import YouTubeThumbnail from "@/components/YouTubeThumbnail";
 import Image from "next/image";
 import Link from "next/link";
-import { Project } from "@/lib/google-sheets";
+import type { Project } from "@/types";
 import { extractYouTubeId } from "@/lib/utils";
 
 interface ProjectDetailClientProps {

@@ -5,6 +5,23 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// title + date からスラッグIDを生成
+export function generateSlugId(title: string, date: string): string {
+  const cleanTitle = title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+  return `${date.replace(/\//g, "-")}-${cleanTitle}`.substring(0, 50);
+}
+
+// YYYY-MM-DD → MM/DD/YYYY
+export function formatDate(iso: string): string {
+  const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[2]}/${m[3]}/${m[1]}` : iso;
+}
+
 // YouTubeのビデオIDを抽出する関数
 export function extractYouTubeId(url: string): string | null {
   if (!url || typeof url !== "string") {

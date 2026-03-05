@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Filter, X, ArrowRight, Calendar, MapPin } from "lucide-react";
-import { Career } from "@/lib/google-sheets";
+import { Career } from "@/types";
 import Link from "next/link";
 
 interface CareerListProps {

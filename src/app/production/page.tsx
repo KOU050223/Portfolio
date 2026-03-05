@@ -1,5 +1,5 @@
 import { Code, Star } from "lucide-react";
-import { getProjects } from "@/lib/google-sheets";
+import { getProjects } from "@/lib/notion";
 import ProductionList from "@/components/ProductionList";
 
 export const revalidate = 300; // 5分ごとに再生成（スプレッドシート更新を5分以内に反映）

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import YouTubeThumbnail from "@/components/YouTubeThumbnail";
 import Image from "next/image";
-import { Project } from "@/lib/google-sheets";
+import type { Project } from "@/types";
 import { extractYouTubeId } from "@/lib/utils";
 
 // 個別のプロジェクトカードコンポーネント
