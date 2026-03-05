@@ -12,116 +12,124 @@ permissions:
 jobs:
   pr-checks:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout PR code
-      uses: actions/checkout@v6
-      with:
-        fetch-depth: 0 # 全履歴を取得してdiffを確認
+      - name: Checkout PR code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v6
-      with:
-        node-version: '22'
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Validate package.json and package-lock.json
-      run: |
-        echo "🔍 Validating package files..."
-        npm audit --audit-level=moderate
-        echo "✅ Package validation completed!"
+      - name: Validate package.json and package-lock.json
+        run: |
+          echo "Validating package files..."
+          npm audit --audit-level=moderate
+          echo "Package validation completed!"
 
-    - name: Run linting
-      run: |
-        echo "🔍 Running ESLint on changed files..."
-        npm run lint
-        echo "✅ Linting passed!"
+      - name: Run linting with oxlint
+        run: |
+          echo "Running oxlint on changed files..."
+          npm run lint
+          echo "Linting passed!"
 
-    - name: Type checking
-      run: |
-        echo "🔍 Running TypeScript type check..."
-        npx tsc --noEmit
-        echo "✅ Type check passed!"
+      - name: Check formatting with oxfmt
+        run: |
+          echo "Checking code formatting with oxfmt..."
+          npm run format:check
+          echo "Formatting check passed!"
 
-    - name: Build test
-      run: |
-        echo "🏗️ Testing build process..."
-        npm run build
-        echo "✅ Build test completed successfully!"
+      - name: Type checking
+        run: |
+          echo "Running TypeScript type check..."
+          npx tsc --noEmit
+          echo "Type check passed!"
 
-    - name: Check build output
-      run: |
-        echo "📁 Checking build output structure..."
-        if [ -d ".next" ]; then
-          echo "✅ .next directory created"
-          echo "📊 Build size: $(du -sh .next | cut -f1)"
-        else
-          echo "❌ .next directory not found"
-          exit 1
-        fi
+      - name: Build test
+        run: |
+          echo "Testing build process..."
+          npm run build
+          echo "Build test completed successfully!"
 
-    - name: Analyze bundle size
-      run: |
-        echo "📊 Bundle Analysis:"
-        echo "==================="
-        find .next -name "*.js" -type f -exec ls -lh {} \; | head -10
-        echo "==================="
+      - name: Check build output
+        run: |
+          echo "Checking build output structure..."
+          if [ -d ".next" ]; then
+            echo ".next directory created"
+            echo "Build size: $(du -sh .next | cut -f1)"
+          else
+            echo ".next directory not found"
+            exit 1
+          fi
 
-    - name: Comment PR with build status
-      uses: actions/github-script@v8
-      if: always()
-      continue-on-error: true
-      with:
-        script: |
-          const status = '${{ job.status }}';
-          const emoji = status === 'success' ? '✅' : '❌';
-          const message = `${emoji} **PR Build Check ${status.toUpperCase()}**
-          
-          - Linting: ${status === 'success' ? '✅ Passed' : '❌ Failed'}
-          - Type Check: ${status === 'success' ? '✅ Passed' : '❌ Failed'}
-          - Build Test: ${status === 'success' ? '✅ Passed' : '❌ Failed'}
-          
-          Build completed at: ${new Date().toISOString()}`;
-          
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: message
-          });
+      - name: Analyze bundle size
+        run: |
+          echo "Bundle Analysis:"
+          echo "==================="
+          find .next -name "*.js" -type f -exec ls -lh {} \; | head -10
+          echo "==================="
 
-  # セキュリティチェック
+      - name: Comment PR with build status
+        uses: actions/github-script@v8
+        if: always()
+        continue-on-error: true
+        env:
+          JOB_STATUS: ${{ job.status }}
+        with:
+          script: |
+            const status = process.env.JOB_STATUS;
+            const emoji = status === 'success' ? '✅' : '❌';
+            const message = `${emoji} **PR Build Check ${status.toUpperCase()}**
+
+            - Linting (oxlint): ${status === 'success' ? '✅ Passed' : '❌ Failed'}
+            - Formatting (oxfmt): ${status === 'success' ? '✅ Passed' : '❌ Failed'}
+            - Type Check: ${status === 'success' ? '✅ Passed' : '❌ Failed'}
+            - Build Test: ${status === 'success' ? '✅ Passed' : '❌ Failed'}
+
+            Build completed at: ${new Date().toISOString()}`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });
+
   security-check:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
+      - name: Checkout code
+        uses: actions/checkout@v6
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v6
-      with:
-        node-version: '22'
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run security audit
-      run: |
-        echo "🔒 Running security audit..."
-        npm audit --audit-level=high
-        echo "✅ Security audit completed!"
+      - name: Run security audit
+        run: |
+          echo "Running security audit..."
+          npm audit --audit-level=high
+          echo "Security audit completed!"
 
-    - name: Check for sensitive files
-      run: |
-        echo "🔍 Checking for sensitive files..."
-        if find . -name "*.env*" -not -path "./node_modules/*" -not -name ".env.example" | grep -q .; then
-          echo "⚠️ Warning: Environment files detected"
-          find . -name "*.env*" -not -path "./node_modules/*" -not -name ".env.example"
-        else
-          echo "✅ No sensitive files detected"
-        fi
+      - name: Check for sensitive files
+        run: |
+          echo "Checking for sensitive files..."
+          if find . -name "*.env*" -not -path "./node_modules/*" -not -name ".env.example" | grep -q .; then
+            echo "Warning: Environment files detected"
+            find . -name "*.env*" -not -path "./node_modules/*" -not -name ".env.example"
+          else
+            echo "No sensitive files detected"
+          fi
