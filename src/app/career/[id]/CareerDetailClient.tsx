@@ -1,21 +1,21 @@
-'use client'
+"use client";
 
-import { ArrowLeft, Calendar, MapPin, ExternalLink, Award, Briefcase } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import Image from 'next/image'
-import Link from 'next/link'
-import { Career } from '@/lib/google-sheets'
+import { ArrowLeft, Calendar, MapPin, ExternalLink, Award, Briefcase } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
+import Link from "next/link";
+import { Career } from "@/lib/google-sheets";
 
 interface CareerDetailClientProps {
-  careerItem: Career
+  careerItem: Career;
 }
 
 export default function CareerDetailClient({ careerItem }: CareerDetailClientProps) {
   // 日付の表示形式を整える
-  const displayDate = careerItem.endDate 
+  const displayDate = careerItem.endDate
     ? `${careerItem.date} 〜 ${careerItem.endDate}`
-    : careerItem.date
+    : careerItem.date;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -54,13 +54,13 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                 {careerItem.title}
               </h1>
-              
+
               <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-300 mb-4">
                 <div className="flex items-center space-x-2">
                   <Calendar className="w-4 h-4" />
                   <span>{displayDate}</span>
                 </div>
-                
+
                 {careerItem.location && (
                   <div className="flex items-center space-x-2">
                     <MapPin className="w-4 h-4" />
@@ -73,8 +73,12 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
               {careerItem.type && (
                 <div className="mb-4">
                   <div className="flex flex-wrap gap-2">
-                    {careerItem.type.split(',').map((tag, index) => (
-                      <Badge key={index} variant="outline" className="border-blue-200 text-blue-700 dark:border-blue-800 dark:text-blue-200">
+                    {careerItem.type.split(",").map((tag, index) => (
+                      <Badge
+                        key={index}
+                        variant="outline"
+                        className="border-blue-200 text-blue-700 dark:border-blue-800 dark:text-blue-200"
+                      >
                         <Briefcase className="w-3 h-3 mr-1" />
                         {tag.trim()}
                       </Badge>
@@ -95,10 +99,16 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
             {/* 使用技術・スキル */}
             {careerItem.skills.length > 0 && (
               <div className="mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">使用技術・スキル</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                  使用技術・スキル
+                </h2>
                 <div className="flex flex-wrap gap-2">
                   {careerItem.skills.map((skill) => (
-                    <Badge key={skill} variant="default" className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200">
+                    <Badge
+                      key={skill}
+                      variant="default"
+                      className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
+                    >
                       {skill}
                     </Badge>
                   ))}
@@ -111,7 +121,9 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
               <div className="mb-6">
                 <div className="flex items-center space-x-2 mb-3">
                   <Award className="w-5 h-5 text-yellow-500" />
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">成果・実績</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    成果・実績
+                  </h2>
                 </div>
                 <div className="space-y-2">
                   {careerItem.achievements.map((achievement) => (
@@ -127,7 +139,9 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
             {/* 関連リンク */}
             {careerItem.links.length > 0 && (
               <div className="mt-8">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">関連リンク</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                  関連リンク
+                </h2>
                 <div className="flex flex-wrap gap-3">
                   {careerItem.links.map((link, index) => (
                     <Button
@@ -137,11 +151,7 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
                       variant="outline"
                       className="flex items-center space-x-2"
                     >
-                      <Link
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
+                      <Link href={link.url} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="w-4 h-4" />
                         <span>{link.label}</span>
                       </Link>
@@ -154,5 +164,5 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
         </div>
       </div>
     </div>
-  )
+  );
 }

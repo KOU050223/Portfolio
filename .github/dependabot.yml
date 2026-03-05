@@ -7,7 +7,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    open-pull-requests-limit: 0  # 通常のバージョン更新を無効化、セキュリティアップデートは引き続き作成される
+    open-pull-requests-limit: 0 # 通常のバージョン更新を無効化、セキュリティアップデートは引き続き作成される
     reviewers:
       - "KOU050223"
     assignees:
@@ -27,7 +27,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "09:00"
-    open-pull-requests-limit: 0  # 通常のバージョン更新を無効化、セキュリティアップデートは引き続き作成される
+    open-pull-requests-limit: 0 # 通常のバージョン更新を無効化、セキュリティアップデートは引き続き作成される
     reviewers:
       - "KOU050223"
     commit-message:

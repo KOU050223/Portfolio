@@ -1,6 +1,6 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { ArrowLeft, Star, GitFork, ExternalLink } from 'lucide-react'
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowLeft, Star, GitFork, ExternalLink } from "lucide-react";
 
 function DarkModeStatsImage({
   lightSrc,
@@ -9,72 +9,92 @@ function DarkModeStatsImage({
   width,
   height,
 }: {
-  lightSrc: string
-  darkSrc: string
-  alt: string
-  width: number
-  height: number
+  lightSrc: string;
+  darkSrc: string;
+  alt: string;
+  width: number;
+  height: number;
 }) {
   return (
     <>
       <div className="block dark:hidden">
-        <Image src={lightSrc} alt={`${alt} (Light)`} width={width} height={height} className="w-full h-auto" unoptimized />
+        <Image
+          src={lightSrc}
+          alt={`${alt} (Light)`}
+          width={width}
+          height={height}
+          className="w-full h-auto"
+          unoptimized
+        />
       </div>
       <div className="hidden dark:block">
-        <Image src={darkSrc} alt={`${alt} (Dark)`} width={width} height={height} className="w-full h-auto" unoptimized />
+        <Image
+          src={darkSrc}
+          alt={`${alt} (Dark)`}
+          width={width}
+          height={height}
+          className="w-full h-auto"
+          unoptimized
+        />
       </div>
     </>
-  )
+  );
 }
 
 interface Repository {
-  id: number
-  name: string
-  description: string | null
-  html_url: string
-  stargazers_count: number
-  forks_count: number
-  language: string | null
-  topics: string[]
-  updated_at: string
+  id: number;
+  name: string;
+  description: string | null;
+  html_url: string;
+  stargazers_count: number;
+  forks_count: number;
+  language: string | null;
+  topics: string[];
+  updated_at: string;
 }
 
 async function getRepositories(): Promise<Repository[]> {
   try {
-    const res = await fetch('https://api.github.com/users/KOU050223/repos?sort=updated&per_page=100', {
-      next: { revalidate: 3600 } // 1時間ごとに再検証
-    })
+    const res = await fetch(
+      "https://api.github.com/users/KOU050223/repos?sort=updated&per_page=100",
+      {
+        next: { revalidate: 3600 }, // 1時間ごとに再検証
+      },
+    );
 
     if (!res.ok) {
-      throw new Error('Failed to fetch repositories')
+      throw new Error("Failed to fetch repositories");
     }
 
-    return res.json()
+    return res.json();
   } catch (error) {
-    console.error('Error fetching repositories:', error)
-    return []
+    console.error("Error fetching repositories:", error);
+    return [];
   }
 }
 
 export default async function GitHubSkillPage() {
-  const repositories = await getRepositories()
+  const repositories = await getRepositories();
 
   // 言語ごとにグルーピング
-  const groupedRepositories = repositories.reduce((acc, repo) => {
-    const language = repo.language || 'Others'
-    if (!acc[language]) {
-      acc[language] = []
-    }
-    acc[language].push(repo)
-    return acc
-  }, {} as Record<string, Repository[]>)
+  const groupedRepositories = repositories.reduce(
+    (acc, repo) => {
+      const language = repo.language || "Others";
+      if (!acc[language]) {
+        acc[language] = [];
+      }
+      acc[language].push(repo);
+      return acc;
+    },
+    {} as Record<string, Repository[]>,
+  );
 
   // 言語のソート順（Othersは最後、それ以外はリポジトリ数が多い順）
   const sortedLanguages = Object.keys(groupedRepositories).sort((a, b) => {
-    if (a === 'Others') return 1
-    if (b === 'Others') return -1
-    return groupedRepositories[b].length - groupedRepositories[a].length
-  })
+    if (a === "Others") return 1;
+    if (b === "Others") return -1;
+    return groupedRepositories[b].length - groupedRepositories[a].length;
+  });
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -144,7 +164,7 @@ export default async function GitHubSkillPage() {
                   </div>
 
                   <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 h-10 line-clamp-2">
-                    {repo.description || 'No description available'}
+                    {repo.description || "No description available"}
                   </p>
 
                   {repo.topics && repo.topics.length > 0 && (
@@ -192,5 +212,5 @@ export default async function GitHubSkillPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

@@ -18,13 +18,24 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default: "魚住 紘平 | ウオミーのポートフォリオサイト",
-    template: "%s | 魚住 紘平"
+    template: "%s | 魚住 紘平",
   },
-  description: "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。React、Next.js、Node.jsなど多様な技術スタックでの開発経験と作品を紹介。",
+  description:
+    "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。React、Next.js、Node.jsなど多様な技術スタックでの開発経験と作品を紹介。",
   keywords: [
-    "魚住紘平", "うおずみこうへい", "フルスタック開発者", "ポートフォリオ",
-    "React", "Next.js", "Node.js", "TypeScript", "JavaScript",
-    "福岡工業大学", "情報工学科", "Webエンジニア", "プログラマー"
+    "魚住紘平",
+    "うおずみこうへい",
+    "フルスタック開発者",
+    "ポートフォリオ",
+    "React",
+    "Next.js",
+    "Node.js",
+    "TypeScript",
+    "JavaScript",
+    "福岡工業大学",
+    "情報工学科",
+    "Webエンジニア",
+    "プログラマー",
   ],
   authors: [{ name: "魚住 紘平", url: "https://github.com/KOU050223" }],
   creator: "魚住 紘平",
@@ -33,13 +44,15 @@ export const metadata: Metadata = {
     locale: "ja_JP",
     url: "https://portfolio.uomi.site",
     title: "魚住 紘平 | ウオミーのポートフォリオサイト",
-    description: "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。React、Next.js、Node.jsなど多様な技術スタックでの開発経験と作品を紹介。",
+    description:
+      "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。React、Next.js、Node.jsなど多様な技術スタックでの開発経験と作品を紹介。",
     siteName: "魚住 紘平 Portfolio",
   },
   twitter: {
     card: "summary_large_image",
     title: "魚住 紘平 | ウオミーのポートフォリオサイト",
-    description: "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。",
+    description:
+      "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。",
     creator: "@uomikou_0223",
     site: "@uomikou_0223",
   },
@@ -78,11 +91,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-white dark:bg-gray-950`}
       >
         <Header />
-        <main className="pt-16 md:pt-20 min-h-screen">
-          {children}
-        </main>
+        <main className="pt-16 md:pt-20 min-h-screen">{children}</main>
         <Footer />
-        
+
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-K46J4R2B4N"

@@ -1,28 +1,32 @@
-import { notFound } from 'next/navigation'
-import { getProjectById, getProjects } from '@/lib/google-sheets'
-import ProjectDetailClient from './ProjectDetailClient'
-import { Metadata } from 'next'
+import { notFound } from "next/navigation";
+import { getProjectById, getProjects } from "@/lib/google-sheets";
+import ProjectDetailClient from "./ProjectDetailClient";
+import { Metadata } from "next";
 
-export const revalidate = 300 // 5分ごとに再生成（スプレッドシート更新を5分以内に反映）
+export const revalidate = 300; // 5分ごとに再生成（スプレッドシート更新を5分以内に反映）
 
 // generateStaticParams でプリレンダリング対象のパスを生成
 export async function generateStaticParams() {
-  const projects = await getProjects()
-  
-  return projects.map(project => ({
+  const projects = await getProjects();
+
+  return projects.map((project) => ({
     id: project.id,
-  }))
+  }));
 }
 
 // 動的メタデータ生成
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
-  const { id } = await params
-  const project = await getProjectById(id)
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const project = await getProjectById(id);
 
   if (!project) {
     return {
-      title: '作品が見つかりません',
-    }
+      title: "作品が見つかりません",
+    };
   }
 
   return {
@@ -31,24 +35,24 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     openGraph: {
       title: `${project.title} | ポートフォリオ`,
       description: project.description,
-      type: 'article',
+      type: "article",
     },
-  }
+  };
 }
 
 interface ProjectDetailPageProps {
   params: Promise<{
-    id: string
-  }>
+    id: string;
+  }>;
 }
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
-  const { id } = await params
-  const project = await getProjectById(id)
+  const { id } = await params;
+  const project = await getProjectById(id);
 
   if (!project) {
-    notFound()
+    notFound();
   }
 
-  return <ProjectDetailClient project={project} />
+  return <ProjectDetailClient project={project} />;
 }

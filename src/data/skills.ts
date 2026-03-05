@@ -1,12 +1,12 @@
 export interface Skill {
-  name: string
-  level: string
-  icons: string
+  name: string;
+  level: string;
+  icons: string;
 }
 
 export interface SkillCategory {
-  name: string
-  skills: Skill[]
+  name: string;
+  skills: Skill[];
 }
 
 // スキルデータの定義
@@ -20,7 +20,7 @@ export const skillCategories: SkillCategory[] = [
       { name: "JavaScript", level: "中級", icons: "js" },
       { name: "Next.js", level: "初級", icons: "nextjs" },
       { name: "Redux", level: "初級", icons: "redux" },
-    ]
+    ],
   },
   {
     name: "バックエンド",
@@ -35,14 +35,14 @@ export const skillCategories: SkillCategory[] = [
       { name: "PHP", level: "中級", icons: "php" },
       { name: "Java", level: "初級", icons: "java" },
       { name: "Go", level: "初級", icons: "go" },
-    ]
+    ],
   },
   {
     name: "モバイル",
     skills: [
       { name: "Flutter", level: "中級", icons: "flutter" },
       { name: "Unity", level: "中級", icons: "unity" },
-    ]
+    ],
   },
   {
     name: "言語",
@@ -58,7 +58,7 @@ export const skillCategories: SkillCategory[] = [
       { name: "Java", level: "初級", icons: "java" },
       { name: "Go", level: "初級", icons: "go" },
       { name: "Ruby", level: "初級", icons: "ruby" },
-    ]
+    ],
   },
   {
     name: "データベース",
@@ -68,7 +68,7 @@ export const skillCategories: SkillCategory[] = [
       { name: "Dynamodb", level: "初級", icons: "dynamodb" },
       { name: "Sqlite", level: "初級", icons: "sqlite" },
       { name: "Firestore", level: "中級", icons: "firebase" },
-    ]
+    ],
   },
   {
     name: "DevOps & クラウド",
@@ -83,7 +83,7 @@ export const skillCategories: SkillCategory[] = [
       { name: "Cloudflare", level: "中級", icons: "cloudflare" },
       { name: "GitHub Actions", level: "初級", icons: "githubactions" },
       { name: "Google Cloud", level: "初級", icons: "gcp" },
-    ]
+    ],
   },
   {
     name: "ツール",
@@ -94,54 +94,62 @@ export const skillCategories: SkillCategory[] = [
       { name: "VisualStudio", level: "初級", icons: "visualstudio" },
       { name: "Discord", level: "中級", icons: "discord" },
       { name: "Figma", level: "中級", icons: "figma" },
-    ]
-  }
-]
+    ],
+  },
+];
 
 // スキルレベルの色分け
 export const getLevelColor = (level: string): string => {
-  switch(level) {
-    case "上級": return "green"
-    case "中級": return "blue"
-    case "初級": return "orange"
-    default: return "gray"
+  switch (level) {
+    case "上級":
+      return "green";
+    case "中級":
+      return "blue";
+    case "初級":
+      return "orange";
+    default:
+      return "gray";
   }
-}
+};
 
 // スキルレベルの数値変換
 export const getLevelPercentage = (level: string): number => {
-  switch(level) {
-    case "上級": return 90
-    case "中級": return 75
-    case "初級": return 60
-    default: return 40
+  switch (level) {
+    case "上級":
+      return 90;
+    case "中級":
+      return 75;
+    case "初級":
+      return 60;
+    default:
+      return 40;
   }
-}
+};
 
 // 技術名に応じた色を返す関数
 export const getSkillColor = (skillName: string): string => {
   const colorMap: Record<string, string> = {
-    'React': 'blue',
-    'TypeScript': 'blue',
-    'JavaScript': 'yellow',
-    'Python': 'green',
-    'Go': 'cyan',
-    'Node.js': 'green',
-    'Laravel': 'red',
-    'Express': 'gray',
-    'Flask': 'blue',
-    'MySQL': 'blue',
-    'AWS': 'orange',
-    'Firebase': 'orange',
-    'Docker': 'blue',
-    'Flutter': 'blue',
-    'Unity': 'purple',
-    'Git': 'orange',
-    'GitHub': 'gray',
-    'PHP': 'purple',
-    'Cloudflare': 'orange',
-    'VSCode': 'blue',
-    'Figma': 'purple'
-  }
-  return colorMap[skillName] || 'gray'
-}
+    React: "blue",
+    TypeScript: "blue",
+    JavaScript: "yellow",
+    Python: "green",
+    Go: "cyan",
+    "Node.js": "green",
+    Laravel: "red",
+    Express: "gray",
+    Flask: "blue",
+    MySQL: "blue",
+    AWS: "orange",
+    Firebase: "orange",
+    Docker: "blue",
+    Flutter: "blue",
+    Unity: "purple",
+    Git: "orange",
+    GitHub: "gray",
+    PHP: "purple",
+    Cloudflare: "orange",
+    VSCode: "blue",
+    Figma: "purple",
+  };
+  return colorMap[skillName] || "gray";
+};
