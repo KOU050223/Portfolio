@@ -23,7 +23,7 @@ export default function CareerList({ career }: CareerListProps) {
         });
       }
     });
-    return ["すべて", ...Array.from(tags).sort()];
+    return ["すべて", ...Array.from(tags).toSorted()];
   }, [career]);
 
   // フィルタリングされたキャリア
