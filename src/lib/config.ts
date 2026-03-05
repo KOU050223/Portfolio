@@ -1,10 +1,9 @@
 // 環境変数の設定と管理
 export const config = {
-  // Google Sheets API設定
-  googleSheets: {
-    apiKey: process.env.NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY || "",
-    spreadsheetId:
-      process.env.NEXT_PUBLIC_SPREADSHEET_ID || "1Ly-ss8euUmEDd3IUXSBqoValHX_m1AKVWjtlxbvp73w",
+  notion: {
+    apiKey: process.env.NOTION_API_KEY || "",
+    projectsDbId: process.env.NOTION_PROJECTS_DB_ID || "",
+    careerDbId: process.env.NOTION_CAREER_DB_ID || "",
   },
 
   // 開発環境での設定
@@ -12,33 +11,10 @@ export const config = {
 
   // 環境変数の検証
   isConfigValid() {
-    const hasApiKey = !!(this.googleSheets.apiKey && this.googleSheets.apiKey !== "");
-    const hasSpreadsheetId = !!(
-      this.googleSheets.spreadsheetId && this.googleSheets.spreadsheetId !== ""
-    );
-
-    if (this.isDevelopment) {
-      console.log("Config validation:", {
-        hasApiKey,
-        hasSpreadsheetId,
-        apiKeyLength: this.googleSheets.apiKey.length,
-        apiKey: this.googleSheets.apiKey.substring(0, 10) + "...",
-        spreadsheetId: this.googleSheets.spreadsheetId,
-      });
-    }
-
-    return hasApiKey && hasSpreadsheetId;
+    return !!(this.notion.apiKey && this.notion.projectsDbId && this.notion.careerDbId);
   },
 };
 
-// デフォルト値での警告とデバッグ情報
-console.log("環境変数チェック:", {
-  NODE_ENV: process.env.NODE_ENV,
-  hasApiKey: !!process.env.NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY,
-  hasSpreadsheetId: !!process.env.NEXT_PUBLIC_SPREADSHEET_ID,
-  configValid: config.isConfigValid(),
-});
-
 if (!config.isConfigValid()) {
-  console.warn("警告: 環境変数が正しく設定されていません。デモデータを表示します。");
+  console.warn("警告: Notion環境変数が正しく設定されていません。データが取得できません。");
 }

@@ -1,17 +1,12 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import Head from "next/head";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Briefcase, GraduationCap, Star, Eye } from "lucide-react";
-import { useProjects } from "@/hooks/useProjects";
-import { useCareer } from "@/hooks/useCareer";
+import { getProjects, getCareer } from "@/lib/google-sheets";
 import { skillCategories, getLevelPercentage, getSkillColor } from "@/data/skills";
 
-export default function Home() {
-  const { projects, isLoading: projectsLoading } = useProjects();
-  const { career, isLoading: careerLoading } = useCareer();
+export default async function Home() {
+  const [projects, career] = await Promise.all([getProjects(), getCareer()]);
 
   // 最新の3つのプロジェクトを取得
   const latestProjects = projects.slice(0, 3);
@@ -39,42 +34,6 @@ export default function Home() {
   const totalSkillsCount = new Set(allSkills.map((skill) => skill.name)).size;
   return (
     <>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "魚住 紘平",
-              alternateName: "ウオミー",
-              description: "福岡工業大学情報工学科在籍のフルスタック開発者",
-              url: "https://portfolio.uomi.site",
-              image:
-                "https://pbs.twimg.com/profile_images/1899830477785075712/LxVQunEl_400x400.jpg",
-              sameAs: ["https://github.com/KOU050223", "https://x.com/uomikou_0223"],
-              jobTitle: "Software Engineer",
-              worksFor: {
-                "@type": "EducationalOrganization",
-                name: "福岡工業大学",
-                department: "情報工学科",
-              },
-              knowsAbout: [
-                "React",
-                "Next.js",
-                "Node.js",
-                "TypeScript",
-                "JavaScript",
-                "Python",
-                "Java",
-                "C++",
-                "Web Development",
-                "Full Stack Development",
-              ],
-            }),
-          }}
-        />
-      </Head>
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* ヒーローセクション */}
         <section className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 mb-12">
@@ -220,43 +179,39 @@ export default function Home() {
               </Link>
             </Button>
           </div>
-          {projectsLoading ? (
-            <div className="text-center text-gray-600 dark:text-gray-300">読み込み中...</div>
-          ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {latestProjects.map((project, index) => (
-                <div
-                  key={index}
-                  className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 hover:shadow-lg transition-shadow"
-                >
-                  <div className="space-y-3">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1">
-                      {project.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.slice(0, 3).map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs rounded"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.technologies.length > 3 && (
-                        <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded">
-                          +{project.technologies.length - 3}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{project.date}</p>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {latestProjects.map((project, index) => (
+              <div
+                key={index}
+                className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 hover:shadow-lg transition-shadow"
+              >
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white line-clamp-1">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.slice(0, 3).map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs rounded"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.technologies.length > 3 && (
+                      <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded">
+                        +{project.technologies.length - 3}
+                      </span>
+                    )}
                   </div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{project.date}</p>
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* 最新キャリア */}
@@ -273,43 +228,39 @@ export default function Home() {
               </Link>
             </Button>
           </div>
-          {careerLoading ? (
-            <div className="text-center text-gray-600 dark:text-gray-300">読み込み中...</div>
-          ) : (
-            <div className="space-y-4">
-              {latestCareer.map((item, index) => (
-                <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <div className="md:w-24 flex-shrink-0">
-                      <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
-                        {item.date}
-                      </span>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                        {item.description}
-                      </p>
-                      {item.type && (
-                        <div className="flex flex-wrap gap-1">
-                          {item.type.split(",").map((tag, tagIndex) => (
-                            <span
-                              key={tagIndex}
-                              className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs rounded"
-                            >
-                              {tag.trim()}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+          <div className="space-y-4">
+            {latestCareer.map((item, index) => (
+              <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="md:w-24 flex-shrink-0">
+                    <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+                      {item.date}
+                    </span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                      {item.description}
+                    </p>
+                    {item.type && (
+                      <div className="flex flex-wrap gap-1">
+                        {item.type.split(",").map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs rounded"
+                          >
+                            {tag.trim()}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* クイックナビゲーション */}
