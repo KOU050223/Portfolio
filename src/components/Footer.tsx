@@ -1,6 +1,6 @@
-import Link from 'next/link'
-import { Github, Twitter, Mail } from 'lucide-react'
-import Image from 'next/image'
+import Link from "next/link";
+import { Github, Twitter, Mail } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -10,7 +10,7 @@ export default function Footer() {
           {/* ブランド */}
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center">
-              <Image 
+              <Image
                 src="/tinkani.png"
                 alt="KOU Portfolio Logo"
                 width={32}
@@ -18,30 +18,28 @@ export default function Footer() {
                 className="w-full h-full object-contain rounded-md"
               />
             </div>
-            <span className="text-lg font-bold text-gray-900 dark:text-white">
-              KOU Portfolio
-            </span>
+            <span className="text-lg font-bold text-gray-900 dark:text-white">KOU Portfolio</span>
           </div>
 
           {/* ソーシャルリンク */}
           <div className="flex items-center space-x-4">
-            <Link 
-              href="https://github.com/KOU050223" 
+            <Link
+              href="https://github.com/KOU050223"
               target="_blank"
               className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
             >
               <Github className="w-5 h-5" />
               <span className="text-sm">GitHub</span>
             </Link>
-            <Link 
-              href="https://x.com/uomikou_0223" 
+            <Link
+              href="https://x.com/uomikou_0223"
               target="_blank"
               className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
             >
               <Twitter className="w-5 h-5" />
               <span className="text-sm">Twitter</span>
             </Link>
-            <Link 
+            <Link
               href="mailto:s23a1090@bene.fit.ac.jp"
               className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
             >
@@ -59,5 +57,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

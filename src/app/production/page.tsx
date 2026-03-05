@@ -1,16 +1,15 @@
-import { Code, Star } from 'lucide-react'
-import { getProjects } from '@/lib/google-sheets'
-import ProductionList from '@/components/ProductionList'
+import { Code, Star } from "lucide-react";
+import { getProjects } from "@/lib/google-sheets";
+import ProductionList from "@/components/ProductionList";
 
-export const revalidate = 300 // 5分ごとに再生成（スプレッドシート更新を5分以内に反映）
+export const revalidate = 300; // 5分ごとに再生成（スプレッドシート更新を5分以内に反映）
 
 export default async function ProductionPage() {
-  const projects = await getProjects()
+  const projects = await getProjects();
 
   // 全技術数を計算（重複除去）
-  const totalTechnologies = projects.length > 0 
-    ? new Set(projects.flatMap(project => project.technologies)).size 
-    : 0
+  const totalTechnologies =
+    projects.length > 0 ? new Set(projects.flatMap((project) => project.technologies)).size : 0;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -32,12 +31,14 @@ export default async function ProductionPage() {
         </div>
         <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl text-center">
           <Star className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
-          <div className="text-2xl font-bold text-gray-900 dark:text-white">{totalTechnologies}</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-white">
+            {totalTechnologies}
+          </div>
           <div className="text-sm text-gray-600 dark:text-gray-300">使用技術数</div>
         </div>
       </section>
 
       <ProductionList projects={projects} />
     </div>
-  )
+  );
 }

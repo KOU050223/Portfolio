@@ -1,40 +1,40 @@
-'use client'
+"use client";
 
-import { useState, useMemo } from 'react'
-import { Button } from '@/components/ui/button'
-import { Filter, X, ArrowRight, Calendar, MapPin } from 'lucide-react'
-import { Career } from '@/lib/google-sheets'
-import Link from 'next/link'
+import { useState, useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { Filter, X, ArrowRight, Calendar, MapPin } from "lucide-react";
+import { Career } from "@/lib/google-sheets";
+import Link from "next/link";
 
 interface CareerListProps {
-  career: Career[]
+  career: Career[];
 }
 
 export default function CareerList({ career }: CareerListProps) {
-  const [selectedFilter, setSelectedFilter] = useState<string>('すべて')
+  const [selectedFilter, setSelectedFilter] = useState<string>("すべて");
 
   // 全てのタグを取得
   const allTags = useMemo(() => {
-    const tags = new Set<string>()
-    career.forEach(item => {
+    const tags = new Set<string>();
+    career.forEach((item) => {
       if (item.type) {
-        item.type.split(',').forEach(tag => {
-          tags.add(tag.trim())
-        })
+        item.type.split(",").forEach((tag) => {
+          tags.add(tag.trim());
+        });
       }
-    })
-    return ['すべて', ...Array.from(tags).sort()]
-  }, [career])
+    });
+    return ["すべて", ...Array.from(tags).sort()];
+  }, [career]);
 
   // フィルタリングされたキャリア
   const filteredCareer = useMemo(() => {
-    if (selectedFilter === 'すべて') {
-      return career
+    if (selectedFilter === "すべて") {
+      return career;
     }
-    return career.filter(item => 
-      item.type && item.type.split(',').some(tag => tag.trim() === selectedFilter)
-    )
-  }, [career, selectedFilter])
+    return career.filter(
+      (item) => item.type && item.type.split(",").some((tag) => tag.trim() === selectedFilter),
+    );
+  }, [career, selectedFilter]);
 
   return (
     <>
@@ -42,7 +42,9 @@ export default function CareerList({ career }: CareerListProps) {
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
           <Filter className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-          <span className="text-sm font-medium text-gray-600 dark:text-gray-300">カテゴリで絞り込み:</span>
+          <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+            カテゴリで絞り込み:
+          </span>
         </div>
         <div className="flex flex-wrap gap-2">
           {allTags.map((tag) => (
@@ -54,13 +56,13 @@ export default function CareerList({ career }: CareerListProps) {
               className="text-xs"
             >
               {tag}
-              {selectedFilter === tag && selectedFilter !== 'すべて' && (
+              {selectedFilter === tag && selectedFilter !== "すべて" && (
                 <X className="w-3 h-3 ml-1" />
               )}
             </Button>
           ))}
         </div>
-        {selectedFilter !== 'すべて' && (
+        {selectedFilter !== "すべて" && (
           <div className="mt-3 text-sm text-gray-600 dark:text-gray-300">
             「{selectedFilter}」で絞り込み中 ({filteredCareer.length}件)
           </div>
@@ -70,9 +72,7 @@ export default function CareerList({ career }: CareerListProps) {
       {/* キャリア一覧 */}
       <div className="space-y-6">
         {filteredCareer.map((item) => {
-          const displayDate = item.endDate 
-            ? `${item.date} 〜 ${item.endDate}`
-            : item.date
+          const displayDate = item.endDate ? `${item.date} 〜 ${item.endDate}` : item.date;
 
           return (
             <Link
@@ -104,14 +104,15 @@ export default function CareerList({ career }: CareerListProps) {
                     {item.description}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {item.type && item.type.split(',').map((tag, tagIndex) => (
-                      <span
-                        key={tagIndex}
-                        className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs rounded"
-                      >
-                        {tag.trim()}
-                      </span>
-                    ))}
+                    {item.type &&
+                      item.type.split(",").map((tag, tagIndex) => (
+                        <span
+                          key={tagIndex}
+                          className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs rounded"
+                        >
+                          {tag.trim()}
+                        </span>
+                      ))}
                     {item.skills.length > 0 && (
                       <>
                         {item.skills.slice(0, 3).map((skill, skillIndex) => (
@@ -133,7 +134,7 @@ export default function CareerList({ career }: CareerListProps) {
                 </div>
               </div>
             </Link>
-          )
+          );
         })}
         {filteredCareer.length === 0 && (
           <div className="text-center text-gray-600 dark:text-gray-300 py-8">
@@ -142,5 +143,5 @@ export default function CareerList({ career }: CareerListProps) {
         )}
       </div>
     </>
-  )
+  );
 }

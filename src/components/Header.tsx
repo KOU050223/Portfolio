@@ -1,39 +1,42 @@
-"use client"
+"use client";
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Home, Code, Briefcase, Settings, Gamepad2, Menu, X } from 'lucide-react'
-import Image from 'next/image'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Home, Code, Briefcase, Settings, Gamepad2, Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const navigationItems = [
-  { name: 'ホーム', path: '/', icon: Home },
-  { name: '作品一覧', path: '/production', icon: Code },
-  { name: 'キャリア', path: '/career', icon: Briefcase },
-  { name: '技術スタック', path: '/skill', icon: Settings },
-  { name: '趣味', path: '/hobby', icon: Gamepad2 },
-]
+  { name: "ホーム", path: "/", icon: Home },
+  { name: "作品一覧", path: "/production", icon: Code },
+  { name: "キャリア", path: "/career", icon: Briefcase },
+  { name: "技術スタック", path: "/skill", icon: Settings },
+  { name: "趣味", path: "/hobby", icon: Gamepad2 },
+];
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false)
-  const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   const isActiveRoute = (path: string) => {
-    if (path === '/') {
-      return pathname === '/'
+    if (path === "/") {
+      return pathname === "/";
     }
-    return pathname.startsWith(path)
-  }
+    return pathname.startsWith(path);
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 dark:bg-gray-900/80 dark:border-gray-700">
       <div className="max-w-7xl mx-auto h-16 md:h-20">
         <div className="flex items-center justify-between h-full px-4 md:px-6">
           {/* ロゴ・ブランド名 */}
-          <Link href="/" className="flex items-center space-x-2 md:space-x-3 hover:opacity-80 transition-opacity">
+          <Link
+            href="/"
+            className="flex items-center space-x-2 md:space-x-3 hover:opacity-80 transition-opacity"
+          >
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-md bg-white flex items-center justify-center">
-              <Image 
+              <Image
                 src="/tinkani.png"
                 alt="KOU Portfolio Logo"
                 width={40}
@@ -54,7 +57,7 @@ export default function Header() {
           {/* デスクトップナビゲーション */}
           <nav className="hidden md:flex items-center space-x-1">
             {navigationItems.map((item) => {
-              const Icon = item.icon
+              const Icon = item.icon;
               return (
                 <Button
                   key={item.path}
@@ -68,7 +71,7 @@ export default function Header() {
                     <span>{item.name}</span>
                   </Link>
                 </Button>
-              )
+              );
             })}
           </nav>
 
@@ -80,7 +83,7 @@ export default function Header() {
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-            <span>{isOpen ? '閉じる' : 'メニュー'}</span>
+            <span>{isOpen ? "閉じる" : "メニュー"}</span>
           </Button>
         </div>
 
@@ -89,7 +92,7 @@ export default function Header() {
           <div className="md:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700">
             <nav className="flex flex-col p-4 space-y-2">
               {navigationItems.map((item) => {
-                const Icon = item.icon
+                const Icon = item.icon;
                 return (
                   <Button
                     key={item.path}
@@ -103,12 +106,12 @@ export default function Header() {
                       <span>{item.name}</span>
                     </Link>
                   </Button>
-                )
+                );
               })}
             </nav>
           </div>
         )}
       </div>
     </header>
-  )
+  );
 }

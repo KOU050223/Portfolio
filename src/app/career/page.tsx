@@ -1,10 +1,10 @@
-import { getCareer } from '@/lib/google-sheets'
-import CareerList from '@/components/CareerList'
+import { getCareer } from "@/lib/google-sheets";
+import CareerList from "@/components/CareerList";
 
-export const revalidate = 300 // 5分ごとに再生成（スプレッドシート更新を5分以内に反映）
+export const revalidate = 300; // 5分ごとに再生成（スプレッドシート更新を5分以内に反映）
 
 export default async function CareerPage() {
-  const career = await getCareer()
+  const career = await getCareer();
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -19,5 +19,5 @@ export default async function CareerPage() {
 
       <CareerList career={career} />
     </div>
-  )
+  );
 }
