@@ -2,6 +2,31 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft, Star, GitFork, ExternalLink } from 'lucide-react'
 
+function DarkModeStatsImage({
+  lightSrc,
+  darkSrc,
+  alt,
+  width,
+  height,
+}: {
+  lightSrc: string
+  darkSrc: string
+  alt: string
+  width: number
+  height: number
+}) {
+  return (
+    <>
+      <div className="block dark:hidden">
+        <Image src={lightSrc} alt={`${alt} (Light)`} width={width} height={height} className="w-full h-auto" unoptimized />
+      </div>
+      <div className="hidden dark:block">
+        <Image src={darkSrc} alt={`${alt} (Dark)`} width={width} height={height} className="w-full h-auto" unoptimized />
+      </div>
+    </>
+  )
+}
+
 interface Repository {
   id: number
   name: string
@@ -72,53 +97,23 @@ export default async function GitHubSkillPage() {
       <div className="grid md:grid-cols-2 gap-6 mb-12">
         <div className="space-y-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">GitHub Stats</h2>
-          {/* Light Mode */}
-          <div className="block dark:hidden">
-            <Image
-              src="https://github-readme-stats.vercel.app/api?username=KOU050223&show_icons=true&theme=default&rank_icon=github"
-              alt="GitHub Stats (Light)"
-              width={495}
-              height={195}
-              className="w-full h-auto"
-              unoptimized
-            />
-          </div>
-          {/* Dark Mode */}
-          <div className="hidden dark:block">
-            <Image
-              src="https://github-readme-stats.vercel.app/api?username=KOU050223&show_icons=true&theme=dark&rank_icon=github&bg_color=111827&title_color=fff&text_color=9ca3af&icon_color=3b82f6&border_color=374151"
-              alt="GitHub Stats (Dark)"
-              width={495}
-              height={195}
-              className="w-full h-auto"
-              unoptimized
-            />
-          </div>
+          <DarkModeStatsImage
+            lightSrc="https://github-readme-stats.vercel.app/api?username=KOU050223&show_icons=true&theme=default&rank_icon=github"
+            darkSrc="https://github-readme-stats.vercel.app/api?username=KOU050223&show_icons=true&theme=dark&rank_icon=github&bg_color=111827&title_color=fff&text_color=9ca3af&icon_color=3b82f6&border_color=374151"
+            alt="GitHub Stats"
+            width={495}
+            height={195}
+          />
         </div>
         <div className="space-y-4">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">Top Languages</h2>
-          {/* Light Mode */}
-          <div className="block dark:hidden">
-            <Image
-              src="https://github-readme-stats.vercel.app/api/top-langs/?username=KOU050223&layout=compact&theme=default"
-              alt="Top Languages (Light)"
-              width={300}
-              height={165}
-              className="w-full h-auto"
-              unoptimized
-            />
-          </div>
-          {/* Dark Mode */}
-          <div className="hidden dark:block">
-            <Image
-              src="https://github-readme-stats.vercel.app/api/top-langs/?username=KOU050223&layout=compact&theme=dark&bg_color=111827&title_color=fff&text_color=9ca3af&border_color=374151"
-              alt="Top Languages (Dark)"
-              width={300}
-              height={165}
-              className="w-full h-auto"
-              unoptimized
-            />
-          </div>
+          <DarkModeStatsImage
+            lightSrc="https://github-readme-stats.vercel.app/api/top-langs/?username=KOU050223&layout=compact&theme=default"
+            darkSrc="https://github-readme-stats.vercel.app/api/top-langs/?username=KOU050223&layout=compact&theme=dark&bg_color=111827&title_color=fff&text_color=9ca3af&border_color=374151"
+            alt="Top Languages"
+            width={300}
+            height={165}
+          />
         </div>
       </div>
 
