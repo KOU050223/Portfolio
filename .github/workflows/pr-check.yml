@@ -52,6 +52,12 @@ jobs:
           npx tsc --noEmit
           echo "Type check passed!"
 
+      - name: Run unit tests
+        run: |
+          echo "Running unit tests..."
+          npm run test:run
+          echo "Unit tests passed!"
+
       - name: Build test
         run: |
           echo "Testing build process..."
