@@ -75,8 +75,10 @@ describe("Button コンポーネント", () => {
 
   it("asChild=true で Slot として描画される", () => {
     render(
+      // oxlint-disable-next-line eslint-plugin-next/no-html-link-for-pages
       <Button asChild>
-        <a href="/test">リンク</a>
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+        <a href="https://example.com">リンク</a>
       </Button>,
     );
     const link = screen.getByRole("link", { name: "リンク" });
