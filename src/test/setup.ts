@@ -22,15 +22,7 @@ vi.mock("next/navigation", () => ({
 
 // next/image のモック
 vi.mock("next/image", () => ({
-  default: ({
-    src,
-    alt,
-    ...props
-  }: {
-    src: string;
-    alt: string;
-    [key: string]: unknown;
-  }) => {
+  default: ({ src, alt, ...props }: { src: string; alt: string; [key: string]: unknown }) => {
     // eslint-disable-next-line @next/next/no-img-element
     return Object.assign(document.createElement("img"), { src, alt, ...props });
   },

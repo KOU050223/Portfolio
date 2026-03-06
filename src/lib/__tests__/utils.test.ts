@@ -44,9 +44,9 @@ describe("extractYouTubeId()", () => {
   });
 
   it("複数クエリパラメータ付きURLからIDを抽出する", () => {
-    expect(
-      extractYouTubeId("https://www.youtube.com/watch?list=PLtest&v=dQw4w9WgXcQ&t=10"),
-    ).toBe("dQw4w9WgXcQ");
+    expect(extractYouTubeId("https://www.youtube.com/watch?list=PLtest&v=dQw4w9WgXcQ&t=10")).toBe(
+      "dQw4w9WgXcQ",
+    );
   });
 
   it("空文字でnullを返す", () => {
