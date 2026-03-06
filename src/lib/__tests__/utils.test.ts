@@ -39,6 +39,10 @@ describe("extractYouTubeId()", () => {
     expect(extractYouTubeId("https://www.youtube.com/embed/dQw4w9WgXcQ")).toBe("dQw4w9WgXcQ");
   });
 
+  it("youtube.com/v/XXX 形式からIDを抽出する", () => {
+    expect(extractYouTubeId("https://www.youtube.com/v/dQw4w9WgXcQ")).toBe("dQw4w9WgXcQ");
+  });
+
   it("m.youtube.com モバイル形式からIDを抽出する", () => {
     expect(extractYouTubeId("https://m.youtube.com/watch?v=dQw4w9WgXcQ")).toBe("dQw4w9WgXcQ");
   });

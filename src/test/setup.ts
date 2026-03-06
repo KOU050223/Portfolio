@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { cleanup } from "@testing-library/react";
 import { afterEach, vi } from "vitest";
+import React from "react";
 
 afterEach(() => {
   cleanup();
@@ -17,13 +18,12 @@ vi.mock("next/navigation", () => ({
     forward: vi.fn(),
     refresh: vi.fn(),
   })),
-  useSearchParams: vi.fn(() => new URLSearchParams()),
+  useSearchParams: vi.fn(() => Object.freeze(new URLSearchParams())),
 }));
 
 // next/image のモック
 vi.mock("next/image", () => ({
   default: ({ src, alt, ...props }: { src: string; alt: string; [key: string]: unknown }) => {
-    // eslint-disable-next-line @next/next/no-img-element
-    return Object.assign(document.createElement("img"), { src, alt, ...props });
+    return React.createElement("img", { src, alt, ...props });
   },
 }));
