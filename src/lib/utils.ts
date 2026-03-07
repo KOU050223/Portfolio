@@ -13,16 +13,23 @@ export function generateSlugId(title: string, date: string): string {
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .trim();
-  const slug = `${date.replace(/\//g, "-")}-${cleanTitle}`
+  // 英数字タイトルがある場合はそれを使い、なければタイトルの簡易ハッシュを使う
+  const titlePart =
+    cleanTitle ||
+    title
+      .split("")
+      .reduce((acc, c) => (acc * 31 + c.charCodeAt(0)) & 0xffff, 0)
+      .toString(36);
+  const slug = `${date.replace(/\//g, "-")}-${titlePart}`
     .replace(/^-+|-+$/g, "") // 前後の余分なハイフンを除去
     .substring(0, 50);
   return slug;
 }
 
-// YYYY-MM-DD → MM/DD/YYYY
+// YYYY-MM-DD → YYYY/MM/DD 形式に変換
 export function formatDate(iso: string): string {
   const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  return m ? `${m[2]}/${m[3]}/${m[1]}` : iso;
+  return m ? `${m[1]}/${m[2]}/${m[3]}` : iso;
 }
 
 // YouTubeのビデオIDを抽出する関数
