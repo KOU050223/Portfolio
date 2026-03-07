@@ -77,7 +77,7 @@ async function _getProjects(): Promise<Project[]> {
         const t = title(page, "title");
         const d = formatDate(date(page, "date"));
         return {
-          id: generateSlugId(t, d) || page.id,
+          id: generateSlugId(t, d, page.id),
           title: t,
           authors: multiSelect(page, "authors"),
           date: d,
@@ -134,7 +134,7 @@ async function _getCareer(): Promise<Career[]> {
 
         const desc = richText(page, "description");
         return {
-          id: generateSlugId(t, d) || page.id,
+          id: generateSlugId(t, d, page.id),
           title: t,
           date: d,
           endDate: endRaw ? formatDate(endRaw) : null,

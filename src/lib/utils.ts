@@ -6,24 +6,18 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // title + date からスラッグIDを生成
-export function generateSlugId(title: string, date: string): string {
+export function generateSlugId(title: string, date: string, uniqueSuffix: string): string {
   const cleanTitle = title
     .toLowerCase()
     .replace(/[^\w\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .trim();
-  // 英数字タイトルがある場合はそれを使い、なければタイトルの簡易ハッシュを使う
-  const titlePart =
-    cleanTitle ||
-    title
-      .split("")
-      .reduce((acc, c) => (acc * 31 + c.charCodeAt(0)) & 0xffff, 0)
-      .toString(36);
-  const slug = `${date.replace(/\//g, "-")}-${titlePart}`
+  const suffix = uniqueSuffix.replace(/-/g, "").slice(-8);
+  const slug = `${date.replace(/\//g, "-")}-${cleanTitle}`
     .replace(/^-+|-+$/g, "") // 前後の余分なハイフンを除去
-    .substring(0, 50);
-  return slug;
+    .substring(0, 40);
+  return `${slug}-${suffix}`;
 }
 
 // YYYY-MM-DD → YYYY/MM/DD 形式に変換
