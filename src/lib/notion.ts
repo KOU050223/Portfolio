@@ -14,12 +14,12 @@ function prop(page: PageObjectResponse, name: string) {
 
 function title(page: PageObjectResponse, name: string): string {
   const p = prop(page, name);
-  return p?.type === "title" ? (p.title[0]?.plain_text ?? "") : "";
+  return p?.type === "title" ? p.title.map((t) => t.plain_text).join("") : "";
 }
 
 function richText(page: PageObjectResponse, name: string): string {
   const p = prop(page, name);
-  return p?.type === "rich_text" ? (p.rich_text[0]?.plain_text ?? "") : "";
+  return p?.type === "rich_text" ? p.rich_text.map((t) => t.plain_text).join("") : "";
 }
 
 function multiSelect(page: PageObjectResponse, name: string): string[] {
@@ -40,20 +40,6 @@ function date(page: PageObjectResponse, name: string): string {
 // --- Notion クライアント & クエリ ---
 
 const notion = new Client({ auth: config.notion.apiKey });
-
-// DBIDからdata_source_idを取得（結果をメモ化）
-const dataSourceIdCache = new Map<string, string>();
-
-async function resolveDataSourceId(dbId: string): Promise<string> {
-  if (dataSourceIdCache.has(dbId)) return dataSourceIdCache.get(dbId)!;
-  const db = await notion.databases.retrieve({ database_id: dbId });
-  if (!("data_sources" in db) || !db.data_sources.length) {
-    throw new Error(`data_source が見つかりません: ${dbId}`);
-  }
-  const id = db.data_sources[0].id;
-  dataSourceIdCache.set(dbId, id);
-  return id;
-}
 
 async function queryAll(
   dataSourceId: string,
@@ -82,19 +68,19 @@ const DATE_DESC = [{ property: "date", direction: "descending" as const }];
 // --- データ取得 ---
 
 async function _getProjects(): Promise<Project[]> {
-  if (!config.isConfigValid()) return [];
+  if (!config.isProjectsConfigValid()) return [];
   try {
-    const dsId = await resolveDataSourceId(config.notion.projectsDbId);
-    const pages = await queryAll(dsId, { filter: PUBLISHED_FILTER, sorts: DATE_DESC });
+    const dsId = config.notion.projectsDataSourceId;
+    const pages = await queryAll(dsId, { sorts: DATE_DESC });
 
     const items = pages
       .map((page) => {
-        const t = title(page, "title");
+        const t = title(page, "名前");
         const d = formatDate(date(page, "date"));
         return {
-          id: generateSlugId(t, d),
+          id: generateSlugId(t, d) || page.id,
           title: t,
-          authors: multiSelect(page, "authors"),
+          authors: multiSelect(page, "author"),
           date: d,
           technologies: multiSelect(page, "technologies"),
           youtubeUrl: url(page, "youtubeUrl"),
@@ -126,9 +112,9 @@ async function _getProjects(): Promise<Project[]> {
 }
 
 async function _getCareer(): Promise<Career[]> {
-  if (!config.isConfigValid()) return [];
+  if (!config.isCareerConfigValid()) return [];
   try {
-    const dsId = await resolveDataSourceId(config.notion.careerDbId);
+    const dsId = config.notion.careerDataSourceId;
     const pages = await queryAll(dsId, { filter: PUBLISHED_FILTER, sorts: DATE_DESC });
 
     return pages
@@ -172,8 +158,9 @@ async function _getCareer(): Promise<Career[]> {
 
 // --- キャッシュ付きエクスポート ---
 
-export const getProjects = unstable_cache(_getProjects, ["projects"], { revalidate: 300 });
-export const getCareer = unstable_cache(_getCareer, ["career"], { revalidate: 300 });
+// TODO: デバッグ中のためキャッシュ無効化中
+export const getProjects = _getProjects;
+export const getCareer = _getCareer;
 
 export async function getProjectById(id: string): Promise<Project | null> {
   return (await getProjects()).find((p) => p.id === id) ?? null;

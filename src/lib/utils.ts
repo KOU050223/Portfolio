@@ -13,7 +13,10 @@ export function generateSlugId(title: string, date: string): string {
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .trim();
-  return `${date.replace(/\//g, "-")}-${cleanTitle}`.substring(0, 50);
+  const slug = `${date.replace(/\//g, "-")}-${cleanTitle}`
+    .replace(/^-+|-+$/g, "") // 前後の余分なハイフンを除去
+    .substring(0, 50);
+  return slug;
 }
 
 // YYYY-MM-DD → MM/DD/YYYY
