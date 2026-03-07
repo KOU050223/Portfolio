@@ -74,7 +74,7 @@ async function _getProjects(): Promise<Project[]> {
 
     const items = pages
       .map((page) => {
-        const t = title(page, "名前");
+        const t = title(page, "title");
         const d = formatDate(date(page, "date"));
         return {
           id: generateSlugId(t, d) || page.id,
