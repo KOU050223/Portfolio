@@ -31,20 +31,20 @@ Projects DB と Career DB をそれぞれ作成する。プロパティは以下
 
 #### Projects DB
 
-| プロパティ名 | Notion型     |
-| ------------ | ------------ |
+| プロパティ名 | Notion型                          |
+| ------------ | --------------------------------- |
 | title        | Title（必須、Notionデフォルト名） |
-| authors      | Multi-select |
-| date         | Date         |
-| skills | Multi-select |
-| youtubeUrl   | URL          |
-| description  | Rich Text    |
-| deployLink   | URL          |
-| githubLink   | URL          |
-| articleLink  | URL          |
-| events       | Multi-select |
-| awards       | Multi-select |
-| isPublished  | Checkbox     |
+| authors      | Multi-select                      |
+| date         | Date                              |
+| skills       | Multi-select                      |
+| youtubeUrl   | URL                               |
+| description  | Rich Text                         |
+| deployLink   | URL                               |
+| githubLink   | URL                               |
+| articleLink  | URL                               |
+| events       | Multi-select                      |
+| awards       | Multi-select                      |
+| isPublished  | Checkbox                          |
 
 #### Career DB
 
