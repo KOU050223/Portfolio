@@ -33,10 +33,10 @@ Projects DB と Career DB をそれぞれ作成する。プロパティは以下
 
 | プロパティ名 | Notion型     |
 | ------------ | ------------ |
-| title        | Title        |
+| title        | Title（必須、Notionデフォルト名） |
 | authors      | Multi-select |
 | date         | Date         |
-| technologies | Multi-select |
+| skills | Multi-select |
 | youtubeUrl   | URL          |
 | description  | Rich Text    |
 | deployLink   | URL          |
