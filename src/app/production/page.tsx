@@ -8,8 +8,8 @@ export default async function ProductionPage() {
   const projects = await getProjects();
 
   // 全技術数を計算（重複除去）
-  const totalTechnologies =
-    projects.length > 0 ? new Set(projects.flatMap((project) => project.technologies)).size : 0;
+  const totalSkills =
+    projects.length > 0 ? new Set(projects.flatMap((project) => project.skills)).size : 0;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -32,7 +32,7 @@ export default async function ProductionPage() {
         <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl text-center">
           <Star className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
           <div className="text-2xl font-bold text-gray-900 dark:text-white">
-            {totalTechnologies}
+            {totalSkills}
           </div>
           <div className="text-sm text-gray-600 dark:text-gray-300">使用技術数</div>
         </div>
