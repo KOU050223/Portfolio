@@ -57,7 +57,7 @@ Projects DB と Career DB をそれぞれ作成する。プロパティは以下
 | description         | Rich Text               |
 | detailedDescription | Rich Text               |
 | skills              | Multi-select            |
-| achievements        | Multi-select            |
+| achievements        | Rich Text               |
 | links               | Rich Text（JSON文字列） |
 | imageUrl            | URL                     |
 | location            | Rich Text               |
@@ -97,7 +97,7 @@ notion.databases.retrieve({ database_id: DB_ID }).then(db => {
 
 DB URL からの DB ID 取得方法:
 
-```
+```text
 https://www.notion.so/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?v=...
                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                        この32文字が DB ID（スクリプト実行用）

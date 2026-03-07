@@ -125,7 +125,7 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
                     成果・実績
                   </h2>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300">{careerItem.achievements}</p>
+                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{careerItem.achievements}</p>
               </div>
             )}
 

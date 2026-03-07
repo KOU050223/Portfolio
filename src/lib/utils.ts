@@ -17,7 +17,7 @@ export function generateSlugId(title: string, date: string, uniqueSuffix: string
   const slug = `${date.replace(/\//g, "-")}-${cleanTitle}`
     .replace(/^-+|-+$/g, "") // 前後の余分なハイフンを除去
     .substring(0, 40);
-  return `${slug}-${suffix}`;
+  return suffix ? `${slug}-${suffix}` : slug;
 }
 
 // YYYY-MM-DD → YYYY/MM/DD 形式に変換

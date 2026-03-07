@@ -70,7 +70,7 @@ async function _getProjects(): Promise<Project[]> {
   if (!config.isProjectsConfigValid()) return [];
   try {
     const dsId = config.notion.projectsDataSourceId;
-    const pages = await queryAll(dsId, { sorts: DATE_DESC });
+    const pages = await queryAll(dsId, { filter: PUBLISHED_FILTER, sorts: DATE_DESC });
 
     const items = pages
       .map((page) => {
