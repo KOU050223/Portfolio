@@ -72,13 +72,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         </p>
 
         <div className="flex flex-wrap gap-2 mb-2">
-          {project.technologies.map((tech, techIndex) => (
+          {project.skills.map((skill, skillIndex) => (
             <Badge
-              key={techIndex}
+              key={skillIndex}
               variant="default"
               className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
             >
-              {tech}
+              {skill}
             </Badge>
           ))}
         </div>

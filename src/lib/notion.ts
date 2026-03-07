@@ -79,9 +79,9 @@ async function _getProjects(): Promise<Project[]> {
         return {
           id: generateSlugId(t, d) || page.id,
           title: t,
-          authors: multiSelect(page, "author"),
+          authors: multiSelect(page, "authors"),
           date: d,
-          technologies: multiSelect(page, "technologies"),
+          skills: multiSelect(page, "skills"),
           youtubeUrl: url(page, "youtubeUrl"),
           description: richText(page, "description"),
           deployLink: url(page, "deployLink"),
@@ -118,7 +118,7 @@ async function _getCareer(): Promise<Career[]> {
 
     return pages
       .map((page) => {
-        const t = title(page, "title");
+        const t = title(page, "name");
         const d = formatDate(date(page, "date"));
         const endRaw = date(page, "endDate");
 
@@ -134,7 +134,7 @@ async function _getCareer(): Promise<Career[]> {
 
         const desc = richText(page, "description");
         return {
-          id: generateSlugId(t, d),
+          id: generateSlugId(t, d) || page.id,
           title: t,
           date: d,
           endDate: endRaw ? formatDate(endRaw) : null,
@@ -142,7 +142,7 @@ async function _getCareer(): Promise<Career[]> {
           description: desc,
           detailedDescription: richText(page, "detailedDescription") || desc,
           skills: multiSelect(page, "skills"),
-          achievements: multiSelect(page, "achievements"),
+          achievements: richText(page, "achievements"),
           links,
           imageUrl: url(page, "imageUrl"),
           location: richText(page, "location") || null,

@@ -7,7 +7,7 @@ export interface Project {
   title: string;
   authors: string[];
   date: string;
-  technologies: string[];
+  skills: string[];
   youtubeUrl: string | null;
   description: string;
   deployLink: string | null;
@@ -27,7 +27,7 @@ export interface Career {
   description: string;
   detailedDescription: string;
   skills: string[];
-  achievements: string[];
+  achievements: string;
   links: Array<{ label: string; url: string }>;
   imageUrl: string | null;
   location: string | null;

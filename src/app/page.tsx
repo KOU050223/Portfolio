@@ -193,17 +193,17 @@ export default async function Home() {
                     {project.description}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {project.technologies.slice(0, 3).map((tech, techIndex) => (
+                    {project.skills.slice(0, 3).map((skill, skillIndex) => (
                       <span
-                        key={techIndex}
+                        key={skillIndex}
                         className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs rounded"
                       >
-                        {tech}
+                        {skill}
                       </span>
                     ))}
-                    {project.technologies.length > 3 && (
+                    {project.skills.length > 3 && (
                       <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded">
-                        +{project.technologies.length - 3}
+                        +{project.skills.length - 3}
                       </span>
                     )}
                   </div>
