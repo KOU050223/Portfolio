@@ -1,6 +1,5 @@
 import { Client, isFullPage } from "@notionhq/client";
 import type { PageObjectResponse } from "@notionhq/client";
-import { unstable_cache } from "next/cache";
 import { config } from "./config";
 import { getOgpImage } from "./getOgp";
 import { generateSlugId, formatDate } from "./utils";
