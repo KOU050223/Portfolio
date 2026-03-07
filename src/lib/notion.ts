@@ -126,7 +126,16 @@ async function _getCareer(): Promise<Career[]> {
         let links: Array<{ label: string; url: string }> = [];
         if (linksRaw) {
           try {
-            links = JSON.parse(linksRaw);
+            const parsed: unknown = JSON.parse(linksRaw);
+            if (Array.isArray(parsed)) {
+              links = parsed.filter(
+                (item): item is { label: string; url: string } =>
+                  typeof item === "object" &&
+                  item !== null &&
+                  typeof (item as Record<string, unknown>).label === "string" &&
+                  typeof (item as Record<string, unknown>).url === "string",
+              );
+            }
           } catch {
             // 不正なJSONはスキップ
           }
