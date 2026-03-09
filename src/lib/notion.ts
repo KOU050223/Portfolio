@@ -118,7 +118,7 @@ async function _getCareer(): Promise<Career[]> {
 
     return pages
       .map((page) => {
-        const t = title(page, "name");
+        const t = title(page, "title");
         const d = formatDate(date(page, "date"));
         const endRaw = date(page, "endDate");
 
