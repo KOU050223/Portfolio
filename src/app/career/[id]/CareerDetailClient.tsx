@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
-import { Career } from "@/lib/google-sheets";
+import type { Career } from "@/types";
 
 interface CareerDetailClientProps {
   careerItem: Career;
@@ -117,7 +117,7 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
             )}
 
             {/* 成果・実績 */}
-            {careerItem.achievements.length > 0 && (
+            {careerItem.achievements && (
               <div className="mb-6">
                 <div className="flex items-center space-x-2 mb-3">
                   <Award className="w-5 h-5 text-yellow-500" />
@@ -125,14 +125,9 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
                     成果・実績
                   </h2>
                 </div>
-                <div className="space-y-2">
-                  {careerItem.achievements.map((achievement) => (
-                    <div key={achievement} className="flex items-start space-x-2">
-                      <span className="text-yellow-500 mt-1">✓</span>
-                      <span className="text-gray-700 dark:text-gray-300">{achievement}</span>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                  {careerItem.achievements}
+                </p>
               </div>
             )}
 

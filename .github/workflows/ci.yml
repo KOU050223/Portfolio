@@ -39,11 +39,20 @@ jobs:
       - name: Run unit tests
         run: npm run test:run
 
-      - name: Build application
+      - name: Build application (PR)
+        if: github.event_name == 'pull_request'
         run: npm run build
         env:
-          # ビルド時に環境変数が必要な場合はここで設定
           NEXT_PUBLIC_APP_ENV: production
+
+      - name: Build application (push)
+        if: github.event_name != 'pull_request'
+        run: npm run build
+        env:
+          NEXT_PUBLIC_APP_ENV: production
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_PROJECTS_DATA_SOURCE_ID: ${{ secrets.NOTION_PROJECTS_DATA_SOURCE_ID }}
+          NOTION_CAREER_DATA_SOURCE_ID: ${{ secrets.NOTION_CAREER_DATA_SOURCE_ID }}
 
       - name: Upload build artifacts
         if: matrix.node-version == 22

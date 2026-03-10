@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Filter, X, ArrowRight, Calendar, MapPin } from "lucide-react";
-import { Career } from "@/lib/google-sheets";
+import { Career } from "@/types";
 import Link from "next/link";
 
 interface CareerListProps {
@@ -23,7 +23,7 @@ export default function CareerList({ career }: CareerListProps) {
         });
       }
     });
-    return ["すべて", ...Array.from(tags).sort()];
+    return ["すべて", ...Array.from(tags).toSorted()];
   }, [career]);
 
   // フィルタリングされたキャリア

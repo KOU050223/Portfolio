@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getCareerById, getCareer } from "@/lib/google-sheets";
+import { getCareerById, getCareer } from "@/lib/notion";
 import CareerDetailClient from "./CareerDetailClient";
 import { Metadata } from "next";
 

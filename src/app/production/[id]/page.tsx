@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getProjectById, getProjects } from "@/lib/google-sheets";
+import { getProjectById, getProjects } from "@/lib/notion";
 import ProjectDetailClient from "./ProjectDetailClient";
 import { Metadata } from "next";
 
