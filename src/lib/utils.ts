@@ -5,6 +5,27 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// title + date からスラッグIDを生成
+export function generateSlugId(title: string, date: string, uniqueSuffix: string): string {
+  const cleanTitle = title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+  const suffix = uniqueSuffix.replace(/-/g, "").slice(-8);
+  const slug = `${date.replace(/\//g, "-")}-${cleanTitle}`
+    .replace(/^-+|-+$/g, "") // 前後の余分なハイフンを除去
+    .substring(0, 40);
+  return suffix ? `${slug}-${suffix}` : slug;
+}
+
+// YYYY-MM-DD → YYYY/MM/DD 形式に変換
+export function formatDate(iso: string): string {
+  const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[1]}/${m[2]}/${m[3]}` : iso;
+}
+
 // YouTubeのビデオIDを抽出する関数
 export function extractYouTubeId(url: string): string | null {
   if (!url || typeof url !== "string") {

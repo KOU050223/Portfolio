@@ -10,9 +10,11 @@
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "export": "next build"
+    "export": "next build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@notionhq/client": "^5.11.1",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

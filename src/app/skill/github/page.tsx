@@ -90,7 +90,7 @@ export default async function GitHubSkillPage() {
   );
 
   // 言語のソート順（Othersは最後、それ以外はリポジトリ数が多い順）
-  const sortedLanguages = Object.keys(groupedRepositories).sort((a, b) => {
+  const sortedLanguages = Object.keys(groupedRepositories).toSorted((a, b) => {
     if (a === "Others") return 1;
     if (b === "Others") return -1;
     return groupedRepositories[b].length - groupedRepositories[a].length;

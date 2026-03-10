@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import YouTubeThumbnail from "@/components/YouTubeThumbnail";
 import Image from "next/image";
 import Link from "next/link";
-import { Project } from "@/lib/google-sheets";
+import type { Project } from "@/types";
 import { extractYouTubeId } from "@/lib/utils";
 
 interface ProjectDetailClientProps {
@@ -156,13 +156,13 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
             <div className="mb-8">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">使用技術</h2>
               <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech, index) => (
+                {project.skills.map((skill, index) => (
                   <Badge
                     key={index}
                     variant="default"
                     className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200"
                   >
-                    {tech}
+                    {skill}
                   </Badge>
                 ))}
               </div>
