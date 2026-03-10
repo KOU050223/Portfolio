@@ -52,6 +52,27 @@ jobs:
           npx tsc --noEmit
           echo "Type check passed!"
 
+      - name: Run unit tests
+        id: unit-tests
+        run: |
+          echo "Running unit tests..."
+          set +e
+          TEST_OUTPUT=$(npm run test:run 2>&1)
+          TEST_EXIT_CODE=$?
+          set -e
+          echo "$TEST_OUTPUT"
+          echo "test_output<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$TEST_OUTPUT" | tail -20 >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          if [ $TEST_EXIT_CODE -eq 0 ]; then
+            echo "test_status=passed" >> "$GITHUB_OUTPUT"
+            echo "Unit tests passed!"
+          else
+            echo "test_status=failed" >> "$GITHUB_OUTPUT"
+            echo "Unit tests failed!"
+            exit 1
+          fi
+
       - name: Build test
         run: |
           echo "Testing build process..."
@@ -75,6 +96,47 @@ jobs:
           echo "==================="
           find .next -name "*.js" -type f -exec ls -lh {} \; | head -10
           echo "==================="
+
+      - name: Comment PR with build status
+        uses: actions/github-script@v8
+        if: always()
+        continue-on-error: true
+        env:
+          JOB_STATUS: ${{ job.status }}
+          TEST_STATUS: ${{ steps.unit-tests.outputs.test_status }}
+          TEST_OUTPUT: ${{ steps.unit-tests.outputs.test_output }}
+        with:
+          script: |
+            const status = process.env.JOB_STATUS;
+            const testStatus = process.env.TEST_STATUS;
+            const testOutput = process.env.TEST_OUTPUT || '';
+            const emoji = status === 'success' ? '✅' : '❌';
+            const testEmoji = testStatus === 'passed' ? '✅' : '❌';
+            const message = `${emoji} **PR Build Check ${status.toUpperCase()}**
+
+            - Linting (oxlint): ${status === 'success' ? '✅ Passed' : '❌ Failed'}
+            - Formatting (oxfmt): ${status === 'success' ? '✅ Passed' : '❌ Failed'}
+            - Type Check: ${status === 'success' ? '✅ Passed' : '❌ Failed'}
+            - Unit Tests: ${testEmoji} ${testStatus === 'passed' ? 'Passed' : 'Failed'}
+            - Build Test: ${status === 'success' ? '✅ Passed' : '❌ Failed'}
+
+            <details>
+            <summary>Unit Test Output</summary>
+
+            \`\`\`
+            ${testOutput}
+            \`\`\`
+
+            </details>
+
+            Build completed at: ${new Date().toISOString()}`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });
 
   security-check:
     runs-on: ubuntu-latest
