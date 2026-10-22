@@ -17,6 +17,6 @@ export const config = {
   },
 };
 
-if (!config.notion.apiKey) {
+if (config.isDevelopment && !config.notion.apiKey) {
   console.warn("警告: NOTION_API_KEY が設定されていません。");
 }
