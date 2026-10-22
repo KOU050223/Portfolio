@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://portfolio.uomi.site/sitemap.xml
+Sitemap: https://portfolio.uomi.dev/sitemap.xml
 
 # Block common bot paths
 Disallow: /api/
