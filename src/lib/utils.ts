@@ -5,6 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// 開発環境でのみ console.log を出力する共通ログ関数
+export function devLog(...args: unknown[]): void {
+  if (process.env.NODE_ENV === "development") {
+    console.log(...args);
+  }
+}
+
 // title + date からスラッグIDを生成
 export function generateSlugId(title: string, date: string, uniqueSuffix: string): string {
   const cleanTitle = title
