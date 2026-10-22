@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
 import type { Career } from "@/types";
+import { splitTags } from "@/lib/utils";
 
 interface CareerDetailClientProps {
   careerItem: Career;
@@ -73,14 +74,14 @@ export default function CareerDetailClient({ careerItem }: CareerDetailClientPro
               {careerItem.type && (
                 <div className="mb-4">
                   <div className="flex flex-wrap gap-2">
-                    {careerItem.type.split(",").map((tag, index) => (
+                    {splitTags(careerItem.type).map((tag, index) => (
                       <Badge
                         key={index}
                         variant="outline"
                         className="border-blue-200 text-blue-700 dark:border-blue-800 dark:text-blue-200"
                       >
                         <Briefcase className="w-3 h-3 mr-1" />
-                        {tag.trim()}
+                        {tag}
                       </Badge>
                     ))}
                   </div>
