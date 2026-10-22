@@ -2,7 +2,6 @@ import { ImageResponse } from "next/og";
 import { PROFILE } from "@/lib/profile";
 import { SharedOgLayout } from "./_components/SharedOgLayout";
 
-export const runtime = "edge";
 export const dynamic = "force-static";
 
 export const alt = PROFILE.siteTitle;
