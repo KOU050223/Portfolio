@@ -11,8 +11,8 @@ describe("PROFILE 定数", () => {
   it("サイト情報が定義されている", () => {
     expect(PROFILE.siteTitle).toBe("魚住 紘平 | ウオミーのポートフォリオサイト");
     expect(PROFILE.siteName).toBe("魚住 紘平 Portfolio");
-    expect(PROFILE.siteUrl).toBe("https://portfolio.uomi.site");
-    expect(PROFILE.siteDomain).toBe("portfolio.uomi.site");
+    expect(PROFILE.siteUrl).toBe("https://portfolio.uomi.dev");
+    expect(PROFILE.siteDomain).toBe("portfolio.uomi.dev");
   });
 
   it("OG/Twitter画像の説明文が定義されている", () => {
