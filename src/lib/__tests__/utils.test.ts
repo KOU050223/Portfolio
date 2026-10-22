@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { cn, extractYouTubeId } from "@/lib/utils";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { cn, devLog, extractYouTubeId } from "@/lib/utils";
 
 describe("cn()", () => {
   it("単一クラス名を返す", () => {
@@ -23,6 +23,38 @@ describe("cn()", () => {
     const isActive = true;
     const isDisabled = false;
     expect(cn("base", isActive && "active", isDisabled && "disabled")).toBe("base active");
+  });
+});
+
+describe("devLog()", () => {
+  let logSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    logSpy.mockRestore();
+  });
+
+  it("development 環境では console.log に引数をそのまま渡す", () => {
+    vi.stubEnv("NODE_ENV", "development");
+    devLog("hogehoge", { foo: 1 }, 123);
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledWith("hogehoge", { foo: 1 }, 123);
+  });
+
+  it("production 環境では console.log を呼ばない", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    devLog("hogehoge");
+    expect(logSpy).not.toHaveBeenCalled();
+  });
+
+  it("test 環境では console.log を呼ばない", () => {
+    vi.stubEnv("NODE_ENV", "test");
+    devLog("hogehoge");
+    expect(logSpy).not.toHaveBeenCalled();
   });
 });
 
