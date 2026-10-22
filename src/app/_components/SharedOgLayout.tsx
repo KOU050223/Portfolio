@@ -98,7 +98,7 @@ export function SharedOgLayout({
         >
           {PROFILE.avatarInitial}
         </div>
-        <div style={{ color: "white", display: "flex", flexDirection: "column" }}>
+        <div style={{ color: "white" }}>
           <div style={{ fontSize: name.fontSize, marginBottom: name.marginBottom }}>
             {PROFILE.name}
           </div>
