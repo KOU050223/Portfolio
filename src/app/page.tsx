@@ -180,9 +180,9 @@ export default async function Home() {
             </Button>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {latestProjects.map((project, index) => (
+            {latestProjects.map((project) => (
               <div
-                key={index}
+                key={project.id}
                 className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 hover:shadow-lg transition-shadow"
               >
                 <div className="space-y-3">
@@ -229,8 +229,8 @@ export default async function Home() {
             </Button>
           </div>
           <div className="space-y-4">
-            {latestCareer.map((item, index) => (
-              <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+            {latestCareer.map((item) => (
+              <div key={item.id} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="md:w-24 flex-shrink-0">
                     <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
