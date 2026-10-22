@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getProjectById, getProjects } from "@/lib/notion";
+import { createPageMetadata } from "@/lib/metadata";
 import ProjectDetailClient from "./ProjectDetailClient";
 import { Metadata } from "next";
 
@@ -32,11 +33,12 @@ export async function generateMetadata({
   return {
     title: `${project.title} | ポートフォリオ`,
     description: project.description,
-    openGraph: {
+    ...createPageMetadata({
+      path: `/production/${id}`,
       title: `${project.title} | ポートフォリオ`,
       description: project.description,
       type: "article",
-    },
+    }),
   };
 }
 

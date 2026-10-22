@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getCareerById, getCareer } from "@/lib/notion";
+import { createPageMetadata } from "@/lib/metadata";
 import CareerDetailClient from "./CareerDetailClient";
 import { Metadata } from "next";
 
@@ -32,11 +33,12 @@ export async function generateMetadata({
   return {
     title: `${careerItem.title} | キャリア`,
     description: careerItem.description,
-    openGraph: {
+    ...createPageMetadata({
+      path: `/career/${id}`,
       title: `${careerItem.title} | キャリア`,
       description: careerItem.description,
       type: "article",
-    },
+    }),
   };
 }
 
