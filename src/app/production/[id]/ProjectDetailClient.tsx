@@ -21,7 +21,7 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* 戻るボタン */}
         <div className="mb-6">
-          <Button asChild variant="ghost" className="mb-4">
+          <Button asChild variant="ghost" size="default" className="mb-4">
             <Link href="/production" className="flex items-center space-x-2">
               <ArrowLeft className="w-4 h-4" />
               <span>作品一覧に戻る</span>

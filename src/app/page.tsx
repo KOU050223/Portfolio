@@ -156,7 +156,7 @@ export default async function Home() {
             ))}
           </div>
           <div className="flex justify-center mt-8">
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" size="default">
               <Link href="/skill" className="flex items-center space-x-2">
                 <span>すべてのスキルを見る</span>
                 <ArrowRight className="w-4 h-4" />

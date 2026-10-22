@@ -94,6 +94,7 @@ export default function Header() {
                     key={item.path}
                     asChild
                     variant={isActive(item.path) ? "default" : "ghost"}
+                    size="default"
                     className="justify-start h-12"
                     onClick={() => setIsOpen(false)}
                   >
