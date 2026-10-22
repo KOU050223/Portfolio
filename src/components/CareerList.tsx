@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Filter, X, ArrowRight, Calendar, MapPin } from "lucide-react";
 import { Career } from "@/types";
+import { splitTags } from "@/lib/utils";
 import Link from "next/link";
 
 interface CareerListProps {
@@ -18,12 +19,7 @@ export default function CareerList({ career }: CareerListProps) {
     const tags = new Set<string>();
     career.forEach((item) => {
       if (item.type) {
-        item.type.split(",").forEach((tag) => {
-          const trimmed = tag.trim();
-          if (trimmed !== "") {
-            tags.add(trimmed);
-          }
-        });
+        splitTags(item.type).forEach((tag) => tags.add(tag));
       }
     });
     return ["すべて", ...Array.from(tags).toSorted()];
@@ -34,9 +30,7 @@ export default function CareerList({ career }: CareerListProps) {
     if (selectedFilter === "すべて") {
       return career;
     }
-    return career.filter(
-      (item) => item.type && item.type.split(",").some((tag) => tag.trim() === selectedFilter),
-    );
+    return career.filter((item) => item.type && splitTags(item.type).includes(selectedFilter));
   }, [career, selectedFilter]);
 
   return (
@@ -108,18 +102,14 @@ export default function CareerList({ career }: CareerListProps) {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {item.type &&
-                      item.type
-                        .split(",")
-                        .map((tag) => tag.trim())
-                        .filter((tag) => tag !== "")
-                        .map((tag, tagIndex) => (
-                          <span
-                            key={tagIndex}
-                            className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs rounded"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                      splitTags(item.type).map((tag, tagIndex) => (
+                        <span
+                          key={tagIndex}
+                          className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs rounded"
+                        >
+                          {tag}
+                        </span>
+                      ))}
                     {item.skills.length > 0 && (
                       <>
                         {item.skills.slice(0, 3).map((skill, skillIndex) => (

@@ -5,6 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function splitTags(type: string): string[] {
+  return type
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter((tag) => tag !== "");
+}
+
 // 開発環境でのみ console.log を出力する共通ログ関数
 export function devLog(...args: unknown[]): void {
   if (process.env.NODE_ENV === "development") {

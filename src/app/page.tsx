@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Briefcase, GraduationCap, Star, Eye } from "lucide-react";
 import { getProjects, getCareer } from "@/lib/notion";
+import { splitTags } from "@/lib/utils";
 import { skillCategories, getLevelPercentage, getSkillColor } from "@/data/skills";
 
 export default async function Home() {
@@ -246,12 +247,12 @@ export default async function Home() {
                     </p>
                     {item.type && (
                       <div className="flex flex-wrap gap-1">
-                        {item.type.split(",").map((tag, tagIndex) => (
+                        {splitTags(item.type).map((tag, tagIndex) => (
                           <span
                             key={tagIndex}
                             className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs rounded"
                           >
-                            {tag.trim()}
+                            {tag}
                           </span>
                         ))}
                       </div>

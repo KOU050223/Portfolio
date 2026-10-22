@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { cn, devLog, extractYouTubeId, isActiveRoute } from "@/lib/utils";
+import { cn, devLog, extractYouTubeId, isActiveRoute, splitTags } from "@/lib/utils";
 
 describe("cn()", () => {
   it("単一クラス名を返す", () => {
@@ -106,6 +106,26 @@ describe("extractYouTubeId()", () => {
   it("11文字英数字が存在しない場合nullを返す", () => {
     expect(extractYouTubeId("https://example.com/short")).toBeNull();
     expect(extractYouTubeId("https://www.youtube.com/short")).toBeNull();
+  });
+});
+
+describe("splitTags()", () => {
+  it("カンマ区切りのタグをトリムして返す", () => {
+    expect(splitTags("仕事, インターン ,ハッカソン")).toEqual(["仕事", "インターン", "ハッカソン"]);
+  });
+
+  it("空文字になるタグを除外する", () => {
+    expect(splitTags("仕事, ,インターン,,  ,ハッカソン,")).toEqual([
+      "仕事",
+      "インターン",
+      "ハッカソン",
+    ]);
+  });
+
+  it("空文字または空白のみでは空配列を返す", () => {
+    expect(splitTags("")).toEqual([]);
+    expect(splitTags("   ")).toEqual([]);
+    expect(splitTags(", ,,")).toEqual([]);
   });
 });
 
