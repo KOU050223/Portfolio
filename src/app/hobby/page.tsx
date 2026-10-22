@@ -78,7 +78,7 @@ export default function HobbyPage() {
           <div
             key={index}
             className={`bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow ${
-              hobby.featured ? "ring-2 ring-blue-500 ring-opacity-50" : ""
+              hobby.featured ? "ring-2 ring-blue-500/50" : ""
             }`}
           >
             <div className="flex items-start space-x-4">

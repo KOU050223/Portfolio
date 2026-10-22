@@ -19,7 +19,10 @@ export default function CareerList({ career }: CareerListProps) {
     career.forEach((item) => {
       if (item.type) {
         item.type.split(",").forEach((tag) => {
-          tags.add(tag.trim());
+          const trimmed = tag.trim();
+          if (trimmed !== "") {
+            tags.add(trimmed);
+          }
         });
       }
     });
@@ -105,14 +108,18 @@ export default function CareerList({ career }: CareerListProps) {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {item.type &&
-                      item.type.split(",").map((tag, tagIndex) => (
-                        <span
-                          key={tagIndex}
-                          className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs rounded"
-                        >
-                          {tag.trim()}
-                        </span>
-                      ))}
+                      item.type
+                        .split(",")
+                        .map((tag) => tag.trim())
+                        .filter((tag) => tag !== "")
+                        .map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs rounded"
+                          >
+                            {tag}
+                          </span>
+                        ))}
                     {item.skills.length > 0 && (
                       <>
                         {item.skills.slice(0, 3).map((skill, skillIndex) => (

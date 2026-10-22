@@ -10,14 +10,11 @@ import type { Project } from "@/types";
 import { extractYouTubeId } from "@/lib/utils";
 
 // 個別のプロジェクトカードコンポーネント
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProjectCard({ project }: { project: Project }) {
   const videoId = project.youtubeUrl ? extractYouTubeId(project.youtubeUrl) : null;
 
   return (
-    <div
-      key={index}
-      className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] relative"
-    >
+    <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02] relative">
       {/* サムネイル表示 */}
       {(() => {
         // 優先順位1: 記事のOGP画像
@@ -185,8 +182,8 @@ interface ProductionListProps {
 export default function ProductionList({ projects }: ProductionListProps) {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {projects.map((project, index) => (
-        <ProjectCard key={project.id || index} project={project} index={index} />
+      {projects.map((project) => (
+        <ProjectCard key={project.id} project={project} />
       ))}
     </div>
   );
