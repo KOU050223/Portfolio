@@ -1,3 +1,4 @@
+import { isIP } from "node:net";
 import ogs from "open-graph-scraper";
 import { unstable_cache } from "next/cache";
 
@@ -6,7 +7,7 @@ import { unstable_cache } from "next/cache";
  * @param url - 検証するURL
  * @returns 正当なURLであればtrue, そうでなければfalse
  */
-function isValidUrl(url: string): boolean {
+export function isValidUrl(url: string): boolean {
   try {
     const { protocol, hostname } = new URL(url);
 
@@ -15,20 +16,39 @@ function isValidUrl(url: string): boolean {
       return false;
     }
 
+    // IPv6アドレスは [::1] のように角括弧付きで返るため除去する
+    const host = hostname.replace(/^\[|\]$/g, "");
+
     // ローカルホストやプライベートIP範囲をブロック
     if (
-      hostname === "localhost" ||
-      hostname.startsWith("127.") ||
-      hostname.startsWith("192.168.") ||
-      hostname.startsWith("10.") ||
-      hostname.match(/^172\.(1[6-9]|2[0-9]|3[0-1])\./)
+      host === "localhost" ||
+      host === "0.0.0.0" ||
+      host.startsWith("127.") ||
+      host.startsWith("192.168.") ||
+      host.startsWith("10.") ||
+      host.startsWith("169.254.") ||
+      host.match(/^172\.(1[6-9]|2[0-9]|3[0-1])\./)
     ) {
       return false;
     }
 
     // Vercel環境の内部ホスト名をブロック
-    if (hostname.endsWith(".internal")) {
+    if (host.endsWith(".internal")) {
       return false;
+    }
+
+    // IPv6の内部アドレスをブロック
+    if (isIP(host) === 6) {
+      const ipv6 = host.toLowerCase();
+      if (
+        ipv6 === "::" || // 未指定アドレス
+        ipv6 === "::1" || // ループバック
+        ipv6.startsWith("::ffff:") || // IPv4マップド
+        /^f[cd]/.test(ipv6) || // ユニークローカル fc00::/7
+        /^fe[89ab]/.test(ipv6) // リンクローカル fe80::/10
+      ) {
+        return false;
+      }
     }
 
     return true;
