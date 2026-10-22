@@ -9,9 +9,9 @@ export const PROFILE = {
   siteUrl: "https://portfolio.uomi.dev",
   siteDomain: "portfolio.uomi.dev",
   description:
-    "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。React、Next.js、Node.jsなど多様な技術スタックでの開発経験と作品を紹介。",
+    "福岡工業大学情報工学科在籍（27卒）のフルスタック開発者、魚住紘平のポートフォリオサイト。React、Next.js、Node.jsなど多様な技術スタックでの開発経験と作品を紹介。",
   shortDescription:
-    "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。",
+    "福岡工業大学情報工学科在籍（27卒）のフルスタック開発者、魚住紘平のポートフォリオサイト。",
   ogDescription: "福岡工業大学情報工学科在籍のフルスタック開発者",
   twitterCardDescription: "福岡工業大学情報工学科在籍のフルスタック開発者のポートフォリオサイト",
   githubUrl: "https://github.com/KOU050223",
