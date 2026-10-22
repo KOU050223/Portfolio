@@ -57,7 +57,7 @@ export default async function Home() {
                 Software Engineer
               </p>
               <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                福岡工業大学情報工学科在籍（3年生）
+                福岡工業大学情報工学科在籍（27卒）
                 <br />
                 フルスタック開発者として、新しい技術への挑戦と学習を通じて価値のあるプロダクトを創造
               </p>
@@ -119,7 +119,7 @@ export default async function Home() {
           <div className="space-y-6">
             <p className="text-lg text-gray-600 dark:text-gray-300 text-center leading-relaxed">
               はじめまして！福岡工業大学の情報工学科に在籍している魚住 紘平です。
-              現在は大学3年生で、2年生の頃から本格的にプログラミングで制作活動を始めました。
+              27卒で、大学2年生の頃から本格的にプログラミングで制作活動を始めました。
             </p>
             <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
               新しい技術を学ぶことが好きで、常に自己成長を目指しています。
