@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { PROFILE } from "@/lib/profile";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,11 +18,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "魚住 紘平 | ウオミーのポートフォリオサイト",
-    template: "%s | 魚住 紘平",
+    default: PROFILE.siteTitle,
+    template: `%s | ${PROFILE.name}`,
   },
-  description:
-    "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。React、Next.js、Node.jsなど多様な技術スタックでの開発経験と作品を紹介。",
+  description: PROFILE.description,
   keywords: [
     "魚住紘平",
     "うおずみこうへい",
@@ -37,24 +37,22 @@ export const metadata: Metadata = {
     "Webエンジニア",
     "プログラマー",
   ],
-  authors: [{ name: "魚住 紘平", url: "https://github.com/KOU050223" }],
-  creator: "魚住 紘平",
+  authors: [{ name: PROFILE.name, url: PROFILE.githubUrl }],
+  creator: PROFILE.name,
   openGraph: {
     type: "website",
     locale: "ja_JP",
-    url: "https://portfolio.uomi.site",
-    title: "魚住 紘平 | ウオミーのポートフォリオサイト",
-    description:
-      "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。React、Next.js、Node.jsなど多様な技術スタックでの開発経験と作品を紹介。",
-    siteName: "魚住 紘平 Portfolio",
+    url: PROFILE.siteUrl,
+    title: PROFILE.siteTitle,
+    description: PROFILE.description,
+    siteName: PROFILE.siteName,
   },
   twitter: {
     card: "summary_large_image",
-    title: "魚住 紘平 | ウオミーのポートフォリオサイト",
-    description:
-      "福岡工業大学情報工学科在籍（3年生）のフルスタック開発者、魚住紘平のポートフォリオサイト。",
-    creator: "@uomikou_0223",
-    site: "@uomikou_0223",
+    title: PROFILE.siteTitle,
+    description: PROFILE.shortDescription,
+    creator: PROFILE.twitterHandle,
+    site: PROFILE.twitterHandle,
   },
   robots: {
     index: true,
@@ -80,7 +78,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        <link rel="canonical" href="https://portfolio.uomi.site" />
+        <link rel="canonical" href={PROFILE.siteUrl} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#2563eb" />
         <link rel="icon" href="/favicon.ico" />
