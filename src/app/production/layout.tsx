@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   title: "作品一覧",
@@ -16,12 +17,12 @@ export const metadata: Metadata = {
     "TypeScript",
     "魚住紘平",
   ],
-  openGraph: {
+  ...createPageMetadata({
+    path: "/production",
     title: "作品一覧 | 魚住 紘平",
     description:
       "魚住 紘平が制作したWebアプリケーション、システム開発プロジェクトの一覧。React、Next.js、Node.js等を使用した実際の開発成果物を紹介。",
-    type: "website",
-  },
+  }),
   twitter: {
     title: "作品一覧 | 魚住 紘平",
     description: "魚住 紘平が制作したWebアプリケーション、システム開発プロジェクトの一覧。",

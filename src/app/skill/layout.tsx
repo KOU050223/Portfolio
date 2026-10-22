@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   title: "技術スタック",
@@ -20,12 +21,12 @@ export const metadata: Metadata = {
     "習熟度",
     "魚住紘平",
   ],
-  openGraph: {
+  ...createPageMetadata({
+    path: "/skill",
     title: "技術スタック | 魚住 紘平",
     description:
       "魚住 紘平が習得している技術スタック・プログラミング言語の一覧。React、Next.js、TypeScript、Python、Java等のスキルレベルと習熟度を紹介。",
-    type: "website",
-  },
+  }),
   twitter: {
     title: "技術スタック | 魚住 紘平",
     description: "魚住 紘平が習得している技術スタック・プログラミング言語の一覧。",

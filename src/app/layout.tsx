@@ -40,6 +40,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: PROFILE.name, url: PROFILE.githubUrl }],
   creator: PROFILE.name,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "ja_JP",
@@ -79,7 +82,6 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        <link rel="canonical" href={PROFILE.siteUrl} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#2563eb" />
         <link rel="icon" href="/favicon.ico" />

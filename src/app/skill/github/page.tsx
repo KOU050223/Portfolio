@@ -1,6 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { ArrowLeft, Star, GitFork, ExternalLink } from "lucide-react";
+import { createPageMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = createPageMetadata({
+  path: "/skill/github",
+  title: "技術スタック | 魚住 紘平",
+  description:
+    "魚住 紘平が習得している技術スタック・プログラミング言語の一覧。React、Next.js、TypeScript、Python、Java等のスキルレベルと習熟度を紹介。",
+});
 
 function DarkModeStatsImage({
   lightSrc,
