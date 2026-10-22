@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { isActiveRoute } from "@/lib/utils";
 import { Home, Code, Briefcase, Settings, Gamepad2, Menu, X } from "lucide-react";
 import Image from "next/image";
 
@@ -19,12 +20,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  const isActiveRoute = (path: string) => {
-    if (path === "/") {
-      return pathname === "/";
-    }
-    return pathname.startsWith(path);
-  };
+  const isActive = (path: string) => isActiveRoute(pathname, path);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 dark:bg-gray-900/80 dark:border-gray-700">
@@ -62,7 +58,7 @@ export default function Header() {
                 <Button
                   key={item.path}
                   asChild
-                  variant={isActiveRoute(item.path) ? "default" : "ghost"}
+                  variant={isActive(item.path) ? "default" : "ghost"}
                   size="sm"
                   className="h-9"
                 >
@@ -97,7 +93,8 @@ export default function Header() {
                   <Button
                     key={item.path}
                     asChild
-                    variant={isActiveRoute(item.path) ? "default" : "ghost"}
+                    variant={isActive(item.path) ? "default" : "ghost"}
+                    size="default"
                     className="justify-start h-12"
                     onClick={() => setIsOpen(false)}
                   >

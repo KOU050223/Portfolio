@@ -33,9 +33,42 @@ export function formatDate(iso: string): string {
   return m ? `${m[1]}/${m[2]}/${m[3]}` : iso;
 }
 
+// アクティブなルートかどうかを判定する関数
+export function isActiveRoute(pathname: string, path: string): boolean {
+  if (path === "/") {
+    return pathname === "/";
+  }
+  return pathname === path || pathname.startsWith(`${path}/`);
+}
+
+// YouTube系のホスト名かどうかを判定する関数
+function isYouTubeHostname(hostname: string): boolean {
+  return (
+    hostname === "youtu.be" ||
+    hostname === "youtube.com" ||
+    hostname.endsWith(".youtube.com") ||
+    hostname === "youtube-nocookie.com" ||
+    hostname.endsWith(".youtube-nocookie.com")
+  );
+}
+
 // YouTubeのビデオIDを抽出する関数
 export function extractYouTubeId(url: string): string | null {
   if (!url || typeof url !== "string") {
+    return null;
+  }
+
+  // URLとしてパースし、YouTube系ホスト名かどうかを判定する
+  let parsedUrl: URL | null = null;
+  try {
+    parsedUrl = new URL(/^https?:\/\//i.test(url) ? url : `https://${url}`);
+  } catch {
+    // URLとして解釈できない場合はパターン一致のみ試みる
+  }
+  const isYouTubeUrl = parsedUrl !== null && isYouTubeHostname(parsedUrl.hostname);
+
+  // URLとして解釈できる場合、YouTube系ホスト名でなければIDを返さない
+  if (parsedUrl !== null && !isYouTubeUrl) {
     return null;
   }
 
@@ -56,10 +89,14 @@ export function extractYouTubeId(url: string): string | null {
     }
   }
 
-  // 最後の手段: URLから11文字の英数字を抽出
-  const fallbackMatch = url.match(/([a-zA-Z0-9_-]{11})/);
-  if (fallbackMatch && fallbackMatch[1]) {
-    return fallbackMatch[1];
+  // 最後の手段: パス・クエリ・フラグメントから11文字の英数字を抽出（YouTube系ホスト名のみ）
+  if (parsedUrl !== null && isYouTubeUrl) {
+    const fallbackMatch = `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`.match(
+      /([a-zA-Z0-9_-]{11})/,
+    );
+    if (fallbackMatch && fallbackMatch[1]) {
+      return fallbackMatch[1];
+    }
   }
 
   return null;

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { cn, devLog, extractYouTubeId } from "@/lib/utils";
+import { cn, devLog, extractYouTubeId, isActiveRoute } from "@/lib/utils";
 
 describe("cn()", () => {
   it("単一クラス名を返す", () => {
@@ -89,13 +89,47 @@ describe("extractYouTubeId()", () => {
     expect(extractYouTubeId("")).toBeNull();
   });
 
-  it("YouTube以外のURLでフォールバック動作をする", () => {
-    // フォールバック: 11文字英数字を抽出
-    const result = extractYouTubeId("https://example.com/dQw4w9WgXcQ");
-    expect(result).toBe("dQw4w9WgXcQ");
+  it("YouTube系URLの既知パターン以外ではフォールバックでIDを抽出する", () => {
+    expect(extractYouTubeId("https://www.youtube.com/shorts/dQw4w9WgXcQ")).toBe("dQw4w9WgXcQ");
+    expect(extractYouTubeId("https://youtube-nocookie.com/embed/dQw4w9WgXcQ")).toBe("dQw4w9WgXcQ");
+    expect(extractYouTubeId("https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ")).toBe(
+      "dQw4w9WgXcQ",
+    );
+  });
+
+  it("YouTube以外のURLではフォールバックせずnullを返す", () => {
+    expect(extractYouTubeId("https://example.com/dQw4w9WgXcQ")).toBeNull();
+    expect(extractYouTubeId("https://notyoutube.com/watch?v=dQw4w9WgXcQ")).toBeNull();
+    expect(extractYouTubeId("https://example.com/?q=youtube.com/dQw4w9WgXcQ")).toBeNull();
   });
 
   it("11文字英数字が存在しない場合nullを返す", () => {
     expect(extractYouTubeId("https://example.com/short")).toBeNull();
+    expect(extractYouTubeId("https://www.youtube.com/short")).toBeNull();
+  });
+});
+
+describe("isActiveRoute()", () => {
+  it("path が / の場合は pathname === / のときのみ true", () => {
+    expect(isActiveRoute("/", "/")).toBe(true);
+    expect(isActiveRoute("/career", "/")).toBe(false);
+  });
+
+  it("完全一致で true を返す", () => {
+    expect(isActiveRoute("/career", "/career")).toBe(true);
+  });
+
+  it("サブパスで true を返す", () => {
+    expect(isActiveRoute("/career/1", "/career")).toBe(true);
+    expect(isActiveRoute("/production/abc", "/production")).toBe(true);
+  });
+
+  it("前方一致だがパス境界でない場合は false を返す", () => {
+    expect(isActiveRoute("/career-something", "/career")).toBe(false);
+    expect(isActiveRoute("/careerabc", "/career")).toBe(false);
+  });
+
+  it("別パスでは false を返す", () => {
+    expect(isActiveRoute("/hobby", "/career")).toBe(false);
   });
 });
