@@ -17,7 +17,7 @@ describe("buildSitemapEntries()", () => {
     const entries = buildSitemapEntries([], []);
     const byUrl = new Map(entries.map((e) => [e.url, e]));
 
-    expect(byUrl.size).toBe(6);
+    expect(byUrl.size).toBe(7);
     expect(byUrl.get(`${PROFILE.siteUrl}/`)).toMatchObject({
       changeFrequency: "weekly",
       priority: 1,
@@ -28,6 +28,10 @@ describe("buildSitemapEntries()", () => {
     });
     expect(byUrl.get(`${PROFILE.siteUrl}/career`)).toMatchObject({
       changeFrequency: "monthly",
+      priority: 0.8,
+    });
+    expect(byUrl.get(`${PROFILE.siteUrl}/articles`)).toMatchObject({
+      changeFrequency: "weekly",
       priority: 0.8,
     });
     expect(byUrl.get(`${PROFILE.siteUrl}/skill`)).toMatchObject({
@@ -76,7 +80,7 @@ describe("sitemap()", () => {
 
     expect(urls).toContain(`${PROFILE.siteUrl}/`);
     expect(urls).toContain(`${PROFILE.siteUrl}/hobby`);
-    expect(entries).toHaveLength(6);
+    expect(entries).toHaveLength(7);
   });
 
   it("Notion が空配列を返しても静的ページだけの sitemap を返す", async () => {
@@ -86,6 +90,6 @@ describe("sitemap()", () => {
     const { default: sitemap } = await import("@/app/sitemap");
     const entries = await sitemap();
 
-    expect(entries).toHaveLength(6);
+    expect(entries).toHaveLength(7);
   });
 });
