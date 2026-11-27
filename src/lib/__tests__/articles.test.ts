@@ -1,5 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
-import { getLatestArticles, parseArticles, type ArticleSource } from "@/lib/articles";
+import {
+  ARTICLE_SOURCES,
+  getAllArticles,
+  getLatestArticles,
+  parseArticles,
+  type ArticleSource,
+} from "@/lib/articles";
 
 const qiita: ArticleSource = {
   name: "Qiita",
@@ -105,45 +111,109 @@ describe("getLatestArticles", () => {
     ]);
   });
 
-  it("Qiita API からタグを補足し、失敗しても記事は残す", async () => {
-    const qiitaWithEnrich: ArticleSource = {
-      ...qiita,
-      enrich: async (articles, fetcher) => {
-        const response = await fetcher(
-          "https://qiita.com/api/v2/users/KOU050223/items?per_page=20",
-        );
-        if (!response.ok) return articles;
-        const items = (await response.json()) as { url: string; tags: { name: string }[] }[];
-        const tagsByUrl = new Map(
-          items.map((item) => [item.url, item.tags.map((tag) => tag.name)]),
-        );
-        return articles.map((article) => {
-          const tags = tagsByUrl.get(article.url);
-          return tags ? { ...article, tags } : article;
-        });
-      },
-    };
+  it("Qiita API にだけある記事も取得する", async () => {
+    const qiitaSource = ARTICLE_SOURCES.find((source) => source.name === "Qiita");
+    expect(qiitaSource).toBeDefined();
     const apiJson = JSON.stringify([
       {
+        title: "APIだけの記事",
+        url: "https://qiita.com/KOU050223/items/def",
+        created_at: "2026-11-17T09:00:00+09:00",
+        updated_at: "2026-11-17T09:00:00+09:00",
+        tags: [{ name: "Cloudflare" }],
+      },
+      {
+        title: "Qiita の記事",
         url: "https://qiita.com/KOU050223/items/abc",
-        tags: [{ name: "CloudRun" }, { name: "Go" }],
+        created_at: "2026-11-16T09:00:00+09:00",
+        updated_at: "2026-11-16T09:00:00+09:00",
+        tags: [{ name: "CloudRun" }],
       },
     ]);
     const fetcher = vi.fn(async (url: string) => {
-      if (url === qiita.feedUrl) return new Response(qiitaFeed, { status: 200 });
-      if (url.includes("api/v2")) return new Response(apiJson, { status: 200 });
+      if (url === qiitaSource?.feedUrl) return new Response(qiitaFeed, { status: 200 });
+      if (url.includes("api/v2")) {
+        return new Response(apiJson, { status: 200, headers: { "total-count": "2" } });
+      }
       return new Response("not found", { status: 404 });
     });
 
-    const articles = await getLatestArticles([qiitaWithEnrich], fetcher, 5);
-    expect(articles[0].tags).toEqual(["CloudRun", "Go"]);
+    const articles = await getLatestArticles([qiitaSource!], fetcher, 10);
 
-    const failingFetcher = vi.fn(async (url: string) => {
-      if (url === qiita.feedUrl) return new Response(qiitaFeed, { status: 200 });
-      return new Response("rate limited", { status: 429 });
+    expect(articles.map((article) => article.title)).toEqual(["APIだけの記事", "Qiita の記事"]);
+    expect(articles[0].tags).toEqual(["Cloudflare"]);
+  });
+
+  it("Qiita API の2ページ目以降も取得する", async () => {
+    const qiitaSource = ARTICLE_SOURCES.find((source) => source.name === "Qiita");
+    expect(qiitaSource).toBeDefined();
+    const firstPageItems = Array.from({ length: 100 }, (_, index) => ({
+      title: `1ページ目の記事${index + 1}`,
+      url: `https://qiita.com/KOU050223/items/page1-${index + 1}`,
+      created_at: "2026-11-16T09:00:00+09:00",
+      updated_at: "2026-11-16T09:00:00+09:00",
+      tags: [],
+    }));
+    const secondPageItems = [
+      {
+        title: "101件目の記事",
+        url: "https://qiita.com/KOU050223/items/page2-101",
+        created_at: "2026-11-15T09:00:00+09:00",
+        updated_at: "2026-11-15T09:00:00+09:00",
+        tags: [],
+      },
+    ];
+    const fetcher = vi.fn(async (url: string) => {
+      if (url === qiitaSource?.feedUrl) {
+        return new Response(`<feed xmlns="http://www.w3.org/2005/Atom"></feed>`, { status: 200 });
+      }
+      if (url.includes("api/v2")) {
+        const page = new URL(url).searchParams.get("page");
+        const items = page === "2" ? secondPageItems : firstPageItems;
+        return new Response(JSON.stringify(items), {
+          status: 200,
+          headers: { "total-count": "101" },
+        });
+      }
+      return new Response("not found", { status: 404 });
     });
-    const fallback = await getLatestArticles([qiitaWithEnrich], failingFetcher, 5);
-    expect(fallback[0].title).toBe("Qiita の記事");
-    expect(fallback[0].tags).toEqual([]);
+
+    const articles = await getLatestArticles([qiitaSource!], fetcher, 101);
+
+    expect(articles).toHaveLength(101);
+    expect(articles.some((article) => article.title === "101件目の記事")).toBe(true);
+  });
+
+  it("Qiita API が失敗してもフィードの記事は残す", async () => {
+    const qiitaSource = ARTICLE_SOURCES.find((source) => source.name === "Qiita");
+    expect(qiitaSource).toBeDefined();
+    const fetcher = vi.fn(async (url: string) => {
+      if (url === qiitaSource?.feedUrl) return new Response(qiitaFeed, { status: 200 });
+      if (url.includes("api/v2")) return new Response("rate limited", { status: 429 });
+      return new Response("not found", { status: 404 });
+    });
+
+    const articles = await getLatestArticles([qiitaSource!], fetcher, 5);
+
+    expect(articles[0].title).toBe("Qiita の記事");
+    expect(articles[0].tags).toEqual([]);
+  });
+});
+
+describe("getAllArticles", () => {
+  it("記事一覧用には配信元の全記事を返す", async () => {
+    const items = Array.from({ length: 12 }, (_, index) => {
+      const number = index + 1;
+      const pubDate = new Date(Date.UTC(2026, 0, 20 - index)).toUTCString();
+      return `<item><title>記事${number}</title><link>https://note.com/kou050223/n/${number}</link><pubDate>${pubDate}</pubDate></item>`;
+    }).join("");
+    const fetcher = vi.fn(
+      async () => new Response(`<rss><channel>${items}</channel></rss>`, { status: 200 }),
+    );
+    const articles = await getAllArticles([note], fetcher);
+
+    expect(articles).toHaveLength(12);
+    expect(articles[0].title).toBe("記事1");
+    expect(articles[11].title).toBe("記事12");
   });
 });

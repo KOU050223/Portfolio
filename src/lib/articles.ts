@@ -7,7 +7,7 @@ export type ArticleSource = {
   profileUrl: string;
   feedUrl: string;
   format: "rss" | "atom";
-  enrich?: (articles: Article[], fetcher: Fetcher) => Promise<Article[]>;
+  enrich?: (articles: Article[], fetcher: Fetcher, source: ArticleSource) => Promise<Article[]>;
 };
 
 export type Article = {
@@ -19,28 +19,52 @@ export type Article = {
   imageUrl?: string;
 };
 
-// Qiita のフィードにはタグが含まれないため、公開 API からタグだけを補足する。
-// API が失敗・レート制限でも記事自体はタグなしで表示できるよう、フィードを正としている。
-async function enrichQiitaTags(articles: Article[], fetcher: Fetcher): Promise<Article[]> {
+// Qiita のフィードは最新数件だけなので、公開 API を使って全件へ広げる。
+// API が失敗・レート制限でも、フィードから取得できた記事は表示できるようにする。
+async function enrichQiitaArticles(
+  articles: Article[],
+  fetcher: Fetcher,
+  source: ArticleSource,
+): Promise<Article[]> {
   try {
-    const response = await fetcher("https://qiita.com/api/v2/users/KOU050223/items?per_page=20");
-    if (!response.ok) return articles;
-    const items: unknown = await response.json();
-    if (!Array.isArray(items)) return articles;
+    const perPage = 100;
+    const apiUrl = (page: number) =>
+      `https://qiita.com/api/v2/users/KOU050223/items?page=${page}&per_page=${perPage}`;
+    const addApiArticles = async (page: number, articlesByUrl: Map<string, Article>) => {
+      try {
+        const response = await fetcher(apiUrl(page));
+        if (!response.ok) return 0;
+        const items: unknown = await response.json();
+        if (!Array.isArray(items)) return 0;
 
-    const tagsByUrl = new Map<string, string[]>();
-    for (const item of items) {
-      if (typeof item?.url !== "string" || !Array.isArray(item?.tags)) continue;
-      const tags = item.tags
-        .map((tag: unknown) => (tag as { name?: unknown })?.name)
-        .filter((name: unknown): name is string => typeof name === "string" && name !== "");
-      tagsByUrl.set(item.url, tags);
+        for (const item of items) {
+          const article = validArticle(item.title, item.url, item.created_at, source);
+          if (!article) continue;
+          if (Array.isArray(item.tags)) {
+            article.tags = item.tags
+              .map((tag: unknown) => (tag as { name?: unknown })?.name)
+              .filter((name: unknown): name is string => typeof name === "string" && name !== "");
+          }
+          articlesByUrl.set(article.url, article);
+        }
+
+        return Number(response.headers.get("total-count")) || items.length;
+      } catch {
+        return 0;
+      }
+    };
+
+    const articlesByUrl = new Map<string, Article>();
+    const totalCount = await addApiArticles(1, articlesByUrl);
+    const pageCount = Math.ceil(totalCount / perPage);
+    for (let page = 2; page <= pageCount; page += 1) {
+      await addApiArticles(page, articlesByUrl);
     }
 
-    return articles.map((article) => {
-      const tags = tagsByUrl.get(article.url);
-      return tags ? { ...article, tags } : article;
-    });
+    for (const article of articles) {
+      if (!articlesByUrl.has(article.url)) articlesByUrl.set(article.url, article);
+    }
+    return [...articlesByUrl.values()];
   } catch {
     return articles;
   }
@@ -52,7 +76,7 @@ export const ARTICLE_SOURCES: ArticleSource[] = [
     profileUrl: "https://qiita.com/KOU050223",
     feedUrl: "https://qiita.com/KOU050223/feed",
     format: "atom",
-    enrich: enrichQiitaTags,
+    enrich: enrichQiitaArticles,
   },
   {
     name: "note",
@@ -144,30 +168,47 @@ async function fetchFeed(url: string): Promise<Response> {
   return fetch(url, { next: { revalidate: 3600 }, signal: AbortSignal.timeout(5000) });
 }
 
-export async function getLatestArticles(
-  sources: ArticleSource[] = ARTICLE_SOURCES,
-  fetcher: Fetcher = fetchFeed,
-  limit = 6,
-): Promise<Article[]> {
+async function fetchArticleGroups(
+  sources: ArticleSource[],
+  fetcher: Fetcher,
+): Promise<Article[][]> {
   const results = await Promise.allSettled(
     sources.map(async (source) => {
       const response = await fetcher(source.feedUrl);
       if (!response.ok) return [];
       const articles = parseArticles(await response.text(), source);
-      return source.enrich ? source.enrich(articles, fetcher) : articles;
+      return source.enrich ? source.enrich(articles, fetcher, source) : articles;
     }),
   );
 
+  return results.flatMap((result) => (result.status === "fulfilled" ? [result.value] : []));
+}
+
+export async function getLatestArticles(
+  sources: ArticleSource[] = ARTICLE_SOURCES,
+  fetcher: Fetcher = fetchFeed,
+  limit = 6,
+): Promise<Article[]> {
+  const articleGroups = await fetchArticleGroups(sources, fetcher);
   const perSourceLimit = Math.ceil(limit / sources.length);
 
-  return results
-    .flatMap((result) =>
-      result.status === "fulfilled"
-        ? result.value
-            .toSorted((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))
-            .slice(0, perSourceLimit)
-        : [],
+  return articleGroups
+    .flatMap((articles) =>
+      articles
+        .toSorted((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))
+        .slice(0, perSourceLimit),
     )
     .toSorted((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt))
     .slice(0, limit);
+}
+
+export async function getAllArticles(
+  sources: ArticleSource[] = ARTICLE_SOURCES,
+  fetcher: Fetcher = fetchFeed,
+): Promise<Article[]> {
+  const articleGroups = await fetchArticleGroups(sources, fetcher);
+
+  return articleGroups
+    .flat()
+    .toSorted((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt));
 }
