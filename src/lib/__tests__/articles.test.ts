@@ -25,10 +25,11 @@ const qiitaFeed = `<?xml version="1.0"?>
 </feed>`;
 
 const noteFeed = `<?xml version="1.0"?>
-<rss version="2.0"><channel><item>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><item>
   <title><![CDATA[note の記事 & メモ]]></title>
   <link>https://note.com/kou050223/n/abc</link>
   <pubDate>Tue, 17 Nov 2026 09:00:00 +0900</pubDate>
+  <media:thumbnail>https://assets.st-note.com/img/example.png</media:thumbnail>
 </item></channel></rss>`;
 
 describe("parseArticles", () => {
@@ -39,6 +40,7 @@ describe("parseArticles", () => {
         url: "https://qiita.com/KOU050223/items/abc",
         publishedAt: "2026-11-16T09:00:00+09:00",
         source: "Qiita",
+        tags: [],
       },
     ]);
   });
@@ -50,8 +52,15 @@ describe("parseArticles", () => {
         url: "https://note.com/kou050223/n/abc",
         publishedAt: "Tue, 17 Nov 2026 09:00:00 +0900",
         source: "note",
+        tags: [],
+        imageUrl: "https://assets.st-note.com/img/example.png",
       },
     ]);
+  });
+
+  it("https 以外のサムネイル URL は無視する", () => {
+    const feed = `<rss xmlns:media="http://search.yahoo.com/mrss/"><channel><item><title>記事</title><link>https://note.com/kou050223/n/abc</link><pubDate>Tue, 17 Nov 2026 09:00:00 +0900</pubDate><media:thumbnail>http://evil.example.com/x.png</media:thumbnail></item></channel></rss>`;
+    expect(parseArticles(feed, note)[0].imageUrl).toBeUndefined();
   });
 
   it("不正な記事 URL と日付を表示対象から除外する", () => {
@@ -94,5 +103,47 @@ describe("getLatestArticles", () => {
       "note の記事 & メモ",
       "Qiita の記事",
     ]);
+  });
+
+  it("Qiita API からタグを補足し、失敗しても記事は残す", async () => {
+    const qiitaWithEnrich: ArticleSource = {
+      ...qiita,
+      enrich: async (articles, fetcher) => {
+        const response = await fetcher(
+          "https://qiita.com/api/v2/users/KOU050223/items?per_page=20",
+        );
+        if (!response.ok) return articles;
+        const items = (await response.json()) as { url: string; tags: { name: string }[] }[];
+        const tagsByUrl = new Map(
+          items.map((item) => [item.url, item.tags.map((tag) => tag.name)]),
+        );
+        return articles.map((article) => {
+          const tags = tagsByUrl.get(article.url);
+          return tags ? { ...article, tags } : article;
+        });
+      },
+    };
+    const apiJson = JSON.stringify([
+      {
+        url: "https://qiita.com/KOU050223/items/abc",
+        tags: [{ name: "CloudRun" }, { name: "Go" }],
+      },
+    ]);
+    const fetcher = vi.fn(async (url: string) => {
+      if (url === qiita.feedUrl) return new Response(qiitaFeed, { status: 200 });
+      if (url.includes("api/v2")) return new Response(apiJson, { status: 200 });
+      return new Response("not found", { status: 404 });
+    });
+
+    const articles = await getLatestArticles([qiitaWithEnrich], fetcher, 5);
+    expect(articles[0].tags).toEqual(["CloudRun", "Go"]);
+
+    const failingFetcher = vi.fn(async (url: string) => {
+      if (url === qiita.feedUrl) return new Response(qiitaFeed, { status: 200 });
+      return new Response("rate limited", { status: 429 });
+    });
+    const fallback = await getLatestArticles([qiitaWithEnrich], failingFetcher, 5);
+    expect(fallback[0].title).toBe("Qiita の記事");
+    expect(fallback[0].tags).toEqual([]);
   });
 });

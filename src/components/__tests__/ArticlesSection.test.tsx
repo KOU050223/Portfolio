@@ -8,6 +8,7 @@ const article: Article = {
   url: "https://qiita.com/KOU050223/items/abc",
   publishedAt: "2026-11-16T09:00:00+09:00",
   source: "Qiita",
+  tags: [],
 };
 
 describe("ArticlesSection", () => {
