@@ -5,13 +5,14 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { isActiveRoute } from "@/lib/utils";
-import { Home, Code, Briefcase, Settings, Gamepad2, Menu, X } from "lucide-react";
+import { Home, Code, Briefcase, Newspaper, Settings, Gamepad2, Menu, X } from "lucide-react";
 import Image from "next/image";
 
 const navigationItems = [
   { name: "ホーム", path: "/", icon: Home },
   { name: "作品一覧", path: "/production", icon: Code },
   { name: "キャリア", path: "/career", icon: Briefcase },
+  { name: "記事", path: "/articles", icon: Newspaper },
   { name: "技術スタック", path: "/skill", icon: Settings },
   { name: "趣味", path: "/hobby", icon: Gamepad2 },
 ];

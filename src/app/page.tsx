@@ -3,11 +3,17 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Briefcase, GraduationCap, Star, Eye } from "lucide-react";
 import { getProjects, getCareer } from "@/lib/notion";
+import { getLatestArticles } from "@/lib/articles";
+import ArticlesSection from "@/components/ArticlesSection";
 import { splitTags } from "@/lib/utils";
 import { skillCategories, getLevelPercentage, getSkillColor } from "@/data/skills";
 
 export default async function Home() {
-  const [projects, career] = await Promise.all([getProjects(), getCareer()]);
+  const [projects, career, articles] = await Promise.all([
+    getProjects(),
+    getCareer(),
+    getLatestArticles(),
+  ]);
 
   // 最新の3つのプロジェクトを取得
   const latestProjects = projects.slice(0, 3);
@@ -214,6 +220,8 @@ export default async function Home() {
             ))}
           </div>
         </section>
+
+        <ArticlesSection articles={articles} />
 
         {/* 最新キャリア */}
         <section className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 mb-12">

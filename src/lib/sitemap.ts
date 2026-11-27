@@ -6,6 +6,7 @@ const STATIC_PAGES = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/production", changeFrequency: "monthly", priority: 0.8 },
   { path: "/career", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/articles", changeFrequency: "weekly", priority: 0.8 },
   { path: "/skill", changeFrequency: "monthly", priority: 0.7 },
   { path: "/skill/github", changeFrequency: "monthly", priority: 0.6 },
   { path: "/hobby", changeFrequency: "yearly", priority: 0.5 },
