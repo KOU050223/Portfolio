@@ -37,7 +37,7 @@ function ArticleThumbnail({ article }: { article: Article }) {
 
   const icon = SOURCE_ICONS[article.source];
   return (
-    <div className="relative aspect-video w-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center">
+    <div className="hidden md:flex relative aspect-video w-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-800 dark:to-gray-700 items-center justify-center">
       {icon ? (
         <span className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 shadow-md overflow-hidden group-hover:scale-105 transition-transform duration-200">
           <Image src={icon.src} alt="" width={40} height={40} className="object-contain" />
