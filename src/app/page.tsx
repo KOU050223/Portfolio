@@ -1,12 +1,55 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Code, Briefcase, GraduationCap, Star, Eye } from "lucide-react";
+import {
+  ArrowRight,
+  Code,
+  Briefcase,
+  Newspaper,
+  Settings,
+  Gamepad2,
+  GraduationCap,
+  Star,
+  Eye,
+} from "lucide-react";
 import { getProjects, getCareer } from "@/lib/notion";
 import { getLatestArticles } from "@/lib/articles";
 import ArticlesSection from "@/components/ArticlesSection";
 import { splitTags } from "@/lib/utils";
 import { skillCategories, getLevelPercentage, getSkillColor } from "@/data/skills";
+
+const quickLinks = [
+  {
+    href: "/production",
+    icon: Code,
+    label: "作品一覧",
+    description: "制作したプロジェクト",
+  },
+  {
+    href: "/career",
+    icon: Briefcase,
+    label: "キャリア",
+    description: "学習履歴と経験・実績",
+  },
+  {
+    href: "/articles",
+    icon: Newspaper,
+    label: "記事",
+    description: "執筆したブログ記事",
+  },
+  {
+    href: "/skill",
+    icon: Settings,
+    label: "技術スタック",
+    description: "技術とスキルレベル",
+  },
+  {
+    href: "/hobby",
+    icon: Gamepad2,
+    label: "趣味",
+    description: "プログラミング以外の趣味",
+  },
+];
 
 export default async function Home() {
   const [projects, career, articles] = await Promise.all([
@@ -273,45 +316,26 @@ export default async function Home() {
         </section>
 
         {/* クイックナビゲーション */}
-        <section className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Link href="/production" className="group">
-            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <Code className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">作品一覧</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">
-                これまでに制作したプロジェクトをご覧ください
-              </p>
-            </div>
-          </Link>
-          <Link href="/career" className="group">
-            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <Briefcase className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">キャリア</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">
-                学習履歴と経験・実績をご紹介
-              </p>
-            </div>
-          </Link>
-          <Link href="/skill" className="group">
-            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <Star className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                技術スタック
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">
-                習得している技術とスキルレベル
-              </p>
-            </div>
-          </Link>
-          <Link href="/hobby" className="group">
-            <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-              <GraduationCap className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">趣味</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">
-                プログラミング以外の趣味について
-              </p>
-            </div>
-          </Link>
+        <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {quickLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <Link key={link.href} href={link.href} className="group">
+                <div className="h-full bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-5 hover:shadow-lg hover:-translate-y-0.5 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-200">
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mb-3">
+                    <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <h3 className="flex items-center justify-between text-base font-semibold text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {link.label}
+                    <ArrowRight className="w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-0.5 transition-all" />
+                  </h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-xs leading-relaxed">
+                    {link.description}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
         </section>
       </div>
     </>
