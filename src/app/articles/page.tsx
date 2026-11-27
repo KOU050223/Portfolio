@@ -1,11 +1,11 @@
-import { getLatestArticles } from "@/lib/articles";
+import { getAllArticles } from "@/lib/articles";
 import ArticleCard from "@/components/ArticleCard";
 import ArticleSourceLinks from "@/components/ArticleSourceLinks";
 
 export const revalidate = 3600;
 
 export default async function ArticlesPage() {
-  const articles = await getLatestArticles(undefined, undefined, 30);
+  const articles = await getAllArticles();
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
